@@ -14,7 +14,6 @@
             "host": "127.0.0.1",
             "program": "${workspaceFolder}/main.go",
             "env": {},
-            "cwd": "/home/pknopf/test/test-pages",
             "args": [],
             "showLog": true
         }
