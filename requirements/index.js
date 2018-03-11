@@ -112,6 +112,7 @@ const parseTests = async(dir) => {
 
 const parseSoftwareReqDir = async(dir) => {
     var softwareReq = await parseRequirement(path.join(dir, 'index.md'), "utf8");
+    softwareReq.tests = await parseTests(dir);
     return softwareReq;
 }
 
@@ -119,6 +120,7 @@ const parseProductReqDir = async(dir) => {
     var productReq = await parseRequirement(path.join(dir, 'index.md'), "utf8");
     productReq.softwareRequirements = await Promise.all((await childDirs(dir))
         .map(parseSoftwareReqDir));
+    productReq.tests = await parseTests(dir);
     return productReq;
 }
 
