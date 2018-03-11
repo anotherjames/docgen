@@ -10,6 +10,20 @@ ${description}
 ${validation}`;
 }
 
+const buildTestContent = function buildReqContent(number, responseType, validationType, type, action, expected) {
+    return `---
+number: ${number}
+responseType: ${responseType}
+validationType: ${validationType}
+type: ${type}
+---
+# Action
+${action}
+# Expected
+${expected}`;
+}
+
 module.exports = {
-    buildReqContent: buildReqContent
+    buildReqContent: buildReqContent,
+    buildTestContent: buildTestContent
 }
