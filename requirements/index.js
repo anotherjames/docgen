@@ -110,24 +110,27 @@ const parseTests = async(dir) => {
     return Promise.all(tests);
 }
 
-const parseSoftwareReqDir = async(dir) => {
+const parseSoftwareReqDir = async(productReq, dir) => {
     var softwareReq = await parseRequirement(path.join(dir, 'index.md'), "utf8");
+    softwareReq.id = `${productReq.id}-${softwareReq.number}`;
     softwareReq.tests = await parseTests(dir);
     return softwareReq;
 }
 
-const parseProductReqDir = async(dir) => {
+const parseProductReqDir = async(userNeed, dir) => {
     var productReq = await parseRequirement(path.join(dir, 'index.md'), "utf8");
+    productReq.id = `${userNeed.id}-${productReq.number}`;
     productReq.softwareRequirements = await Promise.all((await childDirs(dir))
-        .map(parseSoftwareReqDir));
+        .map(childDir => parseSoftwareReqDir(productReq, childDir)));
     productReq.tests = await parseTests(dir);
     return productReq;
 }
 
 const parseUserNeedDir = async(dir) => {
     var userNeed = await parseRequirement(path.join(dir, 'index.md'), "utf8");
+    userNeed.id = userNeed.number;
     userNeed.productRequirements = await Promise.all((await childDirs(dir))
-        .map(parseProductReqDir));
+        .map(childDir => parseProductReqDir(userNeed, childDir)));
     userNeed.tests = await parseTests(dir);
     return userNeed;
 }

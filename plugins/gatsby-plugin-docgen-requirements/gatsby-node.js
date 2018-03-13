@@ -19,20 +19,36 @@ exports.sourceNodes = async (
   var userNeeds = await parseRequirementDir(pluginOptions.path);
 
   userNeeds.forEach(userNeed => {
-    const contentDigest = crypto
-      .createHash('md5')
-      .update('test')
-      .digest('hex');
     createNode({
-      id: 'test',
       ...userNeed,
       parent: null,
       children: [],
       internal: {
-        type: "requirement",
-        contentDigest
+        type: 'userNeed',
+        contentDigest: crypto.createHash('md5').update(userNeed.id).digest('hex')
       }
-    })
+    });
+    userNeed.productRequirements.forEach(productRec => {
+      createNode({
+        ...productRec,
+        parent: userNeed.id,
+        children: [],
+        internal : {
+          type: 'productSpec',
+          contentDigest: crypto.createHash('md5').update(productRec.id).digest('hex')
+        }
+      });
+      productRec.softwareRequirements.forEach(softwareReq => {
+        createNode({
+          ...productRec,
+          parent: userNeed.id,
+          children: [],
+          internal : {
+            type: 'softwareReq',
+            contentDigest: crypto.createHash('md5').update(softwareReq.id).digest('hex')
+          }
+        });
+      });
+    });
   });
-
 }
