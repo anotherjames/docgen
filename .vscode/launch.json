@@ -4,6 +4,26 @@
       {
         "type": "node",
         "request": "launch",
+        "name": "Start a dev server",
+        "program": "${workspaceRoot}/node_modules/gatsby/dist/bin/gatsby.js",
+        "preLaunchTask": "Build",
+        "args": [
+          "develop"
+        ]
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Build a static site",
+        "program": "${workspaceRoot}/node_modules/gatsby/dist/bin/gatsby.js",
+        "preLaunchTask": "Build",
+        "args": [
+          "build"
+        ]
+      },
+      {
+        "type": "node",
+        "request": "launch",
         "name": "Mocha Tests",
         "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
         "preLaunchTask": "Build",
@@ -17,23 +37,5 @@
         ],
         "internalConsoleOptions": "openOnSessionStart"
       },
-      // {
-      //   "type": "node",
-      //   "request": "launch",
-      //   "name": "Start a dev server",
-      //   "program": "${workspaceRoot}/node_modules/gatsby/dist/bin/gatsby.js",
-      //   "args": [
-      //     "develop"
-      //   ]
-      // },
-      // {
-      //   "type": "node",
-      //   "request": "launch",
-      //   "name": "Build a static site",
-      //   "program": "${workspaceRoot}/node_modules/gatsby/dist/bin/gatsby.js",
-      //   "args": [
-      //     "build"
-      //   ]
-      // }
     ]
   }
