@@ -3,11 +3,10 @@
     "tasks": [
         {
             "label": "Build",
-            "type": "shell",
-            "command": "node",
-            "args": [
-                "${workspaceRoot}/node_modules/gatsby/dist/bin/gatsby.js",
-                "build"
+            "type": "typescript",
+            "tsconfig": "tsconfig.json",
+            "problemMatcher": [
+                "$tsc"
             ],
             "group": {
                 "kind": "build",
