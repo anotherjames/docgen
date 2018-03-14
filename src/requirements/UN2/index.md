@@ -1,6 +1,6 @@
 ---
 number: 2.0.0
-title: Title
+title: Title2
 category: Category
 ---
 # Description

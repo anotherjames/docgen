@@ -5,6 +5,7 @@ import Test from '../../requirements/test'
 import * as util from 'util'
 import * as fs from 'fs'
 import * as crypto from 'crypto'
+import * as slash from 'slash'
 
 const fileExists = util.promisify(fs.exists)
 
@@ -103,5 +104,34 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
                 });
             }
         }
+    }
+};
+
+type GraphqlRunner = (query:string, context?: any) => Promise<any>;
+
+export const createPages = async ({ graphql, boundActionCreators }: {graphql: GraphqlRunner, boundActionCreators: any}) => {
+    const { createPage } = boundActionCreators
+    const blogPostTemplate = slash(path.resolve("src/templates/user-need.js"));
+    let result = await graphql(
+        `
+        {
+            allUserNeed {
+                edges {
+                    node {
+                        id
+                        title
+                        number
+                    }
+                }
+            }	
+        }
+        `
+    );
+    for (let edge of result.data.allUserNeed.edges) {
+        var userNeed = edge.node as UserNeed;
+        createPage({
+            path: userNeed.title,
+            component: blogPostTemplate
+        });
     }
 };
