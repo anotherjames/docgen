@@ -1,5 +1,6 @@
 export default class Test {
     number: string
+    path: string
     responseType: TestResponseType
     validationType: TestValidationType
     type: TestType

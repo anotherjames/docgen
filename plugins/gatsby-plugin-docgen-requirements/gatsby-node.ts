@@ -16,6 +16,7 @@ class PluginOptions {
 class ReqProcelain {
     id: string
     number: string
+    path: string
     title: string
     category: string
     description: string
@@ -24,6 +25,7 @@ class ReqProcelain {
     constructor(req: Req) {
         this.id = req.id;
         this.number = req.number;
+        this.path = req.path;
         this.title = req.title;
         this.category = req.category;
         this.description = req.description;
@@ -121,17 +123,41 @@ export const createPages = async ({ graphql, boundActionCreators }: {graphql: Gr
                         id
                         title
                         number
+                        path
+                        productReqs {
+                            id
+                            title
+                            number
+                            path
+                            softwareSpecs {
+                                id
+                                title
+                                number
+                                path
+                            }
+                        }
                     }
                 }
             }	
         }
         `
     );
-    for (let edge of result.data.allUserNeed.edges) {
-        var userNeed = edge.node as UserNeed;
+    for (let userNeed of (result.data.allUserNeed.edges as Array<any>).map(x => x.node as UserNeed)) {
         createPage({
-            path: userNeed.title,
+            path: "/" + userNeed.path,
             component: blogPostTemplate
         });
+        for (let productReq of userNeed.productReqs) {
+            createPage({
+                path: "/" + productReq.path,
+                component: blogPostTemplate
+            });
+            for (let softwareSpec of productReq.softwareSpecs) {
+                createPage({
+                    path: "/" + softwareSpec.path,
+                    component: blogPostTemplate
+                });
+            }
+        }
     }
 };

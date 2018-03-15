@@ -3,6 +3,7 @@ import Test from './test'
 export default class Req {
     id: string
     number: string
+    path: string
     title: string
     category: string
     description: string
