@@ -9,18 +9,27 @@ class PluginOptions {
 
 type GraphqlRunner = (query:string, context?: any) => Promise<any>;
 
+export const createLayouts = ({ graphql, boundActionCreators }) => {
+    const { createLayout } = boundActionCreators;
+    const defaultLayout = slash(path.resolve(path.join(__dirname, 'layouts/index.js')));
+    createLayout({
+        component: defaultLayout,
+        id: 'index',
+    })
+};
+
 export const createPages = async ({ graphql, boundActionCreators, reporter }: {graphql: GraphqlRunner, boundActionCreators: any, reporter: any}, pluginOptions: PluginOptions) => {
     const { createPage } = boundActionCreators
 
     if(!pluginOptions.baseUrl) {
-        pluginOptions.baseUrl = "/";
+        pluginOptions.baseUrl = '/';
     }
 
-    if(!pluginOptions.baseUrl.startsWith("/")) {
-        pluginOptions.baseUrl = "/" + pluginOptions.baseUrl;
+    if(!pluginOptions.baseUrl.startsWith('/')) {
+        pluginOptions.baseUrl = '/' + pluginOptions.baseUrl;
     }
 
-    const blogPostTemplate = slash(path.resolve("src/templates/user-need.js"));
+    const userNeedTemplate = slash(path.resolve(path.join(__dirname, 'templates/user-need.js')));
     let result = await graphql(
         `
         {
@@ -52,17 +61,17 @@ export const createPages = async ({ graphql, boundActionCreators, reporter }: {g
     for (let userNeed of (result.data.allUserNeed.edges as Array<any>).map(x => x.node as UserNeed)) {
         createPage({
             path: path.join(pluginOptions.baseUrl, userNeed.path),
-            component: blogPostTemplate
+            component: userNeedTemplate
         });
         for (let productReq of userNeed.productReqs) {
             createPage({
                 path: path.join(pluginOptions.baseUrl, productReq.path),
-                component: blogPostTemplate
+                component: userNeedTemplate
             });
             for (let softwareSpec of productReq.softwareSpecs) {
                 createPage({
                     path: path.join(pluginOptions.baseUrl, softwareSpec.path),
-                    component: blogPostTemplate
+                    component: userNeedTemplate
                 });
             }
         }
@@ -86,7 +95,7 @@ export const createPages = async ({ graphql, boundActionCreators, reporter }: {g
     for (let test of (result.data.allTest.edges as Array<any>).map(x => x.node as Test)) {
         createPage({
             path: path.join(pluginOptions.baseUrl, test.path),
-            component: blogPostTemplate
+            component: userNeedTemplate
         });
     }
 };
