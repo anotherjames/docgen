@@ -21,6 +21,16 @@ export const createLayouts = ({ graphql, boundActionCreators }) => {
 export const createPages = async ({ graphql, boundActionCreators, reporter }: {graphql: GraphqlRunner, boundActionCreators: any, reporter: any}, pluginOptions: PluginOptions) => {
     const { createPage } = boundActionCreators
 
+    // Create our static pages
+    createPage({
+        path: '/',
+        component: slash(path.join(__dirname, 'pages/index.js'))
+    });
+    createPage({
+        path: '/404',
+        component: slash(path.join(__dirname, 'pages/404.js'))
+    });
+
     if(!pluginOptions.baseUrl) {
         pluginOptions.baseUrl = '/';
     }
@@ -29,7 +39,7 @@ export const createPages = async ({ graphql, boundActionCreators, reporter }: {g
         pluginOptions.baseUrl = '/' + pluginOptions.baseUrl;
     }
 
-    const userNeedTemplate = slash(path.resolve(path.join(__dirname, 'templates/user-need.js')));
+    const userNeedTemplate = slash(path.join(__dirname, 'templates/user-need.js'));
     let result = await graphql(
         `
         {
