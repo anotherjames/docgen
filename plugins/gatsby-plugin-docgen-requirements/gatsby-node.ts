@@ -11,6 +11,7 @@ const fileExists = util.promisify(fs.exists)
 
 class PluginOptions {
     path: string
+    baseUrl: string
 }
 
 class ReqProcelain {
@@ -30,7 +31,7 @@ class ReqProcelain {
         this.category = req.category;
         this.description = req.description;
         this.validation = req.validation;
-        this.tests = req.tests;
+        this.tests = req.tests || [];
     }
 }
 
@@ -81,9 +82,20 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
             children: [],
             internal: {
                 type: 'userNeed',
-                contentDigest: crypto.createHash('md5').update(userNeed.id).digest('hex')
+                contentDigest: crypto.createHash('md5').update(userNeed.path).digest('hex')
             }
         });
+        for(let test of userNeed.tests) {
+            createNode({
+                ...test,
+                parent: userNeed.id,
+                children: [],
+                internal: {
+                    type: 'test',
+                    contentDigest: crypto.createHash('md5').update(test.path).digest('hex')
+                }
+            });
+        }
         for(let productReq of userNeed.productReqs) {
             createNode({
                 ...productReq,
@@ -91,19 +103,41 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
                 children: [],
                 internal : {
                     type: 'productReq',
-                    contentDigest: crypto.createHash('md5').update(productReq.id).digest('hex')
+                    contentDigest: crypto.createHash('md5').update(productReq.path).digest('hex')
                 }
             });
+            for(let test of productReq.tests) {
+                createNode({
+                    ...test,
+                    parent: productReq.id,
+                    children: [],
+                    internal: {
+                        type: 'test',
+                        contentDigest: crypto.createHash('md5').update(test.path).digest('hex')
+                    }
+                });
+            }
             for(let softwareSpec of productReq.softwareSpecs) {
                 createNode({
                     ...softwareSpec,
-                    parent: userNeed.id,
+                    parent: productReq.id,
                     children: [],
                     internal : {
                         type: 'softwareSpec',
-                        contentDigest: crypto.createHash('md5').update(softwareSpec.id).digest('hex')
+                        contentDigest: crypto.createHash('md5').update(softwareSpec.path).digest('hex')
                     }
                 });
+                for(let test of softwareSpec.tests) {
+                    createNode({
+                        ...test,
+                        parent: softwareSpec.id,
+                        children: [],
+                        internal: {
+                            type: 'test',
+                            contentDigest: crypto.createHash('md5').update(test.path).digest('hex')
+                        }
+                    });
+                }
             }
         }
     }
@@ -111,8 +145,17 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
 
 type GraphqlRunner = (query:string, context?: any) => Promise<any>;
 
-export const createPages = async ({ graphql, boundActionCreators }: {graphql: GraphqlRunner, boundActionCreators: any}) => {
+export const createPages = async ({ graphql, boundActionCreators, reporter }: {graphql: GraphqlRunner, boundActionCreators: any, reporter: any}, pluginOptions: PluginOptions) => {
     const { createPage } = boundActionCreators
+
+    if(!pluginOptions.baseUrl) {
+        pluginOptions.baseUrl = "/";
+    }
+
+    if(!pluginOptions.baseUrl.startsWith("/")) {
+        pluginOptions.baseUrl = "/" + pluginOptions.baseUrl;
+    }
+
     const blogPostTemplate = slash(path.resolve("src/templates/user-need.js"));
     let result = await graphql(
         `
@@ -144,20 +187,42 @@ export const createPages = async ({ graphql, boundActionCreators }: {graphql: Gr
     );
     for (let userNeed of (result.data.allUserNeed.edges as Array<any>).map(x => x.node as UserNeed)) {
         createPage({
-            path: "/" + userNeed.path,
+            path: path.join(pluginOptions.baseUrl, userNeed.path),
             component: blogPostTemplate
         });
         for (let productReq of userNeed.productReqs) {
             createPage({
-                path: "/" + productReq.path,
+                path: path.join(pluginOptions.baseUrl, productReq.path),
                 component: blogPostTemplate
             });
             for (let softwareSpec of productReq.softwareSpecs) {
                 createPage({
-                    path: "/" + softwareSpec.path,
+                    path: path.join(pluginOptions.baseUrl, softwareSpec.path),
                     component: blogPostTemplate
                 });
             }
         }
+    }
+
+    result = await graphql(
+        `
+        {
+            allTest {
+                edges {
+                    node {
+                        id
+                        path
+                    }
+                }
+            }	
+        }
+        `
+    );
+
+    for (let test of (result.data.allTest.edges as Array<any>).map(x => x.node as Test)) {
+        createPage({
+            path: path.join(pluginOptions.baseUrl, test.path),
+            component: blogPostTemplate
+        });
     }
 };

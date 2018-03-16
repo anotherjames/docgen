@@ -1,4 +1,5 @@
 export default class Test {
+    id: string
     number: string
     path: string
     responseType: TestResponseType
