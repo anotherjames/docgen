@@ -10,6 +10,7 @@ module.exports = {
         path: `${__dirname}/src/requirements/`
       }
     },
+    'gatsby-plugin-default-layout',
     {
       resolve: 'gatsby-content-docgen',
       options: {

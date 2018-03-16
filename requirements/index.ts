@@ -77,7 +77,6 @@ export function parseReq(content: string): Req {
 }
 
 export async function loadReq(path: string): Promise<Req> {
-    console.log(path);
     return parseReq(await readfile(path, "utf8"));
 }
 
