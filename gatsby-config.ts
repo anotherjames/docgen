@@ -7,7 +7,12 @@ module.exports = {
     {
       resolve: 'gatsby-source-docgen-requirements',
       options: {
-        path: `${__dirname}/src/requirements/`,
+        path: `${__dirname}/src/requirements/`
+      }
+    },
+    {
+      resolve: 'gatsby-content-docgen',
+      options: {
         baseUrl: '/requirements/'
       }
     }
