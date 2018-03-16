@@ -5,7 +5,7 @@ module.exports = {
   plugins: [
     'gatsby-plugin-react-helmet',
     {
-      resolve: 'gatsby-plugin-docgen-requirements',
+      resolve: 'gatsby-source-docgen-requirements',
       options: {
         path: `${__dirname}/src/requirements/`,
         baseUrl: '/requirements/'
