@@ -12,7 +12,7 @@ type GraphqlRunner = (query:string, context?: any) => Promise<any>;
 
 export const createLayouts = ({ graphql, boundActionCreators }) => {
     const { createLayout } = boundActionCreators;
-    const defaultLayout = slash(path.resolve(path.join(__dirname, 'layouts/index.js')));
+    const defaultLayout = slash(path.resolve(path.join(__dirname, 'layouts/index.tsx')));
     createLayout({
         component: defaultLayout,
         id: 'index',
@@ -30,10 +30,10 @@ const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlR
         pluginOptions.baseUrl = '/' + pluginOptions.baseUrl;
     }
 
-    const userNeedTemplate = slash(path.join(__dirname, 'templates/user-need.js'));
-    const productReqTemplate = slash(path.join(__dirname, 'templates/product-req.js'));
-    const softwareSpecTemplate = slash(path.join(__dirname, 'templates/software-spec.js'));
-    const testTemplate = slash(path.join(__dirname, 'templates/test.js'));
+    const userNeedTemplate = slash(path.join(__dirname, 'templates/user-need.tsx'));
+    const productReqTemplate = slash(path.join(__dirname, 'templates/product-req.tsx'));
+    const softwareSpecTemplate = slash(path.join(__dirname, 'templates/software-spec.tsx'));
+    const testTemplate = slash(path.join(__dirname, 'templates/test.tsx'));
 
     let result = await graphql(
         `
@@ -126,7 +126,7 @@ const createMarkdownPages = async(boundActionCreators: any, graphql: GraphqlRunn
         }
         `
         );
-    const pageTemplate = slash(path.join(__dirname, 'templates/page.js'));
+    const pageTemplate = slash(path.join(__dirname, 'templates/page.tsx'));
     for (let page of (result.data.allMarkdownRemark.edges as Array<any>).map(x => x.node)) {
         createPage({
             path: page.fields.slug,

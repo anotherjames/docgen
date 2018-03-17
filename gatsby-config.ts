@@ -30,6 +30,7 @@ module.exports = {
       options: {
         baseUrl: '/requirements/',
       }
-    }
+    },
+    'gatsby-plugin-typescript'
   ]
 };
