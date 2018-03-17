@@ -40,6 +40,10 @@ export const createPages = async ({ graphql, boundActionCreators, reporter }: {g
     }
 
     const userNeedTemplate = slash(path.join(__dirname, 'templates/user-need.js'));
+    const productReqTemplate = slash(path.join(__dirname, 'templates/product-req.js'));
+    const softwareSpecTemplate = slash(path.join(__dirname, 'templates/software-spec.js'));
+    const testTemplate = slash(path.join(__dirname, 'templates/test.js'));
+
     let result = await graphql(
         `
         {
@@ -76,12 +80,12 @@ export const createPages = async ({ graphql, boundActionCreators, reporter }: {g
         for (let productReq of userNeed.productReqs) {
             createPage({
                 path: path.join(pluginOptions.baseUrl, productReq.path),
-                component: userNeedTemplate
+                component: productReqTemplate
             });
             for (let softwareSpec of productReq.softwareSpecs) {
                 createPage({
                     path: path.join(pluginOptions.baseUrl, softwareSpec.path),
-                    component: userNeedTemplate
+                    component: softwareSpecTemplate
                 });
             }
         }
@@ -105,7 +109,7 @@ export const createPages = async ({ graphql, boundActionCreators, reporter }: {g
     for (let test of (result.data.allTest.edges as Array<any>).map(x => x.node as Test)) {
         createPage({
             path: path.join(pluginOptions.baseUrl, test.path),
-            component: userNeedTemplate
+            component: testTemplate
         });
     }
 };
