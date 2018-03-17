@@ -130,7 +130,10 @@ const createMarkdownPages = async(boundActionCreators: any, graphql: GraphqlRunn
     for (let page of (result.data.allMarkdownRemark.edges as Array<any>).map(x => x.node)) {
         createPage({
             path: page.fields.slug,
-            component: pageTemplate
+            component: pageTemplate,
+            context: {
+                slug: page.fields.slug
+            },
         });
     }
 };
