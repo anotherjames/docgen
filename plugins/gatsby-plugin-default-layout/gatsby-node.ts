@@ -7,7 +7,3 @@ export const onCreatePage = ({ page, boundActionCreators }, pluginOptions) => {
         createPage(newPage);
     }
 };
-
-export const sourceNodes = async ({ boundActionCreators }, pluginOptions) => {
-    console.log(pluginOptions);
-}

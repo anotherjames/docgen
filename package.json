@@ -28,7 +28,6 @@
     "test": "./node_modules/.bin/mocha"
   },
   "devDependencies": {
-    "@types/graphql": "^0.12.4",
     "@types/node": "^9.4.7",
     "prettier": "^1.11.1"
   }
