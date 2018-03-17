@@ -2,6 +2,7 @@ import * as path from 'path';
 import Test from '../../requirements/test'
 import { UserNeed, ProductReq, SoftwareSpec } from '../../requirements/req-structs'
 import * as slash from 'slash'
+import { createFilePath } from 'gatsby-source-filesystem'
 
 class PluginOptions {
     baseUrl: string
@@ -18,18 +19,8 @@ export const createLayouts = ({ graphql, boundActionCreators }) => {
     })
 };
 
-export const createPages = async ({ graphql, boundActionCreators, reporter }: {graphql: GraphqlRunner, boundActionCreators: any, reporter: any}, pluginOptions: PluginOptions) => {
-    const { createPage } = boundActionCreators
-
-    // Create our static pages
-    createPage({
-        path: '/',
-        component: slash(path.join(__dirname, 'pages/index.js'))
-    });
-    createPage({
-        path: '/404',
-        component: slash(path.join(__dirname, 'pages/404.js'))
-    });
+const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlRunner, pluginOptions: PluginOptions) => {
+    const { createPage } = boundActionCreators;
 
     if(!pluginOptions.baseUrl) {
         pluginOptions.baseUrl = '/';
@@ -113,3 +104,66 @@ export const createPages = async ({ graphql, boundActionCreators, reporter }: {g
         });
     }
 };
+
+const createMarkdownPages = async(boundActionCreators: any, graphql: GraphqlRunner) => {
+    const { createPage } = boundActionCreators;
+
+    let result = await graphql(
+        `
+        {
+            allMarkdownRemark {
+                edges {
+                    node {
+                        fields {
+                            slug
+                        }
+                        frontmatter {
+                            title
+                        }
+                    }
+                }
+            }
+        }
+        `
+        );
+    const pageTemplate = slash(path.join(__dirname, 'templates/page.js'));
+    for (let page of (result.data.allMarkdownRemark.edges as Array<any>).map(x => x.node)) {
+        createPage({
+            path: page.fields.slug,
+            component: pageTemplate
+        });
+    }
+};
+
+export const createPages = async ({ graphql, boundActionCreators, reporter }: {graphql: GraphqlRunner, boundActionCreators: any, reporter: any}, pluginOptions: PluginOptions) => {
+    const { createPage } = boundActionCreators;
+
+    // Create our static pages
+    createPage({
+        path: '/',
+        component: slash(path.join(__dirname, 'pages/index.js'))
+    });
+    createPage({
+        path: '/404',
+        component: slash(path.join(__dirname, 'pages/404.js'))
+    });
+
+    // Create pages from our requirements.
+    await createRequirementPages(boundActionCreators, graphql, pluginOptions);
+
+    // Create pages from the markdown files.
+    await createMarkdownPages(boundActionCreators, graphql);
+};
+
+export const onCreateNode = ({ node, boundActionCreators, getNode }) => {
+    const { createNodeField } = boundActionCreators
+  
+    if (node.internal.type === 'MarkdownRemark') {
+      const value = createFilePath({ node, getNode })
+      createNodeField({
+        name: 'slug',
+        node,
+        value,
+      })
+    }
+  }
