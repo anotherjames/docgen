@@ -1,5 +1,6 @@
 import * as React from "react";
 import Helmet from 'react-helmet'
+import SideMenu from '../components/SideMenu'
 
 export default (props) => {
   const post = props.data.markdownRemark;
@@ -7,6 +8,8 @@ export default (props) => {
   return (
     <div>
       <Helmet title={`${post.frontmatter.title} | ${siteTitle}`} />
+      <SideMenu {...props} />
+      <div>Page props {JSON.stringify(props)}</div>
       <h1>{post.frontmatter.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: post.html }} />
     </div>
@@ -15,6 +18,7 @@ export default (props) => {
 
 export const pageQuery = graphql`
   query PageBySlug($slug: String!) {
+    ...pageTree
     site {
       siteMetadata {
         title

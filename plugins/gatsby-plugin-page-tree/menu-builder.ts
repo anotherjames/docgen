@@ -1,18 +1,10 @@
 import treeify from 'treeify-paths'
+import MenuItem from './menu-item'
 
 class TreeNode {
     path: string
     name: string
     children: Array<TreeNode>
-}
-
-export class MenuItem {
-    path: string
-    title: string
-    selected: boolean
-    active: boolean
-    isEmptyParent: true
-    children: Array<MenuItem>
 }
 
 class GatsbyNodeInternal {
