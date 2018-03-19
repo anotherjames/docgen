@@ -66,17 +66,29 @@ const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlR
     for (let userNeed of (result.data.allUserNeed.edges as Array<any>).map(x => x.node as UserNeed)) {
         createPage({
             path: path.join(pluginOptions.baseUrl, userNeed.path),
-            component: userNeedTemplate
+            component: userNeedTemplate,
+            context: {
+                slug: path.join(pluginOptions.baseUrl, userNeed.path),
+                title: userNeed.title
+            }
         });
         for (let productReq of userNeed.productReqs) {
             createPage({
                 path: path.join(pluginOptions.baseUrl, productReq.path),
-                component: productReqTemplate
+                component: productReqTemplate,
+                context: {
+                    slug: path.join(pluginOptions.baseUrl, productReq.path),
+                    title: userNeed.title
+                }
             });
             for (let softwareSpec of productReq.softwareSpecs) {
                 createPage({
                     path: path.join(pluginOptions.baseUrl, softwareSpec.path),
-                    component: softwareSpecTemplate
+                    component: softwareSpecTemplate,
+                    context: {
+                        slug: path.join(pluginOptions.baseUrl, softwareSpec.path),
+                        title: userNeed.title
+                    }
                 });
             }
         }
@@ -100,7 +112,11 @@ const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlR
     for (let test of (result.data.allTest.edges as Array<any>).map(x => x.node as Test)) {
         createPage({
             path: path.join(pluginOptions.baseUrl, test.path),
-            component: testTemplate
+            component: testTemplate,
+            context: {
+                slug: path.join(pluginOptions.baseUrl, test.path),
+                title: test.number
+            }
         });
     }
 };
@@ -132,7 +148,8 @@ const createMarkdownPages = async(boundActionCreators: any, graphql: GraphqlRunn
             path: page.fields.slug,
             component: pageTemplate,
             context: {
-                slug: page.fields.slug
+                slug: page.fields.slug,
+                title: page.frontmatter.title
             },
         });
     }

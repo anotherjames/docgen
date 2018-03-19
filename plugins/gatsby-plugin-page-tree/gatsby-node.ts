@@ -1,6 +1,4 @@
-import { GraphQLString, GraphQLScalarType } from 'graphql';
-import * as GraphQLJSON from 'graphql-type-json'
-
+import { GraphQLScalarType } from 'graphql';
 import * as util from 'util'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -8,31 +6,36 @@ import { buildMenuFromNodes } from './menu-builder'
 
 const copyFile = util.promisify(fs.copyFile);
 
-const buildTreeForPath = async(pagePath: string, getNodes) => {
-    return buildMenuFromNodes(getNodes(), pagePath);
+const buildTreeForPath = async(pagePath: string, getNodes: GetNodes, ignorePaths: string[]) => {
+    return buildMenuFromNodes(getNodes(), pagePath, ignorePaths);
 };
 
-export const setFieldsOnGraphQLNodeType = async({ type, getNodes }) => {
+export const setFieldsOnGraphQLNodeType = async({ type, getNodes }: {type: any, getNodes: GetNodes}, pluginOptions: PluginOptions) => {
+    if(!pluginOptions.ignorePaths) {
+        pluginOptions.ignorePaths = [
+            "/404",
+            "/dev-404-page"
+        ];
+    }
+    
     if (type.name !== "SitePage") {
       return {};
     }
 
-    console.log(getNodes());
-
     return {
-      menu: {
-        type: new GraphQLScalarType({
-            name: 'Menu',
-            serialize(value) {
-                return value;
+        menu: {
+            type: new GraphQLScalarType({
+                name: 'Menu',
+                serialize(value) {
+                    return value;
+                }
+            }),
+            resolve: node => {
+                return buildTreeForPath(node.path, getNodes, pluginOptions.ignorePaths);
             }
-        }),
-        resolve: node => {
-            return buildTreeForPath(node.path, getNodes);
         }
-      }
     };
-  };
+};
 
 export const onPreExtractQueries = async ({
     store,

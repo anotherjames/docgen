@@ -31,6 +31,7 @@ module.exports = {
         baseUrl: '/requirements/',
       }
     },
+    'gatsby-plugin-page-tree',
     'gatsby-plugin-typescript'
   ]
 };

@@ -7,30 +7,19 @@ class TreeNode {
     children: Array<TreeNode>
 }
 
-class GatsbyNodeInternal {
-    type: string
-}
-
-class GatsbyNodeContext {
-    title: string
-}
-
-class GatsbyNode {
-    path: string
-    context: GatsbyNodeContext
-    internal: GatsbyNodeInternal
-}
-
 const normalizePath = (p: string) => {
     if(p.endsWith('/'))  {
-        return p.substr(0, p.length - 1);
+        p = p.substr(0, p.length - 1);
+    }
+    if(!p.startsWith('/')) {
+        p = '/' + p;
     }
     return p;
 }
 
-export function buildMenuFromNodes(nodes: Array<GatsbyNode>, selectedPath: string): Array<MenuItem> {
-    // let menuItems = nodes
-    //     .filter(x => x.internal.type == 'SitePage')
+export function buildMenuFromNodes(nodes: Array<GatsbyNode>, selectedPath: string, ignorePaths: string[]): Array<MenuItem> {
+    let pages = nodes.filter(x => x.internal.type == 'SitePage');
+    // let menuItems = pages
     //     .map(x => {
     //         let menuItem = new MenuItem();
     //         menuItem.path = x.path;
@@ -38,36 +27,44 @@ export function buildMenuFromNodes(nodes: Array<GatsbyNode>, selectedPath: strin
     //         menuItem.selected = normalizePath(menuItem.path) == normalizePath(selectedPath);
     //         return menuItem;
     //     });
-    // let tree = treeify(menuItems.map(x => normalizePath(x.path))) as TreeNode;
+    if (!ignorePaths) {
+        ignorePaths = [];
+    }
+    ignorePaths = ignorePaths.map(normalizePath);
+    let treePaths = pages
+        .map(x => normalizePath(x.path))
+        .filter(x => x !== '/')
+        .filter(x => {
+            return ignorePaths.findIndex(ignorePath => ignorePath == x) == -1;
+        });
+    let tree = treeify(treePaths) as TreeNode;
     
-    // var rootNode = tree.children[0];
+    var rootNode = tree.children[0];
 
-    // for(let child of rootNode.children) {
-    //     console.log(child);
-    // }
+    let result: Array<MenuItem> = [];
+    
+    const walkTreeNode = (node: TreeNode): MenuItem => {
+        let normalizedPath = normalizePath(node.path);
+        let menuItem = new MenuItem();
+        menuItem.path = normalizedPath;
 
-    let r = [
-        {
-            path: "/requirements",
-            title: "Requirements",
-            selected: false,
-            active: true,
-            isEmptyParent: true,
-            children: [
-                {
-                    path: "/requirements/req1",
-                    title: "Req 1",
-                    selected: true,
-                    active: true
-                },
-                {
-                    path: "/requirements/req2",
-                    title: "Req 2",
-                    selected: false,
-                    active: false
-                }
-            ]
+        let page = pages.find(x => normalizePath(x.path) == normalizedPath);
+        if (page) {
+            menuItem.title = page.context.title;
+        } else {
+            menuItem.title = node.name;
+            menuItem.isEmptyParent = true;
         }
-    ];
-    return r as Array<MenuItem>;
+
+        if (node.children && node.children.length > 0) {
+            menuItem.children = node.children.map(walkTreeNode);
+        }
+        return menuItem;
+    };
+
+    for(let child of rootNode.children) {
+        result.push(walkTreeNode(child));
+    }
+
+    return result;
 }
