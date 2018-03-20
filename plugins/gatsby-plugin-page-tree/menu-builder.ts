@@ -72,5 +72,19 @@ export function buildMenuFromNodes(nodes: Array<GatsbyNode>, selectedPath: strin
         result.push(walkTreeNode(child, []));
     }
 
+    // Now that we built the entire tree, let's remove the nodes that don't matter.
+    const collapseChildren = (item: MenuItem) => {
+        if(!item.active && !item.selected) {
+            item.children = [];
+        }
+        for(let child of item.children) {
+            collapseChildren(child);
+        }
+    };
+
+    for(let child of result) {
+        collapseChildren(child);
+    }
+
     return result;
 }
