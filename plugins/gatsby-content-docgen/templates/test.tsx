@@ -1,7 +1,14 @@
 import * as React from "react";
+import SideMenu from '../components/SideMenu'
 
 export default (props: any) => {
     return (
-        <div>test {JSON.stringify(props)}</div>
+        <SideMenu {...props} />
     );
 };
+
+export const pageQuery = graphql`
+  query TestQuery($slug: String!) {
+    ...pageTree
+  }
+`;

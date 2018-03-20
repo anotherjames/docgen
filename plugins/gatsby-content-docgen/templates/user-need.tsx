@@ -1,7 +1,19 @@
 import * as React from "react";
+import SideMenu from '../components/SideMenu'
 
 export default (props: any) => {
     return (
-        <div>user need {JSON.stringify(props)}</div>
+        <SideMenu {...props} />
     );
 };
+
+export const sd = graphql`
+  query UserNeedBySlug($slug: String!) {
+    ...pageTree
+    site {
+      siteMetadata {
+        title
+      }
+    }
+  }
+`;

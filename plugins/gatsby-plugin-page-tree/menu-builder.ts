@@ -18,15 +18,8 @@ const normalizePath = (p: string) => {
 }
 
 export function buildMenuFromNodes(nodes: Array<GatsbyNode>, selectedPath: string, ignorePaths: string[]): Array<MenuItem> {
+    selectedPath = normalizePath(selectedPath);
     let pages = nodes.filter(x => x.internal.type == 'SitePage');
-    // let menuItems = pages
-    //     .map(x => {
-    //         let menuItem = new MenuItem();
-    //         menuItem.path = x.path;
-    //         menuItem.title = x.context.title;
-    //         menuItem.selected = normalizePath(menuItem.path) == normalizePath(selectedPath);
-    //         return menuItem;
-    //     });
     if (!ignorePaths) {
         ignorePaths = [];
     }
@@ -39,11 +32,11 @@ export function buildMenuFromNodes(nodes: Array<GatsbyNode>, selectedPath: strin
         });
     let tree = treeify(treePaths) as TreeNode;
     
-    var rootNode = tree.children[0];
+    let rootNode = tree.children[0];
 
     let result: Array<MenuItem> = [];
     
-    const walkTreeNode = (node: TreeNode): MenuItem => {
+    const walkTreeNode = (node: TreeNode, parents: MenuItem[]): MenuItem => {
         let normalizedPath = normalizePath(node.path);
         let menuItem = new MenuItem();
         menuItem.path = normalizedPath;
@@ -56,14 +49,27 @@ export function buildMenuFromNodes(nodes: Array<GatsbyNode>, selectedPath: strin
             menuItem.isEmptyParent = true;
         }
 
+        if(normalizedPath == selectedPath) {
+            menuItem.selected = true;
+            for(let parent of parents) {
+                parent.active = true;
+            }
+        }
+
         if (node.children && node.children.length > 0) {
-            menuItem.children = node.children.map(walkTreeNode);
+            let newParents = [
+                ...parents,
+                menuItem
+            ];
+            menuItem.children = node.children.map(child => {
+                return walkTreeNode(child, newParents)
+            })
         }
         return menuItem;
     };
 
     for(let child of rootNode.children) {
-        result.push(walkTreeNode(child));
+        result.push(walkTreeNode(child, []));
     }
 
     return result;
