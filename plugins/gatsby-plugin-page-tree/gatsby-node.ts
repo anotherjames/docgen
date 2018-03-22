@@ -46,5 +46,4 @@ export const onPreExtractQueries = async ({
     const program = store.getState().program;
     await copyFile(path.join(__dirname, "fragments.js"),
         `${program.directory}/.cache/fragments/page-tree.js`);
-        console.log("copied");
 };
