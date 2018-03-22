@@ -33,6 +33,6 @@ module.exports = {
     },
     'gatsby-plugin-page-tree',
     'gatsby-plugin-typescript',
-    'gatsby-plugin-sass'
+    'gatsby-plugin-less'
   ]
 };
