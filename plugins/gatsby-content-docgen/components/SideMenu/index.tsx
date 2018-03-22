@@ -3,7 +3,6 @@ import Link from 'gatsby-link'
 import SideMenuNode from './SideMenuNode'
 
 export default (props) => {
-    console.log(props);
     let currentPage = props.data.currentPage;
     if (!currentPage) {
         return null;
@@ -15,7 +14,7 @@ export default (props) => {
     return (
         <ul>
             {currentPageNode.node.menu.map(menuItem => 
-                <SideMenuNode {...menuItem} />
+                <SideMenuNode {...menuItem} key={menuItem.path} />
             )}
         </ul>
     )

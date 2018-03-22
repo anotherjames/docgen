@@ -12,7 +12,7 @@ export default class SideMenuNode extends React.Component<MenuItem, {}> {
                 {this.props.children && this.props.children.length > 0 && 
                     <ul>
                         {this.props.children.map(x =>
-                            <SideMenuNode {...x} />
+                            <SideMenuNode {...x} key={x.path} />
                         )}
                     </ul>
                 }
