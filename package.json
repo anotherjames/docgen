@@ -5,6 +5,7 @@
   "author": "Paul Knopf <pauldotknopf@gmail.com>",
   "scripts": {
     "bootstrap": "./node_modules/.bin/lerna bootstrap",
+    "build": "./node_modules/.bin/lerna run build",
     "develop": "cd packages/example-site/ && ./node_modules/.bin/gatsby develop"
   },
   "devDependencies": {

@@ -1,6 +1,10 @@
 {
     "name": "example-site",
     "dependencies": {
-        "gatsby": "^1.9.223"
+        "gatsby": "^1.9.223",
+        "gatsby-plugin-react-helmet": "^2.0.8"
+    },
+    "scripts": {
+        "build": "tsc -p ./tsconfig.json"
     }
 }
