@@ -1,7 +1,9 @@
 {
     "name": "example-site",
+    "version": "1.0.0",
     "dependencies": {
         "gatsby": "^1.9.223",
+        "gatsby-plugin-default-layout": "^1.0.0",
         "gatsby-plugin-react-helmet": "^2.0.8"
     },
     "scripts": {
