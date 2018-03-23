@@ -47,7 +47,9 @@ export default class Master extends React.Component<MasterProps, MasterState> {
           </nav>
         </header>
         <aside className="main-sidebar">
-          {this.props.sidebar}
+          <section className="sidebar">
+            {this.props.sidebar}
+          </section>
         </aside>
         <div className="content-wrapper">
           {this.props.content}

@@ -12,10 +12,10 @@ export default (props) => {
         return null;
     }
     return (
-        <ul>
-            {currentPageNode.node.menu.map(menuItem => 
-                <SideMenuNode {...menuItem} key={menuItem.path} />
-            )}
+        <ul className="tree sidebar-menu">
+        {currentPageNode.node.menu.map(menuItem => 
+            <SideMenuNode {...menuItem} key={menuItem.path} />
+        )}
         </ul>
     )
 };
