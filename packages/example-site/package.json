@@ -1,0 +1,6 @@
+{
+    "name": "example-site",
+    "dependencies": {
+        "gatsby": "^1.9.223"
+    }
+}
