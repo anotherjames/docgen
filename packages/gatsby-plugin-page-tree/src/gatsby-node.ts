@@ -22,6 +22,8 @@ export const setFieldsOnGraphQLNodeType = async({ type, getNodes }: {type: any, 
       return {};
     }
 
+    console.log(GraphQLScalarType);
+
     return {
         menu: {
             type: new GraphQLScalarType({

@@ -5,6 +5,7 @@
         "type": "node",
         "request": "launch",
         "name": "Start a dev server",
+        "preLaunchTask": "Build",
         "program": "${workspaceFolder}/packages/example-site/node_modules/gatsby/dist/bin/gatsby.js",
         "cwd": "${workspaceFolder}/packages/example-site",
         "args": [
