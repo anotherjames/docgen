@@ -1,10 +1,9 @@
-export const menuFragement = graphql`
-  fragment menu on RootQueryType {
+export const pageTreeFragement = graphql`
+  fragment pageTree on RootQueryType {
     menu: allSitePage(filter: {path: {eq:$slug}}) {
         edges {
           node {
             path
-            menu
           }
         }
       }
