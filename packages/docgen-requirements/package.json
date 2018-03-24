@@ -1,0 +1,13 @@
+{
+    "name": "docgen-requirements",
+    "version": "1.0.0",
+    "dependencies": {
+        "gray-matter": "^3.1.1"
+    },
+    "devDependencies": {
+        "@types/node": "^9.6.0"
+    },
+    "scripts": {
+        "build": "tsc -p ./tsconfig.json"
+    }
+}
