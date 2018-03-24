@@ -161,11 +161,11 @@ export const createPages = async ({ graphql, boundActionCreators, reporter }: {g
     // Create our static pages
     createPage({
         path: '/',
-        component: slash(path.join(__dirname, 'pages/index.js'))
+        component: slash(path.join(__dirname, 'pages/index.tsx'))
     });
     createPage({
         path: '/404',
-        component: slash(path.join(__dirname, 'pages/404.js'))
+        component: slash(path.join(__dirname, 'pages/404.tsx'))
     });
 
     // Create pages from our requirements.
