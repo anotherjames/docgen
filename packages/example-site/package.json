@@ -4,7 +4,11 @@
     "dependencies": {
         "gatsby": "^1.9.223",
         "gatsby-plugin-default-layout": "^1.0.0",
-        "gatsby-plugin-react-helmet": "^2.0.8"
+        "gatsby-plugin-react-helmet": "^2.0.8",
+        "gatsby-source-docgen-requirements": "^1.0.0",
+        "gatsby-source-filesystem": "^1.5.27",
+        "gatsby-transformer-remark": "^1.7.37",
+        "gatsby-content-docgen": "^1.0.0"
     },
     "scripts": {
         "build": "tsc -p ./tsconfig.json"

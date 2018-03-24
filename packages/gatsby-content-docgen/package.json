@@ -1,0 +1,14 @@
+{
+    "name": "gatsby-content-docgen",
+    "version": "1.0.0",
+    "dependencies": {
+        "docgen-requirements": "^1.0.0",
+        "gatsby-source-filesystem": "^1.5.27"
+    },
+    "devDependencies": {
+        "@types/node": "^9.6.0"
+    },
+    "scripts": {
+        "build": "tsc -p ./tsconfig.json"
+    }
+}

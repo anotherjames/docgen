@@ -1,8 +1,8 @@
 import * as path from 'path';
-import { loadReqDir } from '../../requirements'
-import Req from '../../requirements/req'
-import Test from '../../requirements/test'
-import { UserNeed, ProductReq, SoftwareSpec } from '../../requirements/req-structs'
+import { loadReqDir } from 'docgen-requirements'
+import Req from 'docgen-requirements/req'
+import Test from 'docgen-requirements/test'
+import { UserNeed, ProductReq, SoftwareSpec } from 'docgen-requirements/req-structs'
 import * as util from 'util'
 import * as fs from 'fs'
 import * as crypto from 'crypto'

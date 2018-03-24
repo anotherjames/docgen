@@ -1,6 +1,6 @@
 import * as path from 'path';
-import Test from '../../requirements/test'
-import { UserNeed, ProductReq, SoftwareSpec } from '../../requirements/req-structs'
+import Test from 'docgen-requirements/test'
+import { UserNeed, ProductReq, SoftwareSpec } from 'docgen-requirements/req-structs'
 import * as slash from 'slash'
 import { createFilePath } from 'gatsby-source-filesystem'
 
