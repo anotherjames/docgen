@@ -2,11 +2,8 @@
     "name": "gatsby-plugin-page-tree",
     "version": "1.0.0",
     "dependencies": {
-        "graphql": "^0.13.2",
-        "treeify-paths": "^1.0.1"
-    },
-    "devDependencies": {
-        "@types/node": "^9.6.0"
+        "treeify-paths": "^1.0.1",
+        "graphql": "^0.11.7"
     },
     "scripts": {
         "build": "tsc -p ./tsconfig.json"

@@ -3,6 +3,8 @@ import Link from 'gatsby-link'
 import SideMenuNode from './SideMenuNode'
 
 export default (props) => {
+    console.log("dd");
+    console.log(props);
     let currentPage = props.data.currentPage;
     if (!currentPage) {
         return null;

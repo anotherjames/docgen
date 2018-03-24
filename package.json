@@ -3,12 +3,20 @@
   "description": "Documentation generator.",
   "version": "1.0.0",
   "author": "Paul Knopf <pauldotknopf@gmail.com>",
+  "private": true,
   "scripts": {
     "bootstrap": "./node_modules/.bin/lerna bootstrap",
     "build": "./node_modules/.bin/lerna run build",
-    "develop": "cd packages/example-site/ && ./node_modules/.bin/gatsby develop"
+    "develop": "./node_modules/.bin/gatsby develop"
+  },
+  "dependencies": {
+    "gatsby": "^1.9.223",
+    "react-helmet": "^5.2.0"
   },
   "devDependencies": {
     "lerna": "^2.9.0"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

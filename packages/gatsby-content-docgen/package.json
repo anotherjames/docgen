@@ -3,7 +3,11 @@
     "version": "1.0.0",
     "dependencies": {
         "docgen-requirements": "^1.0.0",
-        "gatsby-source-filesystem": "^1.5.27"
+        "gatsby-plugin-less": "^1.1.8",
+        "gatsby-plugin-react-helmet": "^2.0.8",
+        "gatsby-plugin-typescript": "^1.4.19",
+        "gatsby-source-filesystem": "^1.5.27",
+        "gatsby-transformer-remark": "^1.7.37"
     },
     "devDependencies": {
         "@types/node": "^9.6.0"
