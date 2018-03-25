@@ -6,7 +6,10 @@ let command = 'build';
 export { command }
 
 export async function handler(argv: yargs.Argv) {
-    //await buildDirectory(process.cwd());
-    //reporter.panic('test');
+    try {
+        await buildDirectory();
+    } catch(err) {
+        reporter.panic(err);
+    }
     process.exit(0);
 }

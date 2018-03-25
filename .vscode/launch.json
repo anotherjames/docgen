@@ -9,7 +9,7 @@
         "cwd": "${workspaceFolder}",
         "args": [
           "content",
-          "build"
+          "serve"
         ]
       },
     ]
