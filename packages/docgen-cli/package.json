@@ -5,8 +5,11 @@
         "docgen": "./index.js"
     },
     "dependencies": {
-        "@types/yargs": "^11.0.0",
-        "yargs": "^11.0.0"
+        "yargs": "^11.0.0",
+        "docgen-gatsby": "^1.0.0"
+    },
+    "devDependencies": {
+        "@types/yargs": "^11.0.0"
     },
     "scripts": {
         "build": "tsc -p ./tsconfig.json",

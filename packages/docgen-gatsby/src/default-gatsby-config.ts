@@ -36,4 +36,3 @@ module.exports = {
         'gatsby-plugin-less'
     ]
 };
-//# sourceMappingURL=default-gatsby-config.js.map
