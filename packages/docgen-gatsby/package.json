@@ -2,8 +2,8 @@
     "name": "docgen-gatsby",
     "version": "1.0.0",
     "scripts": {
-        "build": "tsc -p ./tsconfig.json",
-        "build:watch": "tsc -p ./tsconfig.json -w"
+        "build": "tsc -p ./tsconfig.json -d",
+        "build:watch": "tsc -p ./tsconfig.json -d -w"
     },
     "dependencies": {
         "fs-extra": "^5.0.0",

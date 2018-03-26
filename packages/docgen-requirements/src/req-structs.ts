@@ -1,7 +1,7 @@
 import Test from './test'
 import Req from './req'
 
-class ReqProcelain {
+export class ReqProcelain {
     id: string
     number: string
     path: string

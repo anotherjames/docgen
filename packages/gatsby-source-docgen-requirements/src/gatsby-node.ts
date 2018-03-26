@@ -10,7 +10,7 @@ import * as slash from 'slash'
 
 const fileExists = util.promisify(fs.exists)
 
-class PluginOptions {
+export interface PluginOptions {
     path: string
 }
 

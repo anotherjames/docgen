@@ -4,7 +4,7 @@ import { UserNeed, ProductReq, SoftwareSpec } from 'docgen-requirements/req-stru
 import * as slash from 'slash'
 import { createFilePath } from 'gatsby-source-filesystem'
 
-class PluginOptions {
+export interface PluginOptions {
     baseUrl: string
 }
 

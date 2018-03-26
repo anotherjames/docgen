@@ -2,6 +2,7 @@ import { GraphQLScalarType } from 'graphql';
 import * as util from 'util'
 import * as fs from 'fs'
 import * as path from 'path'
+import MenuItem from './menu-item'
 import { buildMenuFromNodes } from './menu-builder'
 
 const copyFile = util.promisify(fs.copyFile);

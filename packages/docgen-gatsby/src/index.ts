@@ -34,7 +34,7 @@ export async function buildDirectory(): Promise<void> {
 export function serveDirectory() {
     serve({
         directory: process.cwd(),
-        port: 8080,
+        port: 8000,
         open: true
     });
 }
