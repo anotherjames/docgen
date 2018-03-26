@@ -1,6 +1,7 @@
 import * as build from 'gatsby/dist/commands/build'
-import * as bootstrap from 'gatsby/dist/bootstrap';
+import * as bootstrap from 'gatsby/dist/bootstrap'
 import * as serve from 'gatsby/dist/commands/serve'
+import * as develop from 'gatsby/dist/commands/develop'
 import * as fs from 'fs'
 import * as fsExtra from 'fs-extra'
 import * as path from 'path';
@@ -34,6 +35,17 @@ export async function buildDirectory(): Promise<void> {
 export function serveDirectory() {
     serve({
         directory: process.cwd(),
+        port: 8000,
+        open: true
+    });
+}
+
+export function developDirectory() {
+    develop({
+        directory: process.cwd(),
+        sitePackageJson: {
+            name: "docgen"
+        },
         port: 8000,
         open: true
     });
