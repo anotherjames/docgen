@@ -7,19 +7,20 @@ import * as fsExtra from 'fs-extra'
 import * as path from 'path';
 import * as util from 'util'
 
-const fileExists = util.promisify(fs.exists);
-const fileUnlink = util.promisify(fs.unlink);
-const copyFile = util.promisify(fsExtra.copy);
+const exists = util.promisify(fs.exists);
+const unlink = util.promisify(fs.unlink);
+const copy = util.promisify(fsExtra.copy);
+const remove = util.promisify(fsExtra.remove);
 
 export async function buildDirectory(): Promise<void> {
     let sourceConfigFileLocation = path.join(__dirname, 'default-gatsby-config.js');
     let destConfigLocation = path.join(process.cwd(), 'gatsby-config.js');
 
-    if (await fileExists(destConfigLocation)) {
-        await fileUnlink(destConfigLocation);
+    if (await exists(destConfigLocation)) {
+        await unlink(destConfigLocation);
     }
 
-    await copyFile(sourceConfigFileLocation, destConfigLocation);
+    await copy(sourceConfigFileLocation, destConfigLocation);
 
     await build({
         directory: process.cwd(),
@@ -49,4 +50,15 @@ export function developDirectory() {
         port: 8000,
         open: true
     });
+}
+
+export async function cleanDirectory() {
+    let cacheDir = path.join(process.cwd(), '.cache');
+    let buildDir = path.join(process.cwd(), 'public');
+    if(await exists(cacheDir)) {
+        remove(cacheDir);
+    }
+    if(await exists(buildDir)) {
+        remove(buildDir);
+    }
 }
