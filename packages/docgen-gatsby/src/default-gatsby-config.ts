@@ -21,6 +21,7 @@ module.exports = {
             },
         },
         // Transform the markdown files to html.
+        'gatsby-remark-docgen-requirements',
         {
             resolve: 'gatsby-transformer-remark',
             options: {
