@@ -6,7 +6,7 @@ describe('requirements', () => {
 
   describe('loadTest', () => {
 
-    const { loadTest } = require('../requirements');
+    const { loadTest } = require('docgen-requirements');
 
     afterEach(() => {
       mock.restore();
@@ -29,7 +29,7 @@ describe('requirements', () => {
 
   describe('loadReq', () => {
 
-    const { loadReq } = require('../requirements');
+    const { loadReq } = require('docgen-requirements');
 
     afterEach(() => {
         mock.restore();
@@ -51,7 +51,7 @@ describe('requirements', () => {
 
   describe('loadReqDir', () => {
 
-    const { loadReqDir } = require('../requirements');
+    const { loadReqDir } = require('docgen-requirements');
 
     afterEach(() => {
         mock.restore();

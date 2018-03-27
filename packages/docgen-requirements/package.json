@@ -2,8 +2,7 @@
     "name": "docgen-requirements",
     "version": "1.0.0",
     "dependencies": {
-        "gray-matter": "^3.1.1",
-        "gatsby-remark-docgen-requirements": "^1.0.0"
+        "gray-matter": "^3.1.1"
     },
     "devDependencies": {
         "@types/node": "^9.6.0"
