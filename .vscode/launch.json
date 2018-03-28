@@ -12,5 +12,15 @@
           "build"
         ]
       },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Mocha Tests",
+        "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+        "args": [
+          "packages/**/__tests__/*"
+        ],
+        "internalConsoleOptions": "openOnSessionStart"
+      }
     ]
   }

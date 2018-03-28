@@ -5,6 +5,7 @@ import * as util from 'util'
 import './test'
 import Test, { TestResponseType, TestType, TestValidationType } from './test';
 import Req from './req';
+import * as semver from 'semver'
 
 const readdir = util.promisify(fs.readdir)
 const readfile = util.promisify(fs.readFile)
@@ -107,6 +108,29 @@ export function parseTest(content: string): Test {
             }
         }
     });
+
+    if(!d.data.number) {
+        throw new Error('Number is required');
+    }
+    if(!semver.valid(d.data.number)) {
+        throw new Error(`Invalid number ${d.data.number}`);
+    }
+
+    if(!d.data.responseType) {
+        throw new Error('Response type is required');
+    }
+
+    if(d.data.responseType != 'passFail' && d.data.responseType != 'none') {
+        throw new Error(`Invalid response type ${d.data.responseType}`);
+    }
+
+    if(!d.data.validationType) {
+        throw new Error('Validation type is required');
+    }
+
+    if(d.data.validationType != 'verification' && d.data.validationType != 'validation') {
+        throw new Error(`Invalid validation type ${d.data.validationType}`);
+    }
 
     let test = new Test();
     test.number = d.data.number;
