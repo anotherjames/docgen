@@ -14,14 +14,7 @@ describe('requirements', () => {
     });
 
     it('should parse valid test', async() => {
-        var result = await parseTest(
-          buildTestContent('1.0.0',
-            'passFail',
-            'verification',
-            'software',
-            'action',
-            'expected')
-        );
+        var result = await parseTest(buildTestContent({}));
         assert.equal(result.number, '1.0.0');
         assert.equal(result.responseType, "passFail");
         assert.equal(result.validationType, "verification");
@@ -33,22 +26,12 @@ describe('requirements', () => {
     it('throws exception with empty number', async() => {
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent(null,
-                    'passFail',
-                    'verification',
-                    'software',
-                    'action',
-                    'expected')
+                buildTestContent({ number: null })
             );
         }, 'Number is required');
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent('',
-                    'passFail',
-                    'verification',
-                    'software',
-                    'action',
-                    'expected')
+                buildTestContent({ number: '' })
             );
         }, 'Number is required');
     });
@@ -56,25 +39,15 @@ describe('requirements', () => {
     it('throws exception with invalid number', async() => {
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent('1.0.sd0',
-                    'passFail',
-                    'verification',
-                    'software',
-                    'action',
-                    'expected')
+                buildTestContent({ number: '1.0.ds0' })
             );
-        }, 'Invalid number 1.0.sd0')
+        }, 'Invalid number 1.0.ds0')
     });
 
     it('throws exception with empty response type', async() => {
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent('1.0.0',
-                    '',
-                    'verification',
-                    'software',
-                    'action',
-                    'expected')
+                buildTestContent({ responseType: '' })
             );
         }, 'Response type is required');
     });
@@ -82,12 +55,7 @@ describe('requirements', () => {
     it('throws exception with invalid response type', async() => {
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent('1.0.0',
-                    'df',
-                    'verification',
-                    'software',
-                    'action',
-                    'expected')
+                buildTestContent({ responseType: 'df' })
             );
         }, 'Invalid response type df');
     });
@@ -95,12 +63,7 @@ describe('requirements', () => {
     it('throws exception with empty validation type', async() => {
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent('1.0.0',
-                    'passFail',
-                    '',
-                    'software',
-                    'action',
-                    'expected')
+                buildTestContent({ validationType: '' })
             );
         }, 'Validation type is required');
     });
@@ -108,12 +71,7 @@ describe('requirements', () => {
     it('throws exception with invalid validation type', async() => {
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent('1.0.0',
-                    'passFail',
-                    'dfg',
-                    'software',
-                    'action',
-                    'expected')
+                buildTestContent({ validationType: 'dfg' })
             );
         }, 'Invalid validation type dfg');
     });
@@ -121,12 +79,7 @@ describe('requirements', () => {
     it('throws exception with empty test type', async() => {
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent('1.0.0',
-                    'passFail',
-                    'verification',
-                    '',
-                    'action',
-                    'expected')
+                buildTestContent({ type: '' })
             );
         }, 'Test type is required');
     });
@@ -134,12 +87,7 @@ describe('requirements', () => {
     it('throws exception with invalid test type', async() => {
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent('1.0.0',
-                    'passFail',
-                    'verification',
-                    'sdf',
-                    'action',
-                    'expected')
+                buildTestContent({ type: 'sdf' })
             );
         }, 'Invalid test type sdf');
     });
@@ -147,12 +95,7 @@ describe('requirements', () => {
     it('throws exception with empty action', async() => {
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent('1.0.0',
-                    'passFail',
-                    'verification',
-                    'software',
-                    '',
-                    'expected')
+                buildTestContent({ action: '' })
             );
         }, 'Action is required');
     });
@@ -160,12 +103,7 @@ describe('requirements', () => {
     it('throws exception with empty expected', async() => {
         await assertThrows(async() => {
             await parseTest(
-                buildTestContent('1.0.0',
-                    'passFail',
-                    'verification',
-                    'software',
-                    'action',
-                    '')
+                buildTestContent({ expected: '' })
             );
         }, 'Expected is required');
     });

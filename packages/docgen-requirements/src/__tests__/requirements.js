@@ -15,22 +15,22 @@ describe('requirements', () => {
     it('should load valid req dir', async() => {
         mock({
         userNeed1 : {
-            'index.md': buildReqContent('1.0.0', 'Test user need', '', '', ''),
+            'index.md': buildReqContent({ number: '1.0.0' }),
             tests: {
-                'test1.md': buildTestContent('2.0.0', "passFail", "verification", "software", "action1", "expected1"),
-                'test2.md': buildTestContent('3.0.0', "passFail", "verification", "software", "action2", "expected2")
+                'test1.md': buildTestContent({ number: '2.0.0' }),
+                'test2.md': buildTestContent({ number: '3.0.0' })
             },
             productRequirement: {
-                'index.md': buildReqContent('4.0.0', 'Test product req', '', '', ''),
+                'index.md': buildReqContent({ number: '4.0.0' }),
                 tests: {
-                    'test1.md': buildTestContent('5.0.0', "passFail", "verification", "software", "action1", "expected1"),
-                    'test2.md': buildTestContent('6.0.0', "passFail", "verification", "software", "action2", "expected2")
+                    'test1.md': buildTestContent({ number: '5.0.0' }),
+                    'test2.md': buildTestContent({ number: '6.0.0' })
                 },
                 softwareRequirement: {
-                    'index.md': buildReqContent('7.0.0', 'Test software req', '', '', ''),
+                    'index.md': buildReqContent({ number: '7.0.0' }),
                     tests: {
-                        'test1.md': buildTestContent('8.0.0', "passFail", "verification", "software", "action1", "expected1"),
-                        'test2.md': buildTestContent('9.0.0', "passFail", "verification", "software", "action2", "expected2")
+                        'test1.md': buildTestContent({ number: '8.0.0' }),
+                        'test2.md': buildTestContent({ number: '9.0.0' })
                     }
                 }
             }
@@ -70,13 +70,13 @@ describe('requirements', () => {
     it('should load reqs sorted by number', async() => {
         mock({
             userNeed1 : {
-                'index.md': buildReqContent('1.0.0', 'Test user need', '', '', '')
+                'index.md': buildReqContent({ number: '1.0.0' })
             },
             userNeed2 : {
-                'index.md': buildReqContent('3.0.0', 'Test user need', '', '', '')
+                'index.md': buildReqContent({ number: '3.0.0' })
             },
             userNeed3 : {
-                'index.md': buildReqContent('2.0.0', 'Test user need', '', '', '')
+                'index.md': buildReqContent({ number: '2.0.0' })
             }
         });
         var result = await loadReqDir('.');

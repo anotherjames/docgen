@@ -1,26 +1,47 @@
-const buildReqContent = function buildReqContent(number, title, category, description, validation) {
+const buildReqContent = function buildReqContent(content) {
+    var o = {
+        number: "1.0.0",
+        title: "title",
+        category: "category",
+        description: "description",
+        validation: "validation"
+    };
+    for(var k in content) {
+        o[k] = content[k];
+    }
     return `---
-number: ${number}
-title: ${title}
-category: ${category}
+number: ${o.number}
+title: ${o.title}
+category: ${o.category}
 ---
 # Description
-${description}
+${o.description}
 # Validation
-${validation}`;
+${o.validation}`;
 }
 
-const buildTestContent = function buildReqContent(number, responseType, validationType, type, action, expected) {
+const buildTestContent = function buildReqContent(content) {
+    var o = {
+        number: "1.0.0",
+        responseType: "passFail",
+        validationType: "verification",
+        type: "software",
+        action: "action",
+        expected: "expected"
+    };
+    for(var k in content) {
+        o[k] = content[k];
+    }
     return `---
-number: ${number}
-responseType: ${responseType}
-validationType: ${validationType}
-type: ${type}
+number: ${o.number}
+responseType: ${o.responseType}
+validationType: ${o.validationType}
+type: ${o.type}
 ---
 # Action
-${action}
+${o.action}
 # Expected
-${expected}`;
+${o.expected}`;
 }
 
 module.exports = {

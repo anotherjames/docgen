@@ -13,9 +13,9 @@ describe('requirements', () => {
 
     it('sorts by number', async() => {
       mock({
-        'test1.md': buildTestContent('1.0.0', 'passFail', 'verification', 'software', 'action', 'expected'),
-        'test2.md': buildTestContent('3.0.0', 'passFail', 'verification', 'software', 'action', 'expected'),
-        'test3.md': buildTestContent('2.0.0', 'passFail', 'verification', 'software', 'action', 'expected')
+        'test1.md': buildTestContent({ number: '1.0.0' }),
+        'test2.md': buildTestContent({ number: '3.0.0' }),
+        'test3.md': buildTestContent({ number: '2.0.0' })
       });
       var req = { id: 'id', tests: [] };
       await loadTests('.', '.', req);
