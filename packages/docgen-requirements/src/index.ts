@@ -67,12 +67,35 @@ export function parseReq(content: string): Req {
         }
     });
 
+    if(!d.data.number) {
+        throw new Error('Number is required');
+    }
+    if(!semver.valid(d.data.number)) {
+        throw new Error(`Invalid number ${d.data.number}`);
+    }
+    
+    if(!d.data.title) {
+        throw new Error('Title is required');
+    }
+
+    if(!d.data.category) {
+        throw new Error('Category is required');
+    }
+
     let req = new Req();
     req.number = d.data.number;
     req.title = d.data.title;
     req.category = d.data.category;
     req.description = description.join();
     req.validation = validation.join();
+
+    if(!req.description) {
+        throw new Error('Description is required');
+    }
+
+    if(!req.validation) {
+        throw new Error('Validation is required');
+    }
 
     return req;
 }
