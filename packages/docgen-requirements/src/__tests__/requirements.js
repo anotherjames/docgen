@@ -4,51 +4,6 @@ const { buildTestContent, buildReqContent } = require('./utils');
 
 describe('requirements', () => {
 
-  describe('loadTest', () => {
-
-    const { loadTest } = require('docgen-requirements');
-
-    afterEach(() => {
-      mock.restore();
-    });
-
-    it('should parse valid test', async() => {
-      mock({
-        'test.md': buildTestContent('1.0.0', 'passFail', 'verification', 'software', 'action', 'expected')
-      });
-      var result = await loadTest('test.md');
-      assert.equal(result.number, '1.0.0');
-      assert.equal(result.responseType, "passFail");
-      assert.equal(result.validationType, "verification");
-      assert.equal(result.type, "software");
-      assert.equal(result.action, "action");
-      assert.equal(result.expected, "expected");
-    });
-
-  });
-
-  describe('loadReq', () => {
-
-    const { loadReq } = require('docgen-requirements');
-
-    afterEach(() => {
-        mock.restore();
-    });
-
-    it('should load valid req', async() => {
-        mock({
-            'requirement.md': buildReqContent('1.0.0', 'Test title', 'Category', 'Requirement content...', 'Validation content...')
-        });
-        var result = await loadReq('requirement.md');
-        assert.equal(result.number, '1.0.0');
-        assert.equal(result.title, 'Test title');
-        assert.equal(result.category, 'Category');
-        assert.equal(result.description, 'Requirement content...');
-        assert.equal(result.validation, 'Validation content...');
-    });
-
-  });
-
   describe('loadReqDir', () => {
 
     const { loadReqDir } = require('docgen-requirements');
@@ -109,6 +64,26 @@ describe('requirements', () => {
         assert.equal(result[0].children[0].children[0].tests[0].path, "userNeed1/productRequirement/softwareRequirement/tests/test1");
         assert.equal(result[0].children[0].children[0].tests[1].number, "9.0.0");
         assert.equal(result[0].children[0].children[0].tests[1].path, "userNeed1/productRequirement/softwareRequirement/tests/test2");
+    });
+
+
+    it('should load reqs sorted by number', async() => {
+        mock({
+            userNeed1 : {
+                'index.md': buildReqContent('1.0.0', 'Test user need', '', '', '')
+            },
+            userNeed2 : {
+                'index.md': buildReqContent('3.0.0', 'Test user need', '', '', '')
+            },
+            userNeed3 : {
+                'index.md': buildReqContent('2.0.0', 'Test user need', '', '', '')
+            }
+        });
+        var result = await loadReqDir('.');
+        assert.equal(result.length, 3);
+        assert.equal(result[0].number, '1.0.0');
+        assert.equal(result[1].number, '2.0.0');
+        assert.equal(result[2].number, '3.0.0');
     });
 
   });

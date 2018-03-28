@@ -204,5 +204,5 @@ export async function loadReqDir(dir: string) {
             reqs.push(await loadReqWithChildren(dir, childDir, null));
         }
     }
-    return reqs;
+    return reqs.sort((a, b) => semver.compare(a.number, b.number));
 }
