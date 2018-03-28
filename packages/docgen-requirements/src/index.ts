@@ -132,6 +132,14 @@ export function parseTest(content: string): Test {
         throw new Error(`Invalid validation type ${d.data.validationType}`);
     }
 
+    if(!d.data.type) {
+        throw new Error('Test type is required');
+    }
+
+    if(d.data.type != 'software' && d.data.type != 'hardware') {
+        throw new Error(`Invalid test type ${d.data.type}`);
+    }
+
     let test = new Test();
     test.number = d.data.number;
     test.responseType = d.data.responseType as TestResponseType;
@@ -139,6 +147,14 @@ export function parseTest(content: string): Test {
     test.type = d.data.type as TestType;
     test.action = action.join();
     test.expected = expected.join();
+
+    if(!test.action) {
+        throw new Error('Action is required');
+    }
+
+    if(!test.expected) {
+        throw new Error('Expected is required');
+    }
 
     return test;
 }

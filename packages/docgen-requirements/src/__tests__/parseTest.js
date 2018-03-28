@@ -118,6 +118,58 @@ describe('requirements', () => {
         }, 'Invalid validation type dfg');
     });
 
+    it('throws exception with empty test type', async() => {
+        await assertThrows(async() => {
+            await parseTest(
+                buildTestContent('1.0.0',
+                    'passFail',
+                    'verification',
+                    '',
+                    'action',
+                    'expected')
+            );
+        }, 'Test type is required');
+    });
+
+    it('throws exception with invalid test type', async() => {
+        await assertThrows(async() => {
+            await parseTest(
+                buildTestContent('1.0.0',
+                    'passFail',
+                    'verification',
+                    'sdf',
+                    'action',
+                    'expected')
+            );
+        }, 'Invalid test type sdf');
+    });
+
+    it('throws exception with empty action', async() => {
+        await assertThrows(async() => {
+            await parseTest(
+                buildTestContent('1.0.0',
+                    'passFail',
+                    'verification',
+                    'software',
+                    '',
+                    'expected')
+            );
+        }, 'Action is required');
+    });
+
+    it('throws exception with empty expected', async() => {
+        await assertThrows(async() => {
+            await parseTest(
+                buildTestContent('1.0.0',
+                    'passFail',
+                    'verification',
+                    'software',
+                    'action',
+                    '')
+            );
+        }, 'Expected is required');
+    });
+
   });
 
 });
