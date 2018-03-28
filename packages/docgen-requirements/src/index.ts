@@ -198,6 +198,19 @@ export async function loadTests(baseDir: string, dir: string, parent: Req) {
         .forEach(test => {
             parent.tests.push(test);
         });
+    parent.tests.forEach(test => {
+        if(parent.tests.find(dup => dup !== test && semver.compare(dup.number, test.number) == 0)) {
+            throw new Error(`Duplicate test number ${test.number}`);
+        }
+    });
+}
+
+function checkDupNumberForReqs(reqs: Array<Req>) {
+    reqs.forEach(req => {
+        if(reqs.find(dup => dup !== req && semver.compare(dup.number, req.number) == 0)) {
+            throw new Error(`Duplicate req number ${req.number}`);
+        }
+    });
 }
 
 async function loadReqWithChildren(baseDir: string, dir: string, parent: Req): Promise<Req> {
@@ -215,6 +228,8 @@ async function loadReqWithChildren(baseDir: string, dir: string, parent: Req): P
             req.children.push(await loadReqWithChildren(baseDir, path.join(dir, childDir), req));
         }
     }
+    req.children = req.children.sort((a, b) => semver.compare(a.number, b.number));
+    checkDupNumberForReqs(req.children);
     return req;
 }
 
@@ -227,5 +242,7 @@ export async function loadReqDir(dir: string) {
             reqs.push(await loadReqWithChildren(dir, childDir, null));
         }
     }
-    return reqs.sort((a, b) => semver.compare(a.number, b.number));
+    reqs = reqs.sort((a, b) => semver.compare(a.number, b.number));
+    checkDupNumberForReqs(reqs);
+    return reqs;
 }

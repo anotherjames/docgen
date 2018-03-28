@@ -1,6 +1,7 @@
 const assert = require('assert');
 const mock = require('mock-fs');
 const { buildTestContent, buildReqContent } = require('./utils');
+const assertThrows = require('assert-throws-async');
 
 describe('requirements', () => {
 
@@ -76,7 +77,16 @@ describe('requirements', () => {
                 'index.md': buildReqContent({ number: '3.0.0' })
             },
             userNeed3 : {
-                'index.md': buildReqContent({ number: '2.0.0' })
+                'index.md': buildReqContent({ number: '2.0.0' }),
+                productRequirement1: {
+                    'index.md': buildReqContent({ number: '1.0.0' })
+                },
+                productRequirement2: {
+                    'index.md': buildReqContent({ number: '3.0.0' })
+                },
+                productRequirement3: {
+                    'index.md': buildReqContent({ number: '2.0.0' })
+                }
             }
         });
         var result = await loadReqDir('.');
@@ -84,6 +94,40 @@ describe('requirements', () => {
         assert.equal(result[0].number, '1.0.0');
         assert.equal(result[1].number, '2.0.0');
         assert.equal(result[2].number, '3.0.0');
+        assert.equal(result[1].children[0].number, '1.0.0');
+        assert.equal(result[1].children[1].number, '2.0.0');
+        assert.equal(result[1].children[2].number, '3.0.0');
+    });
+
+    it('throw exception with duplicate numbers', async() => {
+        mock({
+            userNeed1 : {
+                'index.md': buildReqContent({ number: '1.0.0' })
+            },
+            userNeed2 : {
+                'index.md': buildReqContent({ number: '1.0.0' })
+            }
+        });
+        await assertThrows(async() => {
+            await loadReqDir('.');
+        }, 'Duplicate req number 1.0.0');
+    });
+
+    it('throw exception with duplicate numbers nested', async() => {
+        mock({
+            userNeed1 : {
+                'index.md': buildReqContent({ number: '1.0.0' }),
+                productRequirement1: {
+                    'index.md': buildReqContent({ number: '2.0.0' })
+                },
+                productRequirement2: {
+                    'index.md': buildReqContent({ number: '2.0.0' })
+                }
+            }
+        });
+        await assertThrows(async() => {
+            await loadReqDir('.');
+        }, 'Duplicate req number 2.0.0');
     });
 
   });
