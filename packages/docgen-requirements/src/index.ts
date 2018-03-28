@@ -164,12 +164,17 @@ export async function loadTest(path: string): Promise<Test> {
 }
 
 export async function loadTests(baseDir: string, dir: string, parent: Req) {
+    let tests: Array<Test> = [];
     for (let childFile of (await getChildFiles(path.join(baseDir, dir)))) {
         let test = await loadTest(path.join(baseDir, dir, childFile));
         test.path = path.join(dir, path.parse(childFile).name);
         test.id = parent.id + "-test-" + path.parse(childFile).name;
-        parent.tests.push(test);
+        tests.push(test);
     }
+    tests.sort((a, b) => semver.compare(a.number, b.number))
+        .forEach(test => {
+            parent.tests.push(test);
+        });
 }
 
 async function loadReqWithChildren(baseDir: string, dir: string, parent: Req): Promise<Req> {
