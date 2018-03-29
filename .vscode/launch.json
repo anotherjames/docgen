@@ -9,8 +9,9 @@
         "cwd": "${workspaceFolder}",
         "args": [
           "content",
-          "build"
-        ]
+          "develop"
+        ],
+        "preLaunchTask": "clean"
       },
       {
         "type": "node",

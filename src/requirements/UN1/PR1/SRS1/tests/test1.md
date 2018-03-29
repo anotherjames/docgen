@@ -1,3 +1,4 @@
+---
 number: 1.0.0
 responseType: passFail
 validationType: validation

@@ -3,6 +3,7 @@ import Test from 'docgen-requirements/test'
 import { UserNeed, ProductReq, SoftwareSpec } from 'docgen-requirements/req-structs'
 import * as slash from 'slash'
 import { createFilePath } from 'gatsby-source-filesystem'
+import { GraphQLInt } from 'graphql'
 
 export interface PluginOptions {
     baseUrl: string
@@ -63,33 +64,35 @@ const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlR
         }
         `
     );
-    for (let userNeed of (result.data.allUserNeed.edges as Array<any>).map(x => x.node as UserNeed)) {
-        createPage({
-            path: path.join(pluginOptions.baseUrl, userNeed.path),
-            component: userNeedTemplate,
-            context: {
-                slug: path.join(pluginOptions.baseUrl, userNeed.path),
-                title: userNeed.title
-            }
-        });
-        for (let productReq of userNeed.productReqs) {
+    if(!result.errors) {
+        for (let userNeed of (result.data.allUserNeed.edges as Array<any>).map(x => x.node as UserNeed)) {
             createPage({
-                path: path.join(pluginOptions.baseUrl, productReq.path),
-                component: productReqTemplate,
+                path: path.join(pluginOptions.baseUrl, userNeed.path),
+                component: userNeedTemplate,
                 context: {
-                    slug: path.join(pluginOptions.baseUrl, productReq.path),
+                    slug: path.join(pluginOptions.baseUrl, userNeed.path),
                     title: userNeed.title
                 }
             });
-            for (let softwareSpec of productReq.softwareSpecs) {
+            for (let productReq of userNeed.productReqs) {
                 createPage({
-                    path: path.join(pluginOptions.baseUrl, softwareSpec.path),
-                    component: softwareSpecTemplate,
+                    path: path.join(pluginOptions.baseUrl, productReq.path),
+                    component: productReqTemplate,
                     context: {
-                        slug: path.join(pluginOptions.baseUrl, softwareSpec.path),
+                        slug: path.join(pluginOptions.baseUrl, productReq.path),
                         title: userNeed.title
                     }
                 });
+                for (let softwareSpec of productReq.softwareSpecs) {
+                    createPage({
+                        path: path.join(pluginOptions.baseUrl, softwareSpec.path),
+                        component: softwareSpecTemplate,
+                        context: {
+                            slug: path.join(pluginOptions.baseUrl, softwareSpec.path),
+                            title: userNeed.title
+                        }
+                    });
+                }
             }
         }
     }
@@ -109,15 +112,17 @@ const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlR
         `
     );
 
-    for (let test of (result.data.allTest.edges as Array<any>).map(x => x.node as Test)) {
-        createPage({
-            path: path.join(pluginOptions.baseUrl, test.path),
-            component: testTemplate,
-            context: {
-                slug: path.join(pluginOptions.baseUrl, test.path),
-                title: test.number
-            }
-        });
+    if (!result.errors) {
+        for (let test of (result.data.allTest.edges as Array<any>).map(x => x.node as Test)) {
+            createPage({
+                path: path.join(pluginOptions.baseUrl, test.path),
+                component: testTemplate,
+                context: {
+                    slug: path.join(pluginOptions.baseUrl, test.path),
+                    title: test.number
+                }
+            });
+        }
     }
 };
 
@@ -136,6 +141,7 @@ const createMarkdownPages = async(boundActionCreators: any, graphql: GraphqlRunn
                         frontmatter {
                             title
                         }
+                        order
                     }
                 }
             }
@@ -149,7 +155,8 @@ const createMarkdownPages = async(boundActionCreators: any, graphql: GraphqlRunn
             component: pageTemplate,
             context: {
                 slug: page.fields.slug,
-                title: page.frontmatter.title
+                title: page.frontmatter.title,
+                order: page.order
             },
         });
     }
@@ -179,11 +186,39 @@ export const onCreateNode = ({ node, boundActionCreators, getNode }) => {
     const { createNodeField } = boundActionCreators
   
     if (node.internal.type === 'MarkdownRemark') {
-      const value = createFilePath({ node, getNode })
-      createNodeField({
-        name: 'slug',
-        node,
-        value,
-      })
+        const value = createFilePath({ node, getNode });
+        createNodeField({
+            name: 'slug',
+            node,
+            value,
+        });
     }
-  }
+
+    if (node.internal.type == 'SitePage') {
+        if(node.context && node.context.order) {
+            createNodeField({
+                name: 'order',
+                node,
+                value: node.context.order
+            });
+        }
+    }
+}
+
+export const setFieldsOnGraphQLNodeType = async({ type }) => {
+    if (type.name === 'MarkdownRemark') {
+        return {
+            order: {
+                type: GraphQLInt,
+                resolve: node => {
+                    if(node.frontmatter.order) {
+                        return node.frontmatter.order;
+                    }
+                    return 0;
+                }
+            }
+        };
+    }
+
+    return {};
+};
