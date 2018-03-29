@@ -44,9 +44,15 @@ export function buildMenuFromNodes(nodes: Array<GatsbyNode>, selectedPath: strin
         let page = pages.find(x => normalizePath(x.path) == normalizedPath);
         if (page) {
             menuItem.title = page.context.title;
+            if(page.fields && page.fields.order) {
+                menuItem.order = page.fields.order;
+            } else {
+                menuItem.order = 0;
+            }
         } else {
             menuItem.title = node.name;
             menuItem.isEmptyParent = true;
+            menuItem.order = 0;
         }
 
         if(normalizedPath == selectedPath) {
@@ -70,6 +76,18 @@ export function buildMenuFromNodes(nodes: Array<GatsbyNode>, selectedPath: strin
 
     for(let child of rootNode.children) {
         result.push(walkTreeNode(child, []));
+    }
+
+    const sortChildren = (items: MenuItem[]): MenuItem[] => {
+        for(let item of items) {
+            item.children = sortChildren(item.children);
+        }
+        return items.sort((a, b) => a.order - b.order);
+    };
+
+    result = result.sort((a,b) => a.order - b.order);
+    for(let item of result) {
+        item.children = sortChildren(item.children);
     }
 
     // Now that we built the entire tree, let's remove the nodes that don't matter.

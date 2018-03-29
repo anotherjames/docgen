@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from 'graphql';
+import { GraphQLScalarType, GraphQLInt } from 'graphql';
 import * as util from 'util'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -14,28 +14,37 @@ const buildTreeForPath = async(pagePath: string, getNodes: GetNodes, ignorePaths
 export const setFieldsOnGraphQLNodeType = async({ type, getNodes }: {type: any, getNodes: GetNodes}, pluginOptions: PluginOptions) => {
     if(!pluginOptions.ignorePaths) {
         pluginOptions.ignorePaths = [
-            "/404",
-            "/dev-404-page"
+            '/404',
+            '/dev-404-page'
         ];
     }
     
-    if (type.name !== "SitePage") {
-      return {};
+    if (type.name === 'SitePage') {
+        return {
+            menu: {
+                type: new GraphQLScalarType({
+                    name: 'Menu',
+                    serialize(value) {
+                        return value;
+                    }
+                }),
+                resolve: (node: GatsbyNode) => {
+                    return buildTreeForPath(node.path, getNodes, pluginOptions.ignorePaths);
+                }
+            },
+            order: {
+                type: GraphQLInt,
+                result: (node: GatsbyNode) => {
+                    if(node.fields && node.fields.order) {
+                        return node.fields.order;
+                    }
+                    return 0;
+                }
+            }
+        };
     }
 
-    return {
-        menu: {
-            type: new GraphQLScalarType({
-                name: 'Menu',
-                serialize(value) {
-                    return value;
-                }
-            }),
-            resolve: node => {
-                return buildTreeForPath(node.path, getNodes, pluginOptions.ignorePaths);
-            }
-        }
-    };
+    return {};
 };
 
 export const onPreExtractQueries = async ({

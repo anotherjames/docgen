@@ -1,16 +1,15 @@
 
-interface GatsbyNodeInternal {
-    type: string
-}
-
-interface GatsbyNodeContext {
-    title: string
-}
-
 interface GatsbyNode {
     path: string
-    context: GatsbyNodeContext
-    internal: GatsbyNodeInternal
+    context: {
+        title: string
+    }
+    internal: {
+        type: string
+    }
+    fields: {
+        order: number | null
+    }
 }
 
 type GetNodes = () => GatsbyNode[];
