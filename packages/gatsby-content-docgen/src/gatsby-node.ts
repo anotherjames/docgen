@@ -65,36 +65,39 @@ const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlR
         `
     );
     if(!result.errors) {
-        for (let userNeed of (result.data.allUserNeed.edges as Array<any>).map(x => x.node as UserNeed)) {
+        (result.data.allUserNeed.edges as Array<any>).map(x => x.node as UserNeed).forEach((userNeed, userNeedIndex) => {
             createPage({
                 path: path.join(pluginOptions.baseUrl, userNeed.path),
                 component: userNeedTemplate,
                 context: {
                     slug: path.join(pluginOptions.baseUrl, userNeed.path),
-                    title: userNeed.title
+                    title: userNeed.title,
+                    order: userNeedIndex
                 }
             });
-            for (let productReq of userNeed.productReqs) {
+            userNeed.productReqs.forEach((productReq, productReqIndex) => {
                 createPage({
                     path: path.join(pluginOptions.baseUrl, productReq.path),
                     component: productReqTemplate,
                     context: {
                         slug: path.join(pluginOptions.baseUrl, productReq.path),
-                        title: userNeed.title
+                        title: userNeed.title,
+                        order: productReqIndex
                     }
                 });
-                for (let softwareSpec of productReq.softwareSpecs) {
+                productReq.softwareSpecs.forEach((softwareSpec, softwareSpecIndex) => {
                     createPage({
                         path: path.join(pluginOptions.baseUrl, softwareSpec.path),
                         component: softwareSpecTemplate,
                         context: {
                             slug: path.join(pluginOptions.baseUrl, softwareSpec.path),
-                            title: userNeed.title
+                            title: userNeed.title,
+                            order: softwareSpecIndex
                         }
                     });
-                }
-            }
-        }
+                });
+            });
+        });
     }
 
     result = await graphql(
@@ -113,16 +116,17 @@ const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlR
     );
 
     if (!result.errors) {
-        for (let test of (result.data.allTest.edges as Array<any>).map(x => x.node as Test)) {
+        (result.data.allTest.edges as Array<any>).map(x => x.node as Test).forEach((test, testIndex) => {
             createPage({
                 path: path.join(pluginOptions.baseUrl, test.path),
                 component: testTemplate,
                 context: {
                     slug: path.join(pluginOptions.baseUrl, test.path),
-                    title: test.number
+                    title: test.number,
+                    order: testIndex
                 }
             });
-        }
+        });
     }
 };
 
