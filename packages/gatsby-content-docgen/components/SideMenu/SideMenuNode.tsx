@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from 'gatsby-link'
-import MenuItem from '../../../gatsby-plugin-page-tree/menu-item'
+import MenuItem from 'gatsby-plugin-page-tree/menu-item'
 
 export default class SideMenuNode extends React.Component<MenuItem, {}> {
     public render() {

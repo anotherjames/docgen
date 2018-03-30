@@ -2,12 +2,13 @@ import * as React from "react";
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import Link from 'gatsby-link'
-import Header from '../components/Header'
-
+import HeaderMenu from './components/HeaderMenu'
+import MenuItem from 'gatsby-plugin-page-tree/menu-item'
 
 interface MasterProps {
   sidebar: any
-  content: any
+  content: any,
+  menu: MenuItem[]
 }
 
 interface MasterState {
@@ -44,6 +45,7 @@ export default class Master extends React.Component<MasterProps, MasterState> {
           </Link>
           <nav className="navbar navbar-static-top">
             <a href="javasript:void(0);" onClick={this.onBarsClick} className="sidebar-toggle"></a>
+            <HeaderMenu items={this.props.menu} />
           </nav>
         </header>
         <aside className="main-sidebar">
