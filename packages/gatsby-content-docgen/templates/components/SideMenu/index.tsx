@@ -1,21 +1,18 @@
 import * as React from "react";
 import Link from 'gatsby-link'
 import SideMenuNode from './SideMenuNode'
+import MenuItem from 'gatsby-plugin-page-tree/menu-item'
 
-export default (props) => {
-    let currentPage = props.data.currentPage;
-    if (!currentPage) {
-        return null;
-    }
-    let currentPageNode = currentPage.edges.find(x => true);
-    if (!currentPageNode) {
-        return null;
-    }
+interface SideMenuProps {
+    items: MenuItem[] | null
+}
+
+export default (props : SideMenuProps) => {
     return (
         <ul className="tree sidebar-menu">
-        {currentPageNode.node.menu.map(menuItem => 
-            <SideMenuNode {...menuItem} key={menuItem.path} />
-        )}
+            {props.items.map(menuItem => 
+                <SideMenuNode {...menuItem} key={menuItem.path} />
+            )}
         </ul>
     )
 };

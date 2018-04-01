@@ -6,7 +6,7 @@ import HeaderMenu from './components/HeaderMenu'
 import MenuItem from 'gatsby-plugin-page-tree/menu-item'
 
 interface MasterProps {
-  sidebar: any
+  sidebar?: any
   content: any,
   menu: MenuItem[]
 }
@@ -48,11 +48,13 @@ export default class Master extends React.Component<MasterProps, MasterState> {
             <HeaderMenu items={this.props.menu} />
           </nav>
         </header>
-        <aside className="main-sidebar">
-          <section className="sidebar">
-            {this.props.sidebar}
-          </section>
-        </aside>
+        {this.props.sidebar &&
+          <aside className="main-sidebar">
+            <section className="sidebar">
+              {this.props.sidebar}
+            </section>
+          </aside>
+        }
         <div className="content-wrapper">
           {this.props.content}
         </div>

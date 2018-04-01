@@ -1,32 +1,16 @@
 import * as React from "react";
-import SideMenu from './components/SideMenu'
-import Master from './master'
-import MenuItem from 'gatsby-plugin-page-tree/menu-item'
+import Helmet from 'react-helmet'
+import Root from './root'
 
-export default (props: any) => {
-    let menu:MenuItem[] | null;
-    if (props.data.currentPage) {
-        let currentPageNode = props.data.currentPage.edges.find(x => true);
-        if (currentPageNode) {
-            menu = currentPageNode.node.menu;
-        }
+export default class ProductReq extends Root {
+    content() {
+        return (
+            <div>
+                product req
+            </div>
+        );
     }
-    return (
-        <div>
-            <Master
-                content={
-                    <div>
-                        product req
-                    </div>
-                }
-                sidebar={
-                    <SideMenu {...props} />
-                }
-                menu={menu}
-            />
-        </div>
-    );
-};
+}
 
 export const pageQuery = graphql`
     query ProductReqQuery($slug: String!) {
