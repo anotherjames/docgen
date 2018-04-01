@@ -1,5 +1,5 @@
 import * as React from "react";
-import SideMenu from '../components/SideMenu'
+import SideMenu from './components/SideMenu'
 import Master from './master'
 import MenuItem from 'gatsby-plugin-page-tree/menu-item'
 

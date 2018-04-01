@@ -1,6 +1,6 @@
 import * as React from "react";
 import Helmet from 'react-helmet'
-import SideMenu from '../components/SideMenu'
+import SideMenu from './components/SideMenu'
 import Master from './master'
 import MenuItem from 'gatsby-plugin-page-tree/menu-item'
 
