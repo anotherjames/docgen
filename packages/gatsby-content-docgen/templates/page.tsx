@@ -9,8 +9,12 @@ export default class Page extends Root {
         return (
             <div>
                 <Helmet title={`${post.frontmatter.title} | ${siteTitle}`} />
-                <h1>{post.frontmatter.title}</h1>
-                <div dangerouslySetInnerHTML={{ __html: post.html }} />
+                <section className="content-header">
+                    <h1>{post.frontmatter.title}</h1>
+                </section>
+                <section className="content">
+                    <div dangerouslySetInnerHTML={{ __html: post.html }} />
+                </section>
             </div>
         );
     }

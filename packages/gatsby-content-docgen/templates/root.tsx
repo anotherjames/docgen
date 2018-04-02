@@ -23,14 +23,20 @@ export default class Root extends React.Component<any, RootState> {
         })
     }
     render() {
-        let bodyClass = 'skin-blue'
-        if(!this.state.sidebarOpen) {
-            bodyClass += ' sidebar-collapse';
-        } else {
-            bodyClass += ' sidebar-open';
-        }
         let menu = this.getMenu();
         let sideBar = this.sideBar(menu);
+
+        let bodyClass = 'skin-blue';
+        if(sideBar) {
+            if(!this.state.sidebarOpen) {
+                bodyClass += ' sidebar-collapse';
+            } else {
+                bodyClass += ' sidebar-open';
+            }
+        } else {
+            bodyClass += ' no-sidebar';
+        }
+
         return (
             <div>
                 <Helmet>
@@ -53,7 +59,9 @@ export default class Root extends React.Component<any, RootState> {
                     </aside>
                 }
                 <div className="content-wrapper">
-                    {this.content()}
+                    <div className={!sideBar ? 'container' : ''}>
+                        {this.content()}
+                    </div>
                 </div>
             </div>
         );
@@ -69,9 +77,21 @@ export default class Root extends React.Component<any, RootState> {
         return menu;
     }
     sideBar(menu: MenuItem[] | null) {
-        if(menu) {
-            return <SideMenu items={menu} />;
+        if(!menu || menu.length == 0) {
+            return null;
         }
+
+        // We don't render the top level menu items.
+        // We only render side menu when a root level item is selected/active.
+        for(let menuItem of menu) {
+            if(menuItem.active || menuItem.selected) {
+                if(menuItem.children.length > 0) {
+                    return <SideMenu items={menuItem.children} />;
+                }
+            }
+        }
+
+        return null;
     }
     content() {
         return null;
