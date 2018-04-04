@@ -18,7 +18,7 @@ export default class HeaderMenu extends React.Component<HeaderMenuProps> {
             return null;
         }
         return (
-            <ul className="nav navbar-nav">
+            <ul className="nav navbar-nav collapse navbar-collapse">
                 {this.props.items.map(menuItem => 
                     <li key={menuItem.path} className={(menuItem.active || menuItem.selected) ? 'active' : ''}><Link to={menuItem.path}>{menuItem.title}</Link></li>
                 )}

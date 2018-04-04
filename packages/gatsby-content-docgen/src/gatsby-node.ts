@@ -71,6 +71,7 @@ const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlR
                 component: userNeedTemplate,
                 context: {
                     slug: path.join(pluginOptions.baseUrl, userNeed.path),
+                    userNeedId: userNeed.id,
                     title: userNeed.title,
                     order: userNeedIndex
                 }
@@ -81,6 +82,7 @@ const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlR
                     component: productReqTemplate,
                     context: {
                         slug: path.join(pluginOptions.baseUrl, productReq.path),
+                        productReqId: productReq.id,
                         title: userNeed.title,
                         order: productReqIndex
                     }
@@ -91,6 +93,7 @@ const createRequirementPages = async(boundActionCreators: any, graphql: GraphqlR
                         component: softwareSpecTemplate,
                         context: {
                             slug: path.join(pluginOptions.baseUrl, softwareSpec.path),
+                            softwareSpecId: softwareSpec.id,
                             title: userNeed.title,
                             order: softwareSpecIndex
                         }
