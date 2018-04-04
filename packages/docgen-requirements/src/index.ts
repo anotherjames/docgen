@@ -6,10 +6,33 @@ import './test'
 import Test, { TestResponseType, TestType, TestValidationType } from './test';
 import Req from './req';
 import * as semver from 'semver'
+import { EOL } from 'os'
 
 const readdir = util.promisify(fs.readdir)
 const readfile = util.promisify(fs.readFile)
 const lstat = util.promisify(fs.lstat);
+
+function isNullEmptyOrWhitespace(val: string): boolean {
+    if(!val) return true;
+
+    if(!val.trim()) return true;
+
+    return false;
+}
+
+function cleanAndJoinLines(lines: string[]): string {
+
+    // Trim beggining lines
+    while(lines.length > 0 && isNullEmptyOrWhitespace(lines[0])) {
+        lines = lines.splice(1)
+    }
+
+    while(lines.length > 0 && isNullEmptyOrWhitespace(lines[lines.length - 1])) {
+        lines.pop();
+    }
+
+    return lines.join(EOL);
+}
 
 async function getChildDirectories(dir: string): Promise<string[]> {
     let childDirs = await readdir(dir);
@@ -86,8 +109,8 @@ export function parseReq(content: string): Req {
     req.number = d.data.number;
     req.title = d.data.title;
     req.category = d.data.category;
-    req.description = description.join();
-    req.validation = validation.join();
+    req.description = cleanAndJoinLines(description);
+    req.validation = cleanAndJoinLines(validation);
 
     if(!req.description) {
         throw new Error('Description is required');
@@ -106,7 +129,7 @@ export async function loadReq(path: string): Promise<Req> {
 
 export function parseTest(content: string): Test {
     let d = matter(content);
-    let lines = (d.content as string).split('\n');
+    let lines = (d.content as string).split(EOL);
     
     let action: string[] = []
     let expected: string[] = [];
@@ -168,8 +191,8 @@ export function parseTest(content: string): Test {
     test.responseType = d.data.responseType as TestResponseType;
     test.validationType = d.data.validationType as TestValidationType;
     test.type = d.data.type as TestType;
-    test.action = action.join();
-    test.expected = expected.join();
+    test.action = cleanAndJoinLines(action);
+    test.expected = cleanAndJoinLines(expected);
 
     if(!test.action) {
         throw new Error('Action is required');

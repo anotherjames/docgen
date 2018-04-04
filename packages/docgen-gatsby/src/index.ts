@@ -36,19 +36,26 @@ export async function buildDirectory(): Promise<void> {
 export function serveDirectory() {
     serve({
         directory: process.cwd(),
-        port: 8000,
-        open: true
+        port: 8000
     });
 }
 
-export function developDirectory() {
+export async function developDirectory() {
+    let sourceConfigFileLocation = path.join(__dirname, 'default-gatsby-config.js');
+    let destConfigLocation = path.join(process.cwd(), 'gatsby-config.js');
+
+    if (await exists(destConfigLocation)) {
+        await unlink(destConfigLocation);
+    }
+
+    await copy(sourceConfigFileLocation, destConfigLocation);
+
     develop({
         directory: process.cwd(),
         sitePackageJson: {
             name: "docgen"
         },
-        port: 8000,
-        open: true
+        port: 8000
     });
 }
 

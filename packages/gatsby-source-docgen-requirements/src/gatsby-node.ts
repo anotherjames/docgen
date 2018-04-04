@@ -7,11 +7,17 @@ import * as util from 'util'
 import * as fs from 'fs'
 import * as crypto from 'crypto'
 import * as slash from 'slash'
+import { GraphQLString } from 'graphql'
+import * as remark from 'remark'
+import * as extendRemarkNode from 'gatsby-transformer-remark/extend-node-type'
 
 const fileExists = util.promisify(fs.exists)
 
 export interface PluginOptions {
-    path: string
+    path: string,
+    remarkOptions: {
+        plugins: any[] | null
+    }
 }
 
 export const sourceNodes = async ({ boundActionCreators, reporter }: any, pluginOptions: PluginOptions) => {
@@ -32,7 +38,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
             parent: null,
             children: [],
             internal: {
-                type: 'userNeed',
+                type: 'UserNeed',
                 contentDigest: crypto.createHash('md5').update(userNeed.path).digest('hex')
             }
         });
@@ -42,7 +48,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
                 parent: userNeed.id,
                 children: [],
                 internal: {
-                    type: 'test',
+                    type: 'Test',
                     contentDigest: crypto.createHash('md5').update(test.path).digest('hex')
                 }
             });
@@ -53,7 +59,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
                 parent: userNeed.id,
                 children: [],
                 internal : {
-                    type: 'productReq',
+                    type: 'ProductReq',
                     contentDigest: crypto.createHash('md5').update(productReq.path).digest('hex')
                 }
             });
@@ -63,7 +69,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
                     parent: productReq.id,
                     children: [],
                     internal: {
-                        type: 'test',
+                        type: 'Test',
                         contentDigest: crypto.createHash('md5').update(test.path).digest('hex')
                     }
                 });
@@ -74,7 +80,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
                     parent: productReq.id,
                     children: [],
                     internal : {
-                        type: 'softwareSpec',
+                        type: 'SoftwareSpec',
                         contentDigest: crypto.createHash('md5').update(softwareSpec.path).digest('hex')
                     }
                 });
@@ -84,7 +90,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
                         parent: softwareSpec.id,
                         children: [],
                         internal: {
-                            type: 'test',
+                            type: 'Test',
                             contentDigest: crypto.createHash('md5').update(test.path).digest('hex')
                         }
                     });
@@ -93,3 +99,64 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
         }
     }
 };
+
+export const setFieldsOnGraphQLNodeType = async(args, pluginOptions: PluginOptions) => {
+    if(!pluginOptions.remarkOptions) {
+        pluginOptions.remarkOptions = {
+            plugins: []
+        };
+    }
+    if(!pluginOptions.remarkOptions.plugins) {
+        pluginOptions.remarkOptions.plugins = [];
+    }
+    if(args.type.name === 'UserNeed'
+        || args.type.name === 'ProductReq'
+        || args.type.name === 'SoftwareSpec'
+        || args.type.name === 'Test') {
+        // Create a new type that looks like a markdown document.
+        // Then, get's it's graphql properties.
+        let newArgs = {...args}
+        let newType = {...args.type};
+        newType.name = 'MarkdownRemark';
+        newArgs.type = newType;
+        let newTypeProperties = await extendRemarkNode(newArgs, pluginOptions.remarkOptions);
+
+        let createMarkdownProperty = (propertyName: string): any => {
+            return {
+                type: GraphQLString,
+                resolve: (node) => {
+                    let newNode = {
+                        ...node
+                    }
+                    newNode.internal = {
+                        ...node.internal
+                    }
+                    newNode.internal.content = node[propertyName];
+                    newNode.internal.contentDigest = `${node.internal.contentDigest}-${propertyName}`;
+                    return newTypeProperties.html.resolve(newNode);
+                }
+            }
+        }
+
+        // if(args.type.name === 'UserNeed'
+        // || args.type.name === 'ProductReq'
+        // || args.type.name === 'SoftwareSpec'
+        // || args.type.name === 'Test')
+
+        if(args.type.name === 'UserNeed'
+            || args.type.name === 'ProductReq'
+            || args.type.name === 'SoftwareSpec') {
+            return {
+                descriptionHtml: createMarkdownProperty('description'),
+                validationHtml: createMarkdownProperty('validation')
+            }
+        } else if(args.type.name === 'Test') {
+            return {
+                actionHtml: createMarkdownProperty('action'),
+                expectedHtml: createMarkdownProperty('expected')
+            }
+        }
+    }
+
+    return {}
+}

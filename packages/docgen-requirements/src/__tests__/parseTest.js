@@ -108,6 +108,41 @@ describe('requirements', () => {
         }, 'Expected is required');
     });
 
+    it('parses multi line correctly', async() => {
+        let action = `
+
+Action line 1
+
+Action line 2
+Action line 3
+
+`
+        let expected = `
+
+Expected line 1
+
+Expected line 2
+Expected line 3
+
+`
+        let test = await parseTest(buildTestContent({
+            action,
+            expected
+        }));
+
+        let actionExpected = `Action line 1
+
+Action line 2
+Action line 3`
+        let expectedExpected = `Expected line 1
+
+Expected line 2
+Expected line 3`
+
+        assert.equal(test.action, actionExpected);
+        assert.equal(test.expected, expectedExpected);
+    });
+
   });
 
 });

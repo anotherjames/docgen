@@ -7,7 +7,7 @@ export { command }
 
 export async function handler(argv: yargs.Argv) {
     try {
-        developDirectory();
+        await developDirectory();
     } catch(err) {
         reporter.panic(err);
     }

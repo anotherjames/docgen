@@ -2,7 +2,8 @@
     "name": "gatsby-source-docgen-requirements",
     "version": "1.0.0",
     "dependencies": {
-        "docgen-requirements": "^1.0.0"
+        "docgen-requirements": "^1.0.0",
+        "gatsby-transformer-remark": "^1.7.37"
     },
     "devDependencies": {
         "@types/node": "^9.6.0"
