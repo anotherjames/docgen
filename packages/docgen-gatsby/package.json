@@ -14,7 +14,11 @@
         "gatsby-plugin-react-helmet": "^2.0.8",
         "gatsby-plugin-typescript": "^1.4.19",
         "gatsby-source-filesystem": "^1.5.27",
-        "gatsby-transformer-remark": "^1.7.37"
+        "gatsby-transformer-remark": "^1.7.37",
+        "gatsby-plugin-default-layout": "0.1.1",
+        "gatsby-source-docgen-requirements": "0.1.2",
+        "gatsby-content-docgen": "0.1.2",
+        "gatsby-plugin-page-tree": "0.1.2"
     },
     "devDependencies": {
         "@types/fs-extra": "^5.0.1"
