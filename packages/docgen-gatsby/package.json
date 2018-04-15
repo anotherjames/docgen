@@ -5,6 +5,7 @@
     "scripts": {
         "build": "tsc -p ./tsconfig.json -d",
         "build:watch": "tsc -p ./tsconfig.json -d -w",
+        "preversion": "rm -f ./default-package.json",
         "version": "cp ../docgen-gatsby-package-json/package.json ./default-package.json && git add ./default-package.json"
     },
     "dependencies": {
