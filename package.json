@@ -9,7 +9,8 @@
     "build": "./node_modules/.bin/lerna run build",
     "watch": "./node_modules/.bin/lerna run build:watch --parallel",
     "docgen": "./packages/docgen-cli/index.js",
-    "test": "./node_modules/.bin/mocha packages/**/__tests__/*"
+    "test": "./node_modules/.bin/mocha packages/**/__tests__/*",
+    "pub": "./node_modules/.bin/lerna publish"
   },
   "dependencies": {
     "gatsby": "^1.9.223",
