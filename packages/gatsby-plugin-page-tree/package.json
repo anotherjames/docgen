@@ -3,7 +3,6 @@
     "version": "0.1.1",
     "license": "MIT",
     "dependencies": {
-        "graphql": "^0.11.7",
         "treeify-paths": "^1.0.1"
     },
     "scripts": {
