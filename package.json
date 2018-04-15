@@ -13,8 +13,8 @@
     "pub": "./node_modules/.bin/lerna publish"
   },
   "dependencies": {
-    "gatsby": "^1.9.223",
-    "react-helmet": "^5.2.0"
+    "gatsby": "1.9.223",
+    "react-helmet": "5.2.0"
   },
   "devDependencies": {
     "lerna": "^2.9.0",

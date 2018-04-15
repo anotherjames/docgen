@@ -3,7 +3,7 @@
     "version": "0.1.2",
     "license": "MIT",
     "dependencies": {
-        "treeify-paths": "^1.0.1"
+        "treeify-paths": "1.0.1"
     },
     "scripts": {
         "build": "tsc -p ./tsconfig.json -d",

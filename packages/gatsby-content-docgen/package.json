@@ -6,7 +6,7 @@
         "docgen-requirements": "^0.1.1"
     },
     "devDependencies": {
-        "@types/node": "^9.6.0"
+        "@types/node": "9.6.0"
     },
     "scripts": {
         "build": "tsc -p ./tsconfig.json -d",

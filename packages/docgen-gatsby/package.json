@@ -7,17 +7,17 @@
         "build:watch": "tsc -p ./tsconfig.json -d -w"
     },
     "dependencies": {
-        "fs-extra": "^5.0.0",
-        "gatsby": "^1.9.223",
+        "fs-extra": "5.0.0",
+        "gatsby": "1.9.223",
         "gatsby-content-docgen": "0.1.2",
         "gatsby-plugin-default-layout": "0.1.1",
-        "gatsby-plugin-less": "^1.1.8",
+        "gatsby-plugin-less": "1.1.8",
         "gatsby-plugin-page-tree": "0.1.2",
-        "gatsby-plugin-react-helmet": "^2.0.8",
-        "gatsby-plugin-typescript": "^1.4.19",
+        "gatsby-plugin-react-helmet": "2.0.8",
+        "gatsby-plugin-typescript": "1.4.19",
         "gatsby-source-docgen-requirements": "0.1.2",
-        "gatsby-source-filesystem": "^1.5.27",
-        "gatsby-transformer-remark": "^1.7.37"
+        "gatsby-source-filesystem": "1.5.27",
+        "gatsby-transformer-remark": "1.7.37"
     },
     "devDependencies": {
         "@types/fs-extra": "^5.0.1"
