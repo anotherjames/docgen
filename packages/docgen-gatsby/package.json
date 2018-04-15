@@ -1,6 +1,6 @@
 {
     "name": "docgen-gatsby",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "license": "MIT",
     "scripts": {
         "build": "tsc -p ./tsconfig.json -d",
