@@ -9,7 +9,7 @@
     "dependencies": {
         "fs-extra": "^5.0.0",
         "gatsby": "^1.9.223",
-        "gatsby-cli": "^1.9.223",
+        "gatsby-cli": "^1.1.48",
         "gatsby-plugin-less": "^1.1.8",
         "gatsby-plugin-react-helmet": "^2.0.8",
         "gatsby-plugin-typescript": "^1.4.19",
