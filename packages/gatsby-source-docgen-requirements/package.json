@@ -1,9 +1,9 @@
 {
     "name": "gatsby-source-docgen-requirements",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "license": "MIT",
     "dependencies": {
-        "docgen-requirements": "^0.1.0",
+        "docgen-requirements": "^0.1.1",
         "gatsby-transformer-remark": "^1.7.37"
     },
     "devDependencies": {
