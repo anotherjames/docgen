@@ -1,9 +1,9 @@
 {
     "name": "gatsby-content-docgen",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "license": "MIT",
     "dependencies": {
-        "docgen-requirements": "^1.0.0",
+        "docgen-requirements": "^0.1.0",
         "gatsby-plugin-less": "^1.1.8",
         "gatsby-plugin-react-helmet": "^2.0.8",
         "gatsby-plugin-typescript": "^1.4.19",
