@@ -1,14 +1,8 @@
 {
-    "name": "docgen-gatsby",
-    "version": "0.1.6",
-    "license": "MIT",
-    "scripts": {
-        "build": "tsc -p ./tsconfig.json -d",
-        "build:watch": "tsc -p ./tsconfig.json -d -w",
-        "version": "cp ../docgen-gatsby-package-json/package.json ./default-package.json"
-    },
+    "name": "docgen-gatsby-package-json",
+    "version": "1.0.0",
+    "private": true,
     "dependencies": {
-        "fs-extra": "5.0.0",
         "gatsby": "1.9.223",
         "gatsby-content-docgen": "^0.1.6",
         "gatsby-plugin-default-layout": "0.1.1",
@@ -19,8 +13,5 @@
         "gatsby-source-docgen-requirements": "^0.1.6",
         "gatsby-source-filesystem": "1.5.27",
         "gatsby-transformer-remark": "1.7.37"
-    },
-    "devDependencies": {
-        "@types/fs-extra": "^5.0.1"
     }
 }
