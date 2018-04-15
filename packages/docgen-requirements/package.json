@@ -3,7 +3,7 @@
     "version": "0.1.11",
     "license": "MIT",
     "dependencies": {
-        "gray-matter": "^4.0.1",
+        "gray-matter": "^3.0.0",
         "semver": "^5.5.0"
     },
     "devDependencies": {
