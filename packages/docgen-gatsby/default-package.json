@@ -1,10 +1,10 @@
 {
     "name": "docgen-gatsby-package-json",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "private": true,
     "dependencies": {
         "gatsby": "1.9.223",
-        "gatsby-content-docgen": "^0.1.8",
+        "gatsby-content-docgen": "^0.1.9",
         "gatsby-plugin-default-layout": "0.1.1",
         "gatsby-plugin-less": "1.1.8",
         "gatsby-plugin-page-tree": "^0.1.6",
