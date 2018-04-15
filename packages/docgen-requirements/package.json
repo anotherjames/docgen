@@ -3,11 +3,11 @@
     "version": "0.1.6",
     "license": "MIT",
     "dependencies": {
-        "gray-matter": "^3.1.1",
+        "gray-matter": "^4.0.1",
         "semver": "^5.5.0"
     },
     "devDependencies": {
-        "@types/node": "9.6.0",
+        "@types/node": "9.6.5",
         "@types/semver": "5.5.0"
     },
     "scripts": {

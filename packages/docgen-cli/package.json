@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "docgen-gatsby": "^0.1.10",
-        "gatsby-cli": "1.1.48",
+        "gatsby-cli": "1.1.50",
         "yargs": "11.0.0"
     },
     "devDependencies": {

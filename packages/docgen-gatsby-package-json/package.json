@@ -3,15 +3,15 @@
     "version": "0.1.9",
     "private": true,
     "dependencies": {
-        "gatsby": "1.9.223",
+        "gatsby": "1.9.250",
         "gatsby-content-docgen": "^0.1.9",
         "gatsby-plugin-default-layout": "0.1.1",
         "gatsby-plugin-less": "1.1.8",
         "gatsby-plugin-page-tree": "^0.1.6",
-        "gatsby-plugin-react-helmet": "2.0.8",
+        "gatsby-plugin-react-helmet": "2.0.10",
         "gatsby-plugin-typescript": "1.4.19",
         "gatsby-source-docgen-requirements": "^0.1.6",
-        "gatsby-source-filesystem": "1.5.27",
-        "gatsby-transformer-remark": "1.7.37"
+        "gatsby-source-filesystem": "1.5.31",
+        "gatsby-transformer-remark": "1.7.40"
     }
 }
