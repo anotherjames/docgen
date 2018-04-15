@@ -1,6 +1,6 @@
 {
     "name": "gatsby-plugin-page-tree",
-    "version": "0.1.2",
+    "version": "0.1.6",
     "license": "MIT",
     "dependencies": {
         "treeify-paths": "1.0.1"
