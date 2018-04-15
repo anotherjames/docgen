@@ -1,11 +1,11 @@
 {
     "name": "docgen-gatsby",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "license": "MIT",
     "scripts": {
         "build": "tsc -p ./tsconfig.json -d",
         "build:watch": "tsc -p ./tsconfig.json -d -w",
-        "version": "cp ../docgen-gatsby-package-json/package.json ./default-package.json"
+        "version": "cp ../docgen-gatsby-package-json/package.json ./default-package.json && git add ./default-package.json"
     },
     "dependencies": {
         "fs-extra": "5.0.0",
