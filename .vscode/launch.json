@@ -5,11 +5,10 @@
         "type": "node",
         "request": "launch",
         "name": "Start a dev server",
-        "program": "${workspaceFolder}/node_modules/docgen-cli/index.js",
+        "program": "${workspaceFolder}/node_modules/.bin/gatsby",
         "cwd": "${workspaceFolder}",
         "args": [
-          "content",
-          "develop"
+          "build"
         ],
         "preLaunchTask": "clean"
       },
