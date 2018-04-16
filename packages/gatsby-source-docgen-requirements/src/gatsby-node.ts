@@ -34,7 +34,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
     for(let req of (await loadReqDir(pluginOptions.path))) {
         var userNeed = new UserNeed(req);
         createNode({
-            ...userNeed,
+            ...(JSON.parse(JSON.stringify(userNeed))),
             parent: null,
             children: [],
             internal: {
@@ -44,7 +44,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
         });
         for(let test of userNeed.tests) {
             createNode({
-                ...test,
+                ...(JSON.parse(JSON.stringify(test))),
                 parent: userNeed.id,
                 children: [],
                 internal: {
@@ -55,7 +55,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
         }
         for(let productReq of userNeed.productReqs) {
             createNode({
-                ...productReq,
+                ...(JSON.parse(JSON.stringify(productReq))),
                 parent: userNeed.id,
                 children: [],
                 internal : {
@@ -65,7 +65,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
             });
             for(let test of productReq.tests) {
                 createNode({
-                    ...test,
+                    ...(JSON.parse(JSON.stringify(test))),
                     parent: productReq.id,
                     children: [],
                     internal: {
@@ -76,7 +76,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
             }
             for(let softwareSpec of productReq.softwareSpecs) {
                 createNode({
-                    ...softwareSpec,
+                    ...(JSON.parse(JSON.stringify(softwareSpec))),
                     parent: productReq.id,
                     children: [],
                     internal : {
@@ -86,7 +86,7 @@ export const sourceNodes = async ({ boundActionCreators, reporter }: any, plugin
                 });
                 for(let test of softwareSpec.tests) {
                     createNode({
-                        ...test,
+                        ...(JSON.parse(JSON.stringify(test))),
                         parent: softwareSpec.id,
                         children: [],
                         internal: {
