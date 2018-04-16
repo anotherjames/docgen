@@ -9,9 +9,10 @@
         "version": "cp ../docgen-gatsby-package-json/package.json ./default-package.json && git add ./default-package.json"
     },
     "dependencies": {
-        "fs-extra": "5.0.0"
+        "fs-extra": "5.0.0",
+        "md5-file": "4.0.0"
     },
     "devDependencies": {
-        "@types/fs-extra": "^5.0.1"
+        "@types/fs-extra": "5.0.1"
     }
 }

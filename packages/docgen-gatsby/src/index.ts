@@ -2,13 +2,32 @@ import * as fs from 'fs'
 import * as fsExtra from 'fs-extra'
 import * as path from 'path';
 import * as util from 'util'
+import * as md5 from 'md5-file/promise'
 import { spawn } from 'child_process';
 
 const exists = util.promisify(fs.exists);
 const unlink = util.promisify(fs.unlink);
 const copy = util.promisify(fsExtra.copy);
 
-async function copyFile(sourceFile: string, destinationFile: string): Promise<boolean> {
+export async function copyFile(sourceFile: string, destinationFile: string): Promise<boolean> {
+
+    let t = await md5(sourceFile);
+
+    if(!(await exists(destinationFile))) {
+        await copy(sourceFile, destinationFile);
+        return true;
+    }
+
+    let sourceHash = await md5(sourceFile);
+    let destHash = await md5(destinationFile);
+
+    if(sourceFile == destHash) {
+        return false;
+    }
+
+    await unlink(sourceFile);
+    copy(sourceFile, destinationFile);
+
     return true;
 }
 
