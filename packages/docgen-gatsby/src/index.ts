@@ -61,7 +61,7 @@ async function prepareDirectory() {
 
 export async function buildDirectory() {
     await prepareDirectory();
-    await spawn('./node_modules/.bin/gatsby', ['install'], { stdio: 'inherit' });
+    await spawn('./node_modules/.bin/gatsby', ['build'], { stdio: 'inherit' });
 }
 
 export async function serveDirectory() {
