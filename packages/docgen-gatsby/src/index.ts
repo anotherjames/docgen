@@ -45,11 +45,11 @@ export async function cleanDirectory() {
 async function prepareDirectory() {
     let currentDirectory = process.cwd();
     let wasChanged = await copyFile(path.join(__dirname, 'default-gatsby-config.js'), path.join(currentDirectory, 'gatsby-config.js'));
-    wasChanged = wasChanged || await copyFile(path.join(__dirname, 'default-gatsby-config.js'), path.join(currentDirectory, 'package.json'));
+    wasChanged = wasChanged || await copyFile(path.join(__dirname, 'default-package.json'), path.join(currentDirectory, 'package.json'));
     if (wasChanged) {
         // Re-install the node_modules
         fsExtra.rmdir(path.join(currentDirectory, 'node_modules'));
-        await spawn("npm install");
+        await spawn('npm', ['install']);
     }
     await cleanDirectory();
 }
