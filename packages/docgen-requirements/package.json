@@ -1,6 +1,6 @@
 {
     "name": "docgen-requirements",
-    "version": "0.1.11",
+    "version": "0.1.14",
     "license": "MIT",
     "dependencies": {
         "gray-matter": "^3.0.0",

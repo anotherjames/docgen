@@ -1,9 +1,9 @@
 {
     "name": "gatsby-content-docgen",
-    "version": "0.1.11",
+    "version": "0.1.14",
     "license": "MIT",
     "dependencies": {
-        "docgen-requirements": "^0.1.11"
+        "docgen-requirements": "^0.1.14"
     },
     "devDependencies": {
         "@types/node": "9.6.5"
