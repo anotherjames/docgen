@@ -3,7 +3,7 @@ import * as fsExtra from 'fs-extra'
 import * as path from 'path';
 import * as util from 'util'
 import * as md5 from 'md5-file/promise'
-import { spawn } from 'child_process';
+import { spawn, execSync } from 'child_process';
 
 const exists = util.promisify(fs.exists);
 const unlink = util.promisify(fs.unlink);
@@ -54,22 +54,22 @@ async function prepareDirectory() {
             await fsExtra.remove(path.join(currentDirectory, 'node_modules'));
         }
         // Install node modules again.
-        await spawn('npm', ['install'], { stdio: 'inherit' });
+        execSync('npm install', { stdio: 'inherit' });
     }
     await cleanDirectory();
 }
 
 export async function buildDirectory() {
     await prepareDirectory();
-    await spawn('./node_modules/.bin/gatsby', ['build'], { stdio: 'inherit' });
+    await execSync('./node_modules/.bin/gatsby build', { stdio: 'inherit' });
 }
 
 export async function serveDirectory() {
     await prepareDirectory();
-    await spawn('./node_modules/.bin/gatsby', ['serve'], { stdio: 'inherit' });
+    await execSync('./node_modules/.bin/gatsby serve', { stdio: 'inherit' });
 }
 
 export async function developDirectory() {
     await prepareDirectory();
-    await spawn('./node_modules/.bin/gatsby', ['develop'], { stdio: 'inherit' });
+    await execSync('./node_modules/.bin/gatsby develop', { stdio: 'inherit' });
 }
