@@ -10,9 +10,6 @@ const unlink = util.promisify(fs.unlink);
 const copy = util.promisify(fsExtra.copy);
 
 export async function copyFile(sourceFile: string, destinationFile: string): Promise<boolean> {
-
-    let t = await md5(sourceFile);
-
     if(!(await exists(destinationFile))) {
         await copy(sourceFile, destinationFile);
         return true;
@@ -21,12 +18,12 @@ export async function copyFile(sourceFile: string, destinationFile: string): Pro
     let sourceHash = await md5(sourceFile);
     let destHash = await md5(destinationFile);
 
-    if(sourceFile == destHash) {
+    if(sourceHash == destHash) {
         return false;
     }
 
     await unlink(destinationFile);
-    copy(sourceFile, destinationFile);
+    await copy(sourceFile, destinationFile);
 
     return true;
 }
@@ -44,15 +41,20 @@ export async function cleanDirectory() {
 
 async function prepareDirectory() {
     let currentDirectory = process.cwd();
-    let wasChanged = await copyFile(path.join(__dirname, 'default-gatsby-config.js'), path.join(currentDirectory, 'gatsby-config.js'));
-    wasChanged = wasChanged || await copyFile(path.join(__dirname, 'default-package.json'), path.join(currentDirectory, 'package.json'));
+    let wasChanged = false;
+    if(await copyFile(path.join(__dirname, 'default-gatsby-config.js'), path.join(currentDirectory, 'gatsby-config.js'))) {
+        wasChanged = true;
+    }
+    if(await copyFile(path.join(__dirname, 'default-package.json'), path.join(currentDirectory, 'package.json'))) {
+        wasChanged = true;
+    }
     if (wasChanged) {
         // Remove existing node modules.
         if(await exists('node_modules')) {
             await fsExtra.remove(path.join(currentDirectory, 'node_modules'));
         }
         // Install node modules again.
-        await spawn('npm', ['install']);
+        await spawn('npm', ['install'], { stdio: 'inherit' });
     }
     await cleanDirectory();
 }
