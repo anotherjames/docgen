@@ -61,15 +61,15 @@ async function prepareDirectory() {
 
 export async function buildDirectory() {
     await prepareDirectory();
-    await spawn('./node_modules/.bin/gatsby build');
+    await spawn('./node_modules/.bin/gatsby', ['install'], { stdio: 'inherit' });
 }
 
 export async function serveDirectory() {
     await prepareDirectory();
-    await spawn('./node_modules/.bin/gatsby serve');
+    await spawn('./node_modules/.bin/gatsby', ['serve'], { stdio: 'inherit' });
 }
 
 export async function developDirectory() {
     await prepareDirectory();
-    await spawn('./node_modules/.bin/gatsby develop');
+    await spawn('./node_modules/.bin/gatsby', ['develop'], { stdio: 'inherit' });
 }

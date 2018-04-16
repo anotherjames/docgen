@@ -12,6 +12,7 @@
         "gatsby-plugin-typescript": "1.4.19",
         "gatsby-source-docgen-requirements": "^0.1.14",
         "gatsby-source-filesystem": "1.5.31",
-        "gatsby-transformer-remark": "1.7.40"
+        "gatsby-transformer-remark": "1.7.40",
+        "react-helmet": "5.1.3"
     }
 }
