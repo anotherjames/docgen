@@ -1,12 +1,12 @@
 {
     "name": "docgen-cli",
-    "version": "0.1.19",
+    "version": "0.1.20",
     "license": "MIT",
     "bin": {
         "docgen": "./index.js"
     },
     "dependencies": {
-        "docgen-gatsby": "^0.1.19",
+        "docgen-gatsby": "^0.1.20",
         "gatsby-cli": "1.1.50",
         "yargs": "11.0.0"
     },
