@@ -25,7 +25,7 @@ export async function copyFile(sourceFile: string, destinationFile: string): Pro
         return false;
     }
 
-    await unlink(sourceFile);
+    await unlink(destinationFile);
     copy(sourceFile, destinationFile);
 
     return true;
@@ -47,10 +47,11 @@ async function prepareDirectory() {
     let wasChanged = await copyFile(path.join(__dirname, 'default-gatsby-config.js'), path.join(currentDirectory, 'gatsby-config.js'));
     wasChanged = wasChanged || await copyFile(path.join(__dirname, 'default-package.json'), path.join(currentDirectory, 'package.json'));
     if (wasChanged) {
-        // Re-install the node_modules
+        // Remove existing node modules.
         if(await exists('node_modules')) {
             await fsExtra.remove(path.join(currentDirectory, 'node_modules'));
         }
+        // Install node modules again.
         await spawn('npm', ['install']);
     }
     await cleanDirectory();
