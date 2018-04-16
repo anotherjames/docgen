@@ -56,20 +56,21 @@ async function prepareDirectory() {
         // Install node modules again.
         execSync('npm install', { stdio: 'inherit' });
     }
-    await cleanDirectory();
 }
 
 export async function buildDirectory() {
     await prepareDirectory();
-    await execSync('./node_modules/.bin/gatsby build', { stdio: 'inherit' });
+    await cleanDirectory();
+    execSync('./node_modules/.bin/gatsby build', { stdio: 'inherit' });
 }
 
 export async function serveDirectory() {
     await prepareDirectory();
-    await execSync('./node_modules/.bin/gatsby serve', { stdio: 'inherit' });
+    execSync('./node_modules/.bin/gatsby serve', { stdio: 'inherit' });
 }
 
 export async function developDirectory() {
     await prepareDirectory();
-    await execSync('./node_modules/.bin/gatsby develop', { stdio: 'inherit' });
+    await cleanDirectory();
+    execSync('./node_modules/.bin/gatsby develop', { stdio: 'inherit' });
 }
