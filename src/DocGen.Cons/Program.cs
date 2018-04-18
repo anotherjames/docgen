@@ -75,9 +75,9 @@ namespace DocGen.Cons
                         Log.Error("{@Exception}", exception);
                     }
                 }
-            }
 
-            return Task.FromResult(0);
+                return Task.FromResult(-1);
+            }
         }
     }
 }
