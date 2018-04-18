@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocGen.Core", "DocGen.Core\DocGen.Core.csproj", "{3C6AB8C5-F46E-498C-8756-805E7E54F13B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "src/DocGen.Core", "src\DocGen.Core\DocGen.Core.csproj", "{3C6AB8C5-F46E-498C-8756-805E7E54F13B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocGen.Cons", "DocGen.Cons\DocGen.Cons.csproj", "{61B2575D-415C-404A-80ED-A2421EDA2A6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "src/DocGen.Cons", "src\DocGen.Cons\DocGen.Cons.csproj", "{61B2575D-415C-404A-80ED-A2421EDA2A6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocGen.Requirements", "DocGen.Requirements\DocGen.Requirements.csproj", "{27C1B385-C063-4A89-88CA-B57017EDCA56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "src/DocGen.Requirements", "src\DocGen.Requirements\DocGen.Requirements.csproj", "{27C1B385-C063-4A89-88CA-B57017EDCA56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocGen.Requirements.Tests", "DocGen.Requirements.Tests\DocGen.Requirements.Tests.csproj", "{83534DC2-27E4-498A-8309-DE0BD7FFBB48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test/DocGen.Requirements.Tests", "test\DocGen.Requirements.Tests\DocGen.Requirements.Tests.csproj", "{83534DC2-27E4-498A-8309-DE0BD7FFBB48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocGen.Web", "DocGen.Web\DocGen.Web.csproj", "{CE79E9C3-91C4-44C4-A7D7-5824E523FDD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "src/DocGen.Web", "src\DocGen.Web\DocGen.Web.csproj", "{CE79E9C3-91C4-44C4-A7D7-5824E523FDD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
