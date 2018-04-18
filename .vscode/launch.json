@@ -11,7 +11,10 @@
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/src/DocGen.Cons/bin/Debug/netcoreapp2.0/DocGen.Cons.dll",
-            "args": [],
+            "args": [
+                "content",
+                "serve"
+            ],
             "cwd": "${workspaceFolder}/src/DocGen.Cons",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
             "console": "internalConsole",

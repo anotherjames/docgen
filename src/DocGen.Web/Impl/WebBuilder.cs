@@ -4,7 +4,7 @@ namespace DocGen.Web.Impl
     {
         public IWeb Build(int port = 8000)
         {
-            return new Web();
+            return new Web(port);
         }
     }
 }

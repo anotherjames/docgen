@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DocGen.Core;
 using Microsoft.Extensions.CommandLineUtils;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace DocGen.Cons
@@ -11,6 +12,14 @@ namespace DocGen.Cons
     {
         public static Task<int> Main(string[] args)
         {
+            IServiceProvider serviceProvider;
+
+            {
+                var services = new ServiceCollection();
+                DocGen.Web.Services.Register(services);
+                serviceProvider = services.BuildServiceProvider();
+            }
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .WriteTo.Console()
@@ -24,7 +33,7 @@ namespace DocGen.Cons
 
             app.HelpOption("-? | -h | --help");
 
-            Commands.Content.Configure(app);
+            Commands.Content.Configure(app, serviceProvider);
 
             app.OnExecute(() =>
             {
