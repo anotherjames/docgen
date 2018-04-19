@@ -33,9 +33,15 @@ namespace DocGen.Cons.Commands
         public static Task<int> Serve(IServiceProvider serviceProvider, int port = 8000)
         {
             var webBuilder = serviceProvider.GetService<IWebBuilder>();
-            var web = webBuilder.Build(port);
+            using(var web = webBuilder.Build(port))
+            {
+                Log.Information("Listening on port {Port}.", port);
+                Log.Information("Press enter to exit...");
 
-            Log.Information($"Listening on port ${port}");
+                web.Listen();
+
+                Console.ReadLine();
+            }
 
             return Task.FromResult(0);
         }

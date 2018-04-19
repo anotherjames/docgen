@@ -1,6 +1,8 @@
+using System;
+
 namespace DocGen.Web
 {
-    public interface IWeb
+    public interface IWeb : IDisposable
     {
         void Listen();
     }
