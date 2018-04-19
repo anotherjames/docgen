@@ -7,7 +7,18 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/DocGen.Cons/DocGen.Cons.csproj"
+                "${workspaceFolder}/DocGen.sln",
+                "--no-restore"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "restore",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "restore",
+                "${workspaceFolder}/DocGen.sln"
             ],
             "problemMatcher": "$msCompile"
         }

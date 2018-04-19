@@ -35,10 +35,10 @@ namespace DocGen.Cons.Commands
             var webBuilder = serviceProvider.GetService<IWebBuilder>();
             using(var web = webBuilder.Build(port))
             {
+                web.Listen();
+                
                 Log.Information("Listening on port {Port}.", port);
                 Log.Information("Press enter to exit...");
-
-                web.Listen();
 
                 Console.ReadLine();
             }
