@@ -6,7 +6,7 @@ namespace DocGen.Core
     {
         public static void Register(ServiceCollection services)
         {
-            services.AddSingleton<Markdown.IMarkdownParser, Markdown.Impl.MarkdownParser>();
+            services.AddSingleton<Markdown.IMarkdownRenderer, Markdown.Impl.MarkdownRenderer>();
             services.AddSingleton<Markdown.IYamlParser, Markdown.Impl.YamlParser>();
         }
     }
