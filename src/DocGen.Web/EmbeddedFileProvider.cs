@@ -15,7 +15,7 @@ namespace DocGen.Web
         List<EmbeddedFile> _files;
         const string PREFIX = "DocGen.Web.Resources";
 
-        public EmbeddedFileProvider()
+        public EmbeddedFileProvider(string subDirectory = null)
         {
             _assembly = typeof(EmbeddedFileProvider).GetTypeInfo().Assembly;
             _files = _assembly.GetManifestResourceNames()
@@ -25,6 +25,18 @@ namespace DocGen.Web
                     var fileName = parts.Skip(parts.Length - 2);
                     var path = Path.DirectorySeparatorChar + Path.Combine(Path.Combine(directory.ToArray()), string.Join(".", fileName));
                     return new EmbeddedFile(path, x);
+                })
+                .Where(x => {
+                    if(!string.IsNullOrEmpty(subDirectory)) {
+                        return x.Path.StartsWith(subDirectory, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    return true;
+                })
+                .Select(x => {
+                    if(!string.IsNullOrEmpty(subDirectory)) {
+                        return new EmbeddedFile(x.Path.Substring(subDirectory.Length), x.ResourceName);
+                    }
+                    return x;
                 })
                 .ToList();
         }
@@ -97,8 +109,8 @@ namespace DocGen.Web
                 {
                     EnsureExists();
 
-                    // TODO:
-                    return 0;
+                    using(var stream = _assembly.GetManifestResourceStream(_file.ResourceName))
+                        return stream.Length;
                 }
             }
 

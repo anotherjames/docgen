@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 namespace DocGen.Web.Impl
 {
@@ -28,16 +29,11 @@ namespace DocGen.Web.Impl
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.UseStaticFiles();
+            app.UseDeveloperExceptionPage();
+            
+            app.UseStaticFiles(new StaticFileOptions() {
+                FileProvider = new EmbeddedFileProvider("/wwwroot")
+            });
 
             app.UseMvc(routes =>
             {
