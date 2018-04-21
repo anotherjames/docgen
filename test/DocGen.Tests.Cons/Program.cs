@@ -29,7 +29,7 @@ namespace DocGen.Tests.Cons
             var messageSink = new ConsoleMessageSink();
             var assemblyInfo = new ReflectionAssemblyInfo(assembly);
             var framework = new XunitTestFramework(messageSink);
-            var executor = new XunitTestFrameworkExecutor(assembly.GetName(), new SourceInformationProvider(), messageSink);
+            var executor = new XunitTestFrameworkExecutor(assembly.GetName(), new NullSourceInformationProvider(), messageSink);
             
             var executionOptions = Xunit.TestFrameworkOptions.ForExecution();
             var discoveryOptions = Xunit.TestFrameworkOptions.ForDiscovery();

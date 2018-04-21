@@ -32,7 +32,7 @@ namespace DocGen.Core.Tests
             document.AppendLine("Title: Test title");
             document.AppendLine("Category: Test category");
             document.AppendLine("---");
-            document.AppendLine("Test paragraph");
+            document.Append("Test paragraph");
 
             var result = _markdownRenderer.RenderMarkdown(document.ToString());
 

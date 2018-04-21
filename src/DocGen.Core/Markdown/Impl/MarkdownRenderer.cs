@@ -17,7 +17,7 @@ namespace DocGen.Core.Markdown.Impl
         {
             var yaml = _yamlParser.ParseYaml(markdown);
 
-            var html = Markdig.Markdown.ToHtml(markdown,
+            var html = Markdig.Markdown.ToHtml(yaml.Markdown,
                 new Markdig.MarkdownPipelineBuilder()
                     .Configure("yaml")
                     .Build());
@@ -27,7 +27,7 @@ namespace DocGen.Core.Markdown.Impl
                 html = html.TrimEnd(Environment.NewLine.ToCharArray());
             }
 
-            return new MarkdownRenderResult(yaml, html);
+            return new MarkdownRenderResult(yaml.Yaml, html);
         }
     }
 }

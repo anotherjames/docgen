@@ -3,37 +3,9 @@ using System.Text;
 using System.Threading;
 using DocGen.Requirements.Impl;
 using Xunit;
-using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace DocGen.Requirements.Tests
 {
-    public class SourceInformationProvider : ISourceInformationProvider
-    {
-        public void Dispose()
-        {
-
-        }
-
-        public ISourceInformation GetSourceInformation(ITestCase testCase)
-        {
-            return null;
-        }
-    }
-
-    public class TestMessageSink : IMessageSink
-    {
-        public bool OnMessage(IMessageSinkMessage message)
-        {
-            if(message is ITestAssemblyFinished)
-                Finished.Set();
-
-            return true;
-        }
-
-        public ManualResetEvent Finished = new ManualResetEvent(initialState: false);
-    }
-
     public class RequirementsParserTests
     {
         IRequirementsParser _requirementsParser;
@@ -46,27 +18,6 @@ namespace DocGen.Requirements.Tests
         [Fact]
         public void Can_parse_user_need()
         {
-            // var messageSink = new Xunit.Sdk.DelegatingMessageSink(new Xunit.Sdk.NullMessageSink(), message => {
-            //     Console.WriteLine(message);
-            // });
-            // var messageSink = new TestMessageSink();
-            // var ase = typeof(RequirementsParserTests).Assembly;
-            // var assemblyInfo = new ReflectionAssemblyInfo(ase);
-            // var framework = new XunitTestFramework(messageSink);
-            // var executor = new XunitTestFrameworkExecutor(ase.GetName(), new SourceInformationProvider(), messageSink);
-            // var options = Xunit.TestFrameworkOptions.ForExecution();
-            // var d = Xunit.TestFrameworkOptions.ForDiscovery();
-            // executor.RunAll(messageSink, d, options);
-            
-            // messageSink.Finished.WaitOne();
-
-            // var discoverer = framework.GetDiscoverer(assemblyInfo);
-            // discoverer.Find(true, messageSink, )
-
-            // var testAssembly = new TestAssembly(assemblyInfo);
-            // using (var assemblyRunner = new XunitTestAssemblyRunner(testAssembly, testCases, DiagnosticMessageSink, executionMessageSink, executionOptions))
-            //     await assemblyRunner.RunAsync();
-
             var document = new StringBuilder();
             document.AppendLine("---");
             document.AppendLine("Number: 1.0");

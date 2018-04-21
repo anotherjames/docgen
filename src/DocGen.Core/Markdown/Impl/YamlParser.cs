@@ -10,7 +10,7 @@ namespace DocGen.Core.Markdown.Impl
 {
     public class YamlParser : IYamlParser
     {
-        public dynamic ParseYaml(string markdown)
+        public YamlParseResult ParseYaml(string markdown)
         {
             var builder = new Markdig.MarkdownPipelineBuilder();
             builder.Extensions.Add(new Markdig.Extensions.Yaml.YamlFrontMatterExtension());
@@ -21,7 +21,7 @@ namespace DocGen.Core.Markdown.Impl
             
             if(yamlBlocks.Count == 0)
             {
-                return null;
+                return new YamlParseResult(null, markdown);
             }
 
             if(yamlBlocks.Count > 1)
@@ -32,23 +32,25 @@ namespace DocGen.Core.Markdown.Impl
             var yamlBlock = yamlBlocks.First();
 
             var yamlBlockIterator = yamlBlock.Lines.ToCharIterator();
-            var yaml = new StringBuilder();
+            var yamlString = new StringBuilder();
             while (yamlBlockIterator.CurrentChar != '\0')
             {
-                yaml.Append(yamlBlockIterator.CurrentChar);
+                yamlString.Append(yamlBlockIterator.CurrentChar);
                 yamlBlockIterator.NextChar();
             }
 
             var yamlDeserializer = new DeserializerBuilder().Build();
-            var yamlObject = yamlDeserializer.Deserialize(new StringReader(yaml.ToString()));
+            var yamlObject = yamlDeserializer.Deserialize(new StringReader(yamlString.ToString()));
 
             var serializer = new SerializerBuilder()
                 .JsonCompatible()
                 .Build();
 
-            var json = serializer.Serialize(yamlObject);
+            dynamic yaml = Newtonsoft.Json.JsonConvert.DeserializeObject(serializer.Serialize(yamlObject));
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            markdown = markdown.Substring(yamlBlock.Span.End + 1);
+
+            return new YamlParseResult(yaml, markdown);
         }
     }
 }
