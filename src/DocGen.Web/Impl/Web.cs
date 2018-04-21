@@ -1,5 +1,8 @@
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace DocGen.Web.Impl
 {
@@ -11,7 +14,15 @@ namespace DocGen.Web.Impl
         {
             _webHost = WebHost.CreateDefaultBuilder(new string[]{})
                 .UseUrls($"http://*:{port}")
-                .UseStartup<Startup>()
+                .UseSetting(WebHostDefaults.ApplicationKey,  Assembly.GetEntryAssembly().GetName().Name)
+                .ConfigureServices(services => 
+                {
+                    services.AddSingleton(typeof(IStartup), sp =>
+                    {
+                        var hostingEnvironment = sp.GetRequiredService<IHostingEnvironment>();
+                        return new ConventionBasedStartup(StartupLoader.LoadMethods(sp, typeof(DocGen.Web.Impl.Startup), hostingEnvironment.EnvironmentName));
+                    });
+                })
                 .Build();
         }
 

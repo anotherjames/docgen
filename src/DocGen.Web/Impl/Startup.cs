@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DocGen.Web
+namespace DocGen.Web.Impl
 {
     public class Startup
     {
@@ -34,7 +34,7 @@ namespace DocGen.Web
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseStaticFiles();
