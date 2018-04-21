@@ -5,7 +5,7 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "DocGen",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -16,6 +16,18 @@
                 "serve"
             ],
             "cwd": "${workspaceFolder}/src/DocGen.Cons",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Tests",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/test/DocGen.Tests.Cons/bin/Debug/netcoreapp2.0/DocGen.Tests.Cons.dll",
+            "args": [
+            ],
+            "cwd": "${workspaceFolder}/test/DocGen.Tests.Cons",
             "console": "integratedTerminal"
         }
     ]

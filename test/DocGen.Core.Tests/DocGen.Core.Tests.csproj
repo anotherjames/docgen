@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\DocGen.Requirements\DocGen.Requirements.csproj" />
+    <ProjectReference Include="..\..\src\DocGen.Core\DocGen.Core.csproj" />
   </ItemGroup>
 
 </Project>
