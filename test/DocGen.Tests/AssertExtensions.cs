@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DocGen.Requirements.Tests
+namespace DocGen.Tests
 {
     public static class AssertExtensions
     {

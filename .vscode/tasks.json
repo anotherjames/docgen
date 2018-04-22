@@ -20,6 +20,29 @@
                 "${workspaceFolder}/DocGen.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "${workspaceFolder}/test/DocGen.Tests.Coverage/DocGen.Tests.Coverage.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test-coverage",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "${workspaceFolder}/test/DocGen.Tests.Coverage/DocGen.Tests.Coverage.csproj",
+                "/p:CollectCoverage=true",
+                "/p:CoverletOutputFormat=lcov",
+                "/p:CoverletOutput=${workspaceFolder}/lcov"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Threading;
 using DocGen.Requirements.Impl;
+using DocGen.Tests;
 using Xunit;
 
 namespace DocGen.Requirements.Tests

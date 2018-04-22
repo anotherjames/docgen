@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DocGen.Tests\DocGen.Tests.csproj" />
     <ProjectReference Include="..\..\src\DocGen.Requirements\DocGen.Requirements.csproj" />
   </ItemGroup>
 
