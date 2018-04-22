@@ -234,564 +234,589 @@ namespace DocGen.Requirements.Tests
             });
         }
 
-        // [Fact]
-        // public void Can_parse_product_requirement()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("Some more....");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
-        //     document.AppendLine("Some more....");
+        [Fact]
+        public void Can_parse_product_requirement()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("Some more....");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
+            document.AppendLine("Some more....");
 
-        //     var result = _requirementsParser.ParseProductRequirement(document.ToString());
+            var result = _requirementsParser.ParseProductRequirement(document.ToString());
 
-        //     Assert.Equal(result.Number, new Version(1, 0));
-        //     Assert.Equal(result.Title, "Test title");
-        //     Assert.Equal(result.Category, "Test category");
-        //     Assert.Equal(result.Requirement, "Requirement content...." + Environment.NewLine + "Some more....");
-        //     Assert.Equal(result.VerificationMethod, "Verification content..." + Environment.NewLine + "Some more....");
-        // }
+            Assert.Equal(result.Number, new Version(1, 0));
+            Assert.Equal(result.Title, "Test title");
+            Assert.Equal(result.Category, "Test category");
+            Assert.Equal(result.Requirement, "Requirement content...." + Environment.NewLine + "Some more....");
+            Assert.Equal(result.VerificationMethod, "Verification content..." + Environment.NewLine + "Some more....");
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_product_requirement_title()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+        [Fact]
+        public void Exceptions_thrown_when_missing_product_requirement_title()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseProductRequirement(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Title is required");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseProductRequirement(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Title is required");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_product_requirement_category()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+        [Fact]
+        public void Exceptions_thrown_when_missing_product_requirement_category()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseProductRequirement(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Category is required");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseProductRequirement(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Category is required");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_product_requirement_number()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+        [Fact]
+        public void Exceptions_thrown_when_missing_product_requirement_number()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseProductRequirement(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provider a number");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseProductRequirement(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provider a number");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_product_requirement_number_wrong_format()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.V");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+        [Fact]
+        public void Exceptions_thrown_when_product_requirement_number_wrong_format()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.V");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseProductRequirement(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Invalid number format 1.V");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseProductRequirement(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Invalid number format 1.V");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_product_requirement_description()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+        [Fact]
+        public void Exceptions_thrown_when_missing_product_requirement_description()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseProductRequirement(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provide requirements");
-        //     });
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseProductRequirement(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provide requirements");
+            });
 
-        //     document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+            document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseProductRequirement(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provide requirements");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseProductRequirement(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provide requirements");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_product_requirement_verification_method()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("# Verification Method");
+        [Fact]
+        public void Exceptions_thrown_when_missing_product_requirement_verification_method()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("# Verification Method");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseProductRequirement(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provide a verification method");
-        //     });
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseProductRequirement(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provide a verification method");
+            });
 
-        //     document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
+            document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseProductRequirement(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provide a verification method");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseProductRequirement(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provide a verification method");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_product_requirement_has_rogue_content()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Random");
+        [Fact]
+        public void Exceptions_thrown_when_product_requirement_has_rogue_content()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Random");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseProductRequirement(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Content '# Random' should be within a requirement or verification method");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseProductRequirement(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Content '# Random' should be within a requirement or verification method");
+            });
+        }
 
-        // //--
+        [Fact]
+        public void Can_parse_software_requirement()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        // [Fact]
-        // public void Can_parse_software_requirement()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+            var result = _requirementsParser.ParseSoftwareSpecification(document.ToString());
 
-        //     var result = _requirementsParser.ParseSoftwareSpecification(document.ToString());
+            Assert.Equal(result.Number, new Version(1, 0));
+            Assert.Equal(result.Title, "Test title");
+            Assert.Equal(result.Requirement, "Requirement content....");
+            Assert.Equal(result.VerificationMethod, "Verification content...");
+        }
 
-        //     Assert.Equal(result.Number, new Version(1, 0));
-        //     Assert.Equal(result.Title, "Test title");
-        //     Assert.Equal(result.Requirement, "Requirement content....");
-        //     Assert.Equal(result.VerificationMethod, "Verification content...");
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_missing_software_requirement_title()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_software_requirement_title()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseSoftwareSpecification(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Title is required");
+            });
+        }
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseSoftwareSpecification(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Title is required");
-        //     });
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_missing_software_requirement_number()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_software_requirement_number()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseSoftwareSpecification(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provider a number");
+            });
+        }
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseSoftwareSpecification(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provider a number");
-        //     });
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_software_requirement_number_wrong_format()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.V");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_software_requirement_number_wrong_format()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.V");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseSoftwareSpecification(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Invalid number format 1.V");
+            });
+        }
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseSoftwareSpecification(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Invalid number format 1.V");
-        //     });
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_missing_software_requirement_description()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_software_requirement_description()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseSoftwareSpecification(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Requirement is required");
+            });
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseSoftwareSpecification(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Requirement is required");
-        //     });
+            document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("---");
+            document.AppendLine("# Verification Method");
+            document.AppendLine("Verification content...");
 
-        //     document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Verification Method");
-        //     document.AppendLine("Verification content...");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseSoftwareSpecification(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Requirement is required");
+            });
+        }
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseSoftwareSpecification(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Requirement is required");
-        //     });
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_missing_software_requirement_verification_method()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
+            document.AppendLine("# Verification Method");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_software_requirement_verification_method()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
-        //     document.AppendLine("# Verification Method");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseSoftwareSpecification(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provide a verification method");
+            });
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseSoftwareSpecification(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provide a verification method");
-        //     });
+            document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("---");
+            document.AppendLine("# Requirement");
+            document.AppendLine("Requirement content....");
 
-        //     document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Requirement");
-        //     document.AppendLine("Requirement content....");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseSoftwareSpecification(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provide a verification method");
+            });
+        }
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseSoftwareSpecification(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provide a verification method");
-        //     });
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_software_requirement_has_rogue_content()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Random");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_software_requirement_has_rogue_content()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Random");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseSoftwareSpecification(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Content '# Random' should be within a requirement or verification method");
+            });
+        }
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseSoftwareSpecification(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Content '# Random' should be within a requirement or verification method");
-        //     });
-        // }
+        [Fact]
+        public void Can_parse_test_case()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("ResponseType: Done");
+            document.AppendLine("ValidationType: Validation");
+            document.AppendLine("Type: Hardware");
+            document.AppendLine("---");
+            document.AppendLine("# Action");
+            document.AppendLine("Action....");
+            document.AppendLine("# Expected");
+            document.AppendLine("Expected...");
 
-        // [Fact]
-        // public void Can_parse_test_case()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("ResponseType: Done");
-        //     document.AppendLine("ValidationType: Validation");
-        //     document.AppendLine("Type: Hardware");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Action");
-        //     document.AppendLine("Action....");
-        //     document.AppendLine("# Expected");
-        //     document.AppendLine("Expected...");
+            var result = _requirementsParser.ParseTestCase(document.ToString());
 
-        //     var result = _requirementsParser.ParseTestCase(document.ToString());
+            Assert.Equal(result.Number, new Version(1, 0));
+            Assert.Equal(result.ResponseType, TestCaseResponseTypeEnum.Done);
+            Assert.Equal(result.ValidationType, TestCaseValidationTypeEnum.Validation);
+            Assert.Equal(result.Type, TestCaseTypeEnum.Hardware);
+            Assert.Equal(result.Action, "Action....");
+            Assert.Equal(result.Expected, "Expected...");
+        }
 
-        //     Assert.Equal(result.Number, new Version(1, 0));
-        //     Assert.Equal(result.ResponseType, TestCaseResponseTypeEnum.Done);
-        //     Assert.Equal(result.ValidationType, TestCaseValidationTypeEnum.Validation);
-        //     Assert.Equal(result.Type, TestCaseTypeEnum.Hardware);
-        //     Assert.Equal(result.Action, "Action....");
-        //     Assert.Equal(result.Expected, "Expected...");
-        // }
+        [Fact]
+        public void Can_parse_test_case_with_defaults()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("---");
+            document.AppendLine("# Action");
+            document.AppendLine("Action....");
+            document.AppendLine("# Expected");
+            document.AppendLine("Expected...");
 
-        // [Fact]
-        // public void Can_parse_test_case_with_defaults()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Action");
-        //     document.AppendLine("Action....");
-        //     document.AppendLine("# Expected");
-        //     document.AppendLine("Expected...");
+            var result = _requirementsParser.ParseTestCase(document.ToString());
 
-        //     var result = _requirementsParser.ParseTestCase(document.ToString());
+            Assert.Equal(result.ResponseType, TestCaseResponseTypeEnum.PassFail);
+            Assert.Equal(result.ValidationType, TestCaseValidationTypeEnum.Verification);
+            Assert.Equal(result.Type, TestCaseTypeEnum.Software);
+            Assert.Equal(result.Action, "Action....");
+            Assert.Equal(result.Expected, "Expected...");
+        }
 
-        //     Assert.Equal(result.ResponseType, TestCaseResponseTypeEnum.PassFail);
-        //     Assert.Equal(result.ValidationType, TestCaseValidationTypeEnum.Verification);
-        //     Assert.Equal(result.Type, TestCaseTypeEnum.Software);
-        //     Assert.Equal(result.Action, "Action....");
-        //     Assert.Equal(result.Expected, "Expected...");
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_missing_test_case_number()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("# Action");
+            document.AppendLine("# Expected");
+            document.AppendLine("Expected...");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_test_case_number()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("# Action");
-        //     document.AppendLine("# Expected");
-        //     document.AppendLine("Expected...");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseTestCase(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provider a number");
+            });
+        }
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseTestCase(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provider a number");
-        //     });
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_test_case_number_wrong_format()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.V");
+            document.AppendLine("---");
+            document.AppendLine("# Action");
+            document.AppendLine("# Expected");
+            document.AppendLine("Expected...");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_test_case_number_wrong_format()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.V");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Action");
-        //     document.AppendLine("# Expected");
-        //     document.AppendLine("Expected...");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseTestCase(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Invalid number format 1.V");
+            });
+        }
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseTestCase(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Invalid number format 1.V");
-        //     });
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_missing_test_case_action()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("---");
+            document.AppendLine("# Action");
+            document.AppendLine("# Expected");
+            document.AppendLine("Expected...");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_test_case_action()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Action");
-        //     document.AppendLine("# Expected");
-        //     document.AppendLine("Expected...");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseTestCase(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Action is required");
+            });
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseTestCase(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Action is required");
-        //     });
+            document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("---");
+            document.AppendLine("# Expected");
+            document.AppendLine("Expected...");
 
-        //     document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Expected");
-        //     document.AppendLine("Expected...");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseTestCase(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Action is required");
+            });
+        }
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseTestCase(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Action is required");
-        //     });
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_missing_test_case_expected()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("---");
+            document.AppendLine("# Action");
+            document.AppendLine("Action....");
+            document.AppendLine("# Expected");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_test_case_expected()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Action");
-        //     document.AppendLine("Action....");
-        //     document.AppendLine("# Expected");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseTestCase(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Expected is required");
+            });
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseTestCase(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Expected is required");
-        //     });
+            document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("---");
+            document.AppendLine("# Action");
+            document.AppendLine("Action....");
 
-        //     document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Action");
-        //     document.AppendLine("Action....");
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseTestCase(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Expected is required");
+            });
+        }
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseTestCase(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Expected is required");
-        //     });
-        // }
+        [Fact]
+        public void Exceptions_thrown_when_test_case_has_rogue_content()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("---");
+            document.AppendLine("# Random");
 
-        // [Fact]
-        // public void Exceptions_thrown_when_test_case_has_rogue_content()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Random");
-
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseTestCase(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Content '# Random' should be within a action or expected");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseTestCase(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Content '# Random' should be within a action or expected");
+            });
+        }
     }
 }

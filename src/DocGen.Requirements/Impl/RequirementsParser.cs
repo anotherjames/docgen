@@ -1,4 +1,5 @@
 using System;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace DocGen.Requirements.Impl
             var yaml = _yamlParser.ParseYaml(content);
             
             if(yaml.Yaml == null)
-                yaml = new YamlParseResult(new Object(), yaml.Markdown);
+                yaml = new YamlParseResult(Newtonsoft.Json.JsonConvert.DeserializeObject("{}"), yaml.Markdown);
 
             StringBuilder userNeed = new StringBuilder();
             StringBuilder validationMethod = new StringBuilder();
@@ -81,30 +82,190 @@ namespace DocGen.Requirements.Impl
             return result;
         }
 
-        private static string ToString(StringLineGroup.Iterator text)
-        {
-            var chars = new StringBuilder();
-            while (text.CurrentChar != '\0')
-            {
-                chars.Append(text.CurrentChar);
-                text.NextChar();
-            }
-            return chars.ToString();
-        }
-
         public ProductRequirement ParseProductRequirement(string content)
         {
-            return null;
+            var yaml = _yamlParser.ParseYaml(content);
+            
+            if(yaml.Yaml == null)
+                yaml = new YamlParseResult(Newtonsoft.Json.JsonConvert.DeserializeObject("{}"), yaml.Markdown);
+
+            StringBuilder requirement = new StringBuilder();
+            StringBuilder verification = new StringBuilder();
+            StringBuilder current = null;
+            using(var stringReader = new StringReader(yaml.Markdown))
+            {
+                string line;
+                while ((line = stringReader.ReadLine()) != null)
+                {
+                    if (line == "# Requirement")
+                    {
+                        current = requirement;
+                    }
+                    else if (line == "# Verification Method")
+                    {
+                        current = verification;
+                    }
+                    else
+                    {
+                        if (current == null)
+                            throw new DocGenException($"Content '{line}' should be within a requirement or verification method");
+
+                        current.AppendLine(line);
+                    }
+                }
+            }
+
+            var result = new ProductRequirement();
+            string number = yaml.Yaml?.Number;
+            if (string.IsNullOrEmpty(number))
+                throw new DocGenException("You must provider a number");
+            if (!Version.TryParse(number, out Version version))
+                throw new DocGenException($"Invalid number format {number}");
+
+            result.Number = version;
+            result.Title = yaml.Yaml?.Title;
+            result.Category = yaml.Yaml?.Category;
+            result.Requirement = requirement.ToString();
+            result.VerificationMethod = verification.ToString();
+
+            result.Requirement = result.Requirement.TrimEnd(Environment.NewLine.ToCharArray());
+            result.VerificationMethod = result.VerificationMethod.TrimEnd(Environment.NewLine.ToCharArray());
+
+            if (string.IsNullOrEmpty(result.Title))
+                throw new DocGenException("Title is required");
+            if (string.IsNullOrEmpty(result.Category))
+                throw new DocGenException("Category is required");
+            if (string.IsNullOrEmpty(result.Requirement))
+                throw new DocGenException("You must provide requirements");
+            if (string.IsNullOrEmpty(result.VerificationMethod))
+                throw new DocGenException("You must provide a verification method");
+
+            return result;
         }
 
         public SoftwareSpecification ParseSoftwareSpecification(string content)
         {
-            return null;
+            var yaml = _yamlParser.ParseYaml(content);
+            
+            if(yaml.Yaml == null)
+                yaml = new YamlParseResult(Newtonsoft.Json.JsonConvert.DeserializeObject("{}"), yaml.Markdown);
+
+            StringBuilder requirement = new StringBuilder();
+            StringBuilder verification = new StringBuilder();
+            StringBuilder current = null;
+            using(var stringReader = new StringReader(yaml.Markdown))
+            {
+                string line;
+                while ((line = stringReader.ReadLine()) != null)
+                {
+                    if (line == "# Requirement")
+                    {
+                        current = requirement;
+                    }
+                    else if (line == "# Verification Method")
+                    {
+                        current = verification;
+                    }
+                    else
+                    {
+                        if (current == null)
+                            throw new DocGenException($"Content '{line}' should be within a requirement or verification method");
+
+                        current.AppendLine(line);
+                    }
+                }
+            }
+
+            var result = new SoftwareSpecification();
+            string number = yaml.Yaml?.Number;
+            if (string.IsNullOrEmpty(number))
+                throw new DocGenException("You must provider a number");
+            if (!Version.TryParse(number, out Version version))
+                throw new DocGenException($"Invalid number format {number}");
+
+            result.Number = version;
+            result.Title = yaml.Yaml?.Title;
+            result.Requirement = requirement.ToString();
+            result.VerificationMethod = verification.ToString();
+
+            result.Requirement = result.Requirement.TrimEnd(Environment.NewLine.ToCharArray());
+            result.VerificationMethod = result.VerificationMethod.TrimEnd(Environment.NewLine.ToCharArray());
+
+            if (string.IsNullOrEmpty(result.Title))
+                throw new DocGenException("Title is required");
+            if (string.IsNullOrEmpty(result.Requirement))
+                throw new DocGenException("Requirement is required");
+            if (string.IsNullOrEmpty(result.VerificationMethod))
+                throw new DocGenException("You must provide a verification method");
+
+            return result;
         }
 
         public TestCase ParseTestCase(string content)
         {
-            return null;
+            var yaml = _yamlParser.ParseYaml(content);
+            
+            if(yaml.Yaml == null)
+                yaml = new YamlParseResult(Newtonsoft.Json.JsonConvert.DeserializeObject("{}"), yaml.Markdown);
+
+            StringBuilder action = new StringBuilder();
+            StringBuilder expected = new StringBuilder();
+            StringBuilder current = null;
+            using(var stringReader = new StringReader(yaml.Markdown))
+            {
+                string line;
+                while ((line = stringReader.ReadLine()) != null)
+                {
+                    if (line == "# Action")
+                    {
+                        current = action;
+                    }
+                    else if (line == "# Expected")
+                    {
+                        current = expected;
+                    }
+                    else
+                    {
+                        if (current == null)
+                            throw new DocGenException($"Content '{line}' should be within a action or expected");
+
+                        current.AppendLine(line);
+                    }
+                }
+            }
+
+            var result = new TestCase();
+            string number = yaml.Yaml?.Number;
+            if (string.IsNullOrEmpty(number))
+                throw new DocGenException("You must provider a number");
+            if (!Version.TryParse(number, out Version version))
+                throw new DocGenException($"Invalid number format {number}");
+
+            result.Number = version;
+            string responseType = yaml.Yaml?.ResponseType;
+            if(string.IsNullOrEmpty(responseType))
+                responseType = "PassFail";
+            result.ResponseType = (TestCaseResponseTypeEnum)Enum.Parse(typeof(TestCaseResponseTypeEnum), responseType);
+            string validationType = yaml.Yaml?.ValidationType;
+            if(string.IsNullOrEmpty(validationType))
+                validationType = "Verification";
+            result.ValidationType = (TestCaseValidationTypeEnum)Enum.Parse(typeof(TestCaseValidationTypeEnum), validationType);
+            string testType = yaml.Yaml?.Type;
+            if(string.IsNullOrEmpty(testType))
+                testType = "Software";
+            result.Type = (TestCaseTypeEnum)Enum.Parse(typeof(TestCaseTypeEnum), testType);
+            result.Action = action.ToString();
+            result.Expected = expected.ToString();
+
+            result.Action = result.Action.TrimEnd(Environment.NewLine.ToCharArray());
+            result.Expected = result.Expected.TrimEnd(Environment.NewLine.ToCharArray());
+
+            if (string.IsNullOrEmpty(result.Action))
+                throw new DocGenException("Action is required");
+            if (string.IsNullOrEmpty(result.Expected))
+                throw new DocGenException("Expected is required");
+
+            return result;
         }
     }
 }
