@@ -4,7 +4,7 @@ namespace DocGen.Core
 {
     public class DocGenException : Exception
     {
-        public DocGenException()
+        public DocGenException(string message) : base(message)
         {
             
         }

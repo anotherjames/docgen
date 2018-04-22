@@ -12,7 +12,7 @@ namespace DocGen.Requirements.Tests
 
         public RequirementsParserTests()
         {
-            _requirementsParser = new RequirementsParser();
+            _requirementsParser = new RequirementsParser(new DocGen.Core.Markdown.Impl.YamlParser());
         }
 
         [Fact]
@@ -38,192 +38,201 @@ namespace DocGen.Requirements.Tests
             Assert.Equal(result.ValidationMethod, "Validation content...");
         }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_user_need_title()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# User Need");
-        //     document.AppendLine("User need content....");
-        //     document.AppendLine("# Validation Method");
-        //     document.AppendLine("Validation content...");
+        [Fact]
+        public void Exceptions_thrown_when_missing_user_need_title()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# User Need");
+            document.AppendLine("User need content....");
+            document.AppendLine("# Validation Method");
+            document.AppendLine("Validation content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseUserNeed(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Title is required");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseUserNeed(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Title is required");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_user_need_category()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# User Need");
-        //     document.AppendLine("User need content....");
-        //     document.AppendLine("# Validation Method");
-        //     document.AppendLine("Validation content...");
+        [Fact]
+        public void Exceptions_thrown_when_missing_user_need_category()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("---");
+            document.AppendLine("# User Need");
+            document.AppendLine("User need content....");
+            document.AppendLine("# Validation Method");
+            document.AppendLine("Validation content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseUserNeed(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Category is required");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseUserNeed(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Category is required");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_user_need_number()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# User Need");
-        //     document.AppendLine("User need content....");
-        //     document.AppendLine("# Validation Method");
-        //     document.AppendLine("Validation content...");
+        [Fact]
+        public void Exceptions_thrown_when_missing_user_need_number()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# User Need");
+            document.AppendLine("User need content....");
+            document.AppendLine("# Validation Method");
+            document.AppendLine("Validation content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseUserNeed(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provider a number");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseUserNeed(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provider a number");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_user_need_number_wrong_format()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.v");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# User Need");
-        //     document.AppendLine("User need content....");
-        //     document.AppendLine("# Validation Method");
-        //     document.AppendLine("Validation content...");
+        [Fact]
+        public void Exceptions_thrown_when_user_need_number_wrong_format()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.v");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# User Need");
+            document.AppendLine("User need content....");
+            document.AppendLine("# Validation Method");
+            document.AppendLine("Validation content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseUserNeed(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Invalid number format 1.v");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseUserNeed(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Invalid number format 1.v");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_user_need_description()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# User Need");
-        //     document.AppendLine("# Validation Method");
-        //     document.AppendLine("Validation content...");
+        [Fact]
+        public void Exceptions_thrown_when_missing_user_need_description()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# User Need");
+            document.AppendLine("# Validation Method");
+            document.AppendLine("Validation content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseUserNeed(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provide description");
-        //     });
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseUserNeed(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provide description");
+            });
 
-        //     document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Validation Method");
-        //     document.AppendLine("Validation content...");
+            document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Validation Method");
+            document.AppendLine("Validation content...");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseUserNeed(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provide description");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseUserNeed(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provide description");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_missing_user_need_validation_method()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# User Need");
-        //     document.AppendLine("User need content....");
-        //     document.AppendLine("# Validation Method");
+        [Fact]
+        public void Exceptions_thrown_when_missing_user_need_validation_method()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# User Need");
+            document.AppendLine("User need content....");
+            document.AppendLine("# Validation Method");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseUserNeed(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provide a validation method");
-        //     });
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseUserNeed(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provide a validation method");
+            });
 
-        //     document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# User Need");
-        //     document.AppendLine("User need content....");
+            document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# User Need");
+            document.AppendLine("User need content....");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseUserNeed(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "You must provide a validation method");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseUserNeed(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "You must provide a validation method");
+            });
+        }
 
-        // [Fact]
-        // public void Exceptions_thrown_when_user_need_has_rogue_content()
-        // {
-        //     var document = new StringBuilder();
-        //     document.AppendLine("Number: 1.0");
-        //     document.AppendLine("Title: Test title");
-        //     document.AppendLine("Category: Test category");
-        //     document.AppendLine("-");
-        //     document.AppendLine("# Random");
+        [Fact]
+        public void Exceptions_thrown_when_user_need_has_rogue_content()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# Random");
 
-        //     AssertExtensions.Exception(() =>
-        //     {
-        //         _requirementsParser.ParseUserNeed(document.ToString());
-        //     },
-        //     ex =>
-        //     {
-        //         Assert.Equal(ex.Message, "Content '# Random' should be within a user need or validation method");
-        //     });
-        // }
+            AssertExtensions.Exception(() =>
+            {
+                _requirementsParser.ParseUserNeed(document.ToString());
+            },
+            ex =>
+            {
+                Assert.Equal(ex.Message, "Content '# Random' should be within a user need or validation method");
+            });
+        }
 
         // [Fact]
         // public void Can_parse_product_requirement()

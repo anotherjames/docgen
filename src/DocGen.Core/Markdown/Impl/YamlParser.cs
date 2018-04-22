@@ -49,6 +49,8 @@ namespace DocGen.Core.Markdown.Impl
             dynamic yaml = Newtonsoft.Json.JsonConvert.DeserializeObject(serializer.Serialize(yamlObject));
 
             markdown = markdown.Substring(yamlBlock.Span.End + 1);
+            if(markdown.StartsWith(Environment.NewLine))
+                markdown = markdown.Substring(Environment.NewLine.Length);
 
             return new YamlParseResult(yaml, markdown);
         }
