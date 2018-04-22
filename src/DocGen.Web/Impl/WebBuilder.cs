@@ -2,9 +2,9 @@ namespace DocGen.Web.Impl
 {
     public class WebBuilder : IWebBuilder
     {
-        public IWeb Build(int port = 8000)
+        public IWeb Build(IWebContext webContext, int port = 8000)
         {
-            return new Web(port);
+            return new Web(webContext, port);
         }
     }
 }

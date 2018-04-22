@@ -7,13 +7,13 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 using System.Collections;
 
-namespace DocGen.Web
+namespace DocGen.Web.Internal
 {
-    public class EmbeddedFileProvider : IFileProvider
+    internal class EmbeddedFileProvider : IFileProvider
     {   
         Assembly _assembly;
         List<EmbeddedFile> _files;
-        const string PREFIX = "DocGen.Web.Resources";
+        const string PREFIX = "DocGen.Web.Internal.Resources";
 
         public EmbeddedFileProvider(string subDirectory = null)
         {

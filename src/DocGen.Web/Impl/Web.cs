@@ -10,17 +10,18 @@ namespace DocGen.Web.Impl
     {
         IWebHost _webHost;
         
-        public Web(int port)
+        public Web(IWebContext webContext, int port)
         {
             _webHost = WebHost.CreateDefaultBuilder(new string[]{})
                 .UseUrls($"http://*:{port}")
                 .UseSetting(WebHostDefaults.ApplicationKey,  Assembly.GetEntryAssembly().GetName().Name)
                 .ConfigureServices(services => 
                 {
+                    services.AddSingleton<IWebContext>(webContext);
                     services.AddSingleton(typeof(IStartup), sp =>
                     {
                         var hostingEnvironment = sp.GetRequiredService<IHostingEnvironment>();
-                        return new ConventionBasedStartup(StartupLoader.LoadMethods(sp, typeof(DocGen.Web.Impl.Startup), hostingEnvironment.EnvironmentName));
+                        return new ConventionBasedStartup(StartupLoader.LoadMethods(sp, typeof(DocGen.Web.Internal.Startup), hostingEnvironment.EnvironmentName));
                     });
                 })
                 .Build();

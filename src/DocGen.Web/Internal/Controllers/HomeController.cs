@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace DocGen.Web
+namespace DocGen.Web.Internal
 {
-    public class HomeController : Controller
+    internal class HomeController : Controller
     {
         public ActionResult Index()
         {

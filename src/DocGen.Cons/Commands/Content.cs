@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using DocGen.Web;
 using Microsoft.Extensions.CommandLineUtils;
@@ -15,11 +17,13 @@ namespace DocGen.Cons.Commands
             {
                 application.HelpOption("-? | -h | --help");
                 
-                application.Command("serve", removeApp =>
+                application.Command("serve", serveApp =>
                 {
-                    removeApp.HelpOption("-? | -h | --help");
+                    serveApp.HelpOption("-? | -h | --help");
+                    var contentDirectoryOption = serveApp.Option("-c |--content <content>", "The location of the content directory. Defaults to the current directory", CommandOptionType.SingleValue);
 
-                    removeApp.OnExecute(() => Serve(serviceProvider));
+                    serveApp.OnExecute(() => Serve(serviceProvider,
+                        contentDirectoryOption.Value()));
                 });
 
                 application.OnExecute(() =>
@@ -30,20 +34,27 @@ namespace DocGen.Cons.Commands
             });
         }
 
-        public static Task<int> Serve(IServiceProvider serviceProvider, int port = 8000)
+        public static async Task<int> Serve(IServiceProvider serviceProvider, string contentDirectory)
         {
-            var webBuilder = serviceProvider.GetService<IWebBuilder>();
-            using(var web = webBuilder.Build(port))
+            var webBuilder = serviceProvider.GetRequiredService<IWebBuilder>();
+            var webContextBuilder = serviceProvider.GetRequiredService<IWebContextBuilder>();
+
+            if(string.IsNullOrEmpty(contentDirectory))
+                contentDirectory = Directory.GetCurrentDirectory();
+
+            var webContext = await webContextBuilder.Build(contentDirectory);
+
+            using(var web = webBuilder.Build(webContext, DocGen.Web.WebDefaults.DefaultPort))
             {
                 web.Listen();
                 
-                Log.Information("Listening on port {Port}.", port);
+                Log.Information("Listening on port {Port}.", DocGen.Web.WebDefaults.DefaultPort);
                 Log.Information("Press enter to exit...");
 
                 Console.ReadLine();
             }
 
-            return Task.FromResult(0);
+            return 0;
         }
     }
 }

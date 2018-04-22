@@ -13,7 +13,9 @@
             "program": "${workspaceFolder}/src/DocGen.Cons/bin/Debug/netcoreapp2.0/DocGen.Cons.dll",
             "args": [
                 "content",
-                "serve"
+                "serve",
+                "--content",
+                "${workspaceFolder}/example"
             ],
             "cwd": "${workspaceFolder}/src/DocGen.Cons",
             "console": "integratedTerminal"

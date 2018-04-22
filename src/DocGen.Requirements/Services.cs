@@ -6,8 +6,8 @@ namespace DocGen.Requirements
     {
         public static void Register(ServiceCollection services)
         {
-            services.AddSingleton<IRequirementsParser, DocGen.Requirements.Impl.RequirementsParser>();
-            //services.AddSingleton<Markdown.IYamlParser, Markdown.Impl.YamlParser>();
+            services.AddSingleton<IRequirementsParser, Impl.RequirementsParser>();
+            services.AddSingleton<IRequirementsBuilder, Impl.RequirementsBuilder>();
         }
     }
 }

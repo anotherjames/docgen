@@ -7,6 +7,7 @@ namespace DocGen.Web
         public static void Register(ServiceCollection services)
         {
             services.AddSingleton<IWebBuilder, Impl.WebBuilder>();
+            services.AddSingleton<IWebContextBuilder, Impl.WebContextBuilder>();
         }
     }
 }

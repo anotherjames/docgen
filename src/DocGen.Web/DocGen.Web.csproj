@@ -15,7 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources/**/*" />
+    <EmbeddedResource Include="Internal/Resources/**/*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DocGen.Requirements\DocGen.Requirements.csproj" />
   </ItemGroup>
 
   <Target Name="CopyDepsFiles" AfterTargets="Build" Condition="'$(TargetFramework)'!=''">

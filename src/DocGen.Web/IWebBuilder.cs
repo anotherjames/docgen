@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace DocGen.Web
 {
     public interface IWebBuilder
     {
-        IWeb Build(int port = 8000);
+        IWeb Build(IWebContext webContext, int port = 8000);
     }
 }

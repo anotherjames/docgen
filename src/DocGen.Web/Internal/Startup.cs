@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
-namespace DocGen.Web.Impl
+namespace DocGen.Web.Internal
 {
-    public class Startup
+    internal class Startup
     {
         public Startup(IConfiguration configuration)
         {
