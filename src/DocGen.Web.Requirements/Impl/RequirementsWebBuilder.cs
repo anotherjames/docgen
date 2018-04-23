@@ -3,6 +3,8 @@ using System.IO;
 using System.Threading.Tasks;
 using DocGen.Core;
 using DocGen.Requirements;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
@@ -44,7 +46,23 @@ namespace DocGen.Web.Requirements.Impl
             var pages = await Task.Run(() => Directory.GetFiles(pagesDirectory, "*.md", System.IO.SearchOption.AllDirectories));
             
             // TODO: register user needs and pages.
+            foreach(var page in pages) {
+                
+                webBuilder.RegisterMvc("/test", new {
+                    controller = "Markdown",
+                    action = "Page",
+                    page = "testp"
+                });
+            }
 
+            webBuilder.RegisterServices(services => {
+                services.AddMvc();
+                services.Configure<RazorViewEngineOptions>(options =>
+                {
+                    options.FileProviders.Add(new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Requirements/Internal/Resources"));
+                });
+            });
+            
             return webBuilder.BuildWeb(port);
         }
     }

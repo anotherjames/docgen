@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Microsoft.Extensions.Logging;
 
 namespace DocGen.Web.Impl
 {
@@ -18,6 +19,10 @@ namespace DocGen.Web.Impl
             _webHost = WebHost.CreateDefaultBuilder(new string[]{})
                 .UseUrls($"http://*:{port}")
                 .UseSetting(WebHostDefaults.ApplicationKey,  Assembly.GetEntryAssembly().GetName().Name)
+                .ConfigureLogging(factory =>
+                {
+                    factory.AddConsole();
+                })
                 .ConfigureServices(services => 
                 {
                     services.AddSingleton<DocGen.Web.Internal.Startup>();

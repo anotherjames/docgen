@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
 namespace DocGen.Web.Impl
@@ -14,6 +15,7 @@ namespace DocGen.Web.Impl
     {
         Dictionary<string, Page> _pages = new Dictionary<string, Page>();
         List<Action<IApplicationBuilder, IHostingEnvironment>> _additionalAppActions = new List<Action<IApplicationBuilder, IHostingEnvironment>>();
+        List<Action<IServiceCollection>> _serviceActions = new List<Action<IServiceCollection>>();
 
         public void Register(string path, Func<HttpContext, Task> action)
         {
@@ -36,10 +38,19 @@ namespace DocGen.Web.Impl
             });
         }
 
+        public void RegisterServices(Action<IServiceCollection> action)
+        {
+            _serviceActions.Add(action);
+        }
+
         public IWeb BuildWeb(int port = 8000)
         {
             return new Web(
-                new List<IWebModule>{new WebModule(_pages.ToDictionary(x => x.Key, x => x.Value), _additionalAppActions.ToList())},
+                new List<IWebModule>{
+                    new WebModule(
+                        _pages.ToDictionary(x => x.Key, x => x.Value), _additionalAppActions.ToList(),
+                        _serviceActions.ToList())
+                },
                 _pages.Keys.ToList(),
                 port);
         }
@@ -80,12 +91,15 @@ namespace DocGen.Web.Impl
         {
             Dictionary<string, Page> _pages;
             List<Action<IApplicationBuilder, IHostingEnvironment>> _additionalAppActions;
+            List<Action<IServiceCollection>> _serviceActions;
 
             public WebModule(Dictionary<string, Page> pages,
-                List<Action<IApplicationBuilder, IHostingEnvironment>> additionalAppActions)
+                List<Action<IApplicationBuilder, IHostingEnvironment>> additionalAppActions,
+                List<Action<IServiceCollection>> serviceActions)
             {
                 _pages = pages;
                 _additionalAppActions = additionalAppActions;
+                _serviceActions = serviceActions;
             }
 
             public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -101,6 +115,13 @@ namespace DocGen.Web.Impl
                 });
                 foreach(var action in _additionalAppActions) {
                     action(app, env);
+                }
+            }
+
+            public void ConfigureServices(IServiceCollection services)
+            {
+                foreach(var serviceAction in _serviceActions) {
+                    serviceAction(services);
                 }
             }
         }

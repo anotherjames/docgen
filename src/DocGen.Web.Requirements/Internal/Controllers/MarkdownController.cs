@@ -4,9 +4,9 @@ namespace DocGen.Web.Requirements.Internal.Controllers
 {
     public class MarkdownController : Controller
     {
-        public ActionResult Markdown(string page)
+        public ActionResult Page(string page)
         {
-            return Content(page, "application/text");
+            return View();
         }
     }
 }
