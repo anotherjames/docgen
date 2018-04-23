@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DocGen.Core\DocGen.Core.csproj" />
     <ProjectReference Include="..\DocGen.Web\DocGen.Web.csproj" />
+    <ProjectReference Include="..\DocGen.Web.Requirements\DocGen.Web.Requirements.csproj" />
   </ItemGroup>
 
 </Project>

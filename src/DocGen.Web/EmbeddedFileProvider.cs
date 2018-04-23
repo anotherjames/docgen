@@ -12,15 +12,16 @@ namespace DocGen.Web.Internal
     internal class EmbeddedFileProvider : IFileProvider
     {   
         Assembly _assembly;
+        string _prefix;
         List<EmbeddedFile> _files;
-        const string PREFIX = "DocGen.Web.Internal.Resources";
 
-        public EmbeddedFileProvider(string subDirectory = null)
+        public EmbeddedFileProvider(Assembly assembly, string prefix, string subDirectory = null)
         {
-            _assembly = typeof(EmbeddedFileProvider).GetTypeInfo().Assembly;
+            _assembly = assembly;
+            _prefix = prefix;
             _files = _assembly.GetManifestResourceNames()
                 .Select(x => {
-                    var parts = x.Substring(PREFIX.Length).Split('.');
+                    var parts = x.Substring(_prefix.Length).Split('.');
                     var directory = parts.Take(parts.Length - 2);
                     var fileName = parts.Skip(parts.Length - 2);
                     var path = Path.DirectorySeparatorChar + Path.Combine(Path.Combine(directory.ToArray()), string.Join(".", fileName));

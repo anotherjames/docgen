@@ -19,6 +19,7 @@ namespace DocGen.Cons
                 DocGen.Core.Services.Register(services);
                 DocGen.Requirements.Services.Register(services);
                 DocGen.Web.Services.Register(services);
+                DocGen.Web.Requirements.Services.Register(services);
                 serviceProvider = services.BuildServiceProvider();
             }
 

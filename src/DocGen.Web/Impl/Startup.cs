@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -9,38 +10,26 @@ namespace DocGen.Web.Internal
 {
     internal class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        List<IWebModule> _webModules;
 
-        public IConfiguration Configuration { get; }
+        public Startup(List<IWebModule> webModules)
+        {
+            _webModules = webModules;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
-                options.FileProviders.Add(new EmbeddedFileProvider());
-            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseDeveloperExceptionPage();
-            
-            app.UseStaticFiles(new StaticFileOptions() {
-                FileProvider = new EmbeddedFileProvider("/wwwroot")
-            });
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            foreach(var module in _webModules) {
+                module.Configure(app, env);
+            }
         }
     }
 }

@@ -15,19 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Internal/Resources/**/*" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DocGen.Requirements\DocGen.Requirements.csproj" />
   </ItemGroup>
-
-  <Target Name="CopyDepsFiles" AfterTargets="Build" Condition="'$(TargetFramework)'!=''">
-    <ItemGroup>
-      <DepsFilePaths Include="$([System.IO.Path]::ChangeExtension('%(_ResolvedProjectReferencePaths.FullPath)', '.deps.json'))" />
-    </ItemGroup>
-
-    <Copy SourceFiles="%(DepsFilePaths.FullPath)" DestinationFolder="$(OutputPath)" Condition="Exists('%(DepsFilePaths.FullPath)')" />
-  </Target>
 
 </Project>

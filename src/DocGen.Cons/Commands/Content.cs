@@ -36,15 +36,12 @@ namespace DocGen.Cons.Commands
 
         public static async Task<int> Serve(IServiceProvider serviceProvider, string contentDirectory)
         {
-            var webBuilder = serviceProvider.GetRequiredService<IWebBuilder>();
-            var webContextBuilder = serviceProvider.GetRequiredService<IWebContextBuilder>();
+            var webBuilder = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsWebBuilder>();
 
             if(string.IsNullOrEmpty(contentDirectory))
                 contentDirectory = Directory.GetCurrentDirectory();
 
-            var webContext = await webContextBuilder.Build(contentDirectory);
-
-            using(var web = webBuilder.Build(webContext, DocGen.Web.WebDefaults.DefaultPort))
+            using(var web = await webBuilder.Build(contentDirectory, DocGen.Web.WebDefaults.DefaultPort))
             {
                 web.Listen();
                 

@@ -7,7 +7,7 @@ namespace DocGen.Web
     {
         string ContentRoot { get; }
 
-        List<UserNeed> UserNeeds{ get; }
+        List<UserNeed> UserNeeds { get; }
 
         List<string> Pages { get; }
     }
