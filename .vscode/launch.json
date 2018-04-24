@@ -13,7 +13,7 @@
             "program": "${workspaceFolder}/src/DocGen.Cons/bin/Debug/netcoreapp2.0/DocGen.Cons.dll",
             "args": [
                 "content",
-                "serve",
+                "gen",
                 "--content",
                 "${workspaceFolder}/example"
             ],

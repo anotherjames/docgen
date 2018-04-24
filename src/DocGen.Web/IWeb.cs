@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DocGen.Web
 {
@@ -8,5 +9,7 @@ namespace DocGen.Web
         IReadOnlyCollection<string> Paths { get; }
 
         void Listen();
+
+        Task ExportTo(string directory);
     }
 }

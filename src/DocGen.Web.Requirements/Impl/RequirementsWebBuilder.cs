@@ -47,7 +47,6 @@ namespace DocGen.Web.Requirements.Impl
             
             // TODO: register user needs and pages.
             foreach(var page in pages) {
-                
                 webBuilder.RegisterMvc("/test", new {
                     controller = "Markdown",
                     action = "Page",
