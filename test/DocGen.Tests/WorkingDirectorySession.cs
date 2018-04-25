@@ -10,6 +10,7 @@ namespace DocGen.Tests
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Path.GetFileNameWithoutExtension(Path.GetRandomFileName()));
             while (System.IO.Directory.Exists(path))
                 path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Path.GetFileNameWithoutExtension(Path.GetRandomFileName()));
+            System.IO.Directory.CreateDirectory(path);
             Directory = path;
         }
 
