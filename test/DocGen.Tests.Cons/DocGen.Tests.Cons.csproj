@@ -9,6 +9,7 @@
     <ProjectReference Include="..\DocGen.Tests\DocGen.Tests.csproj" />
     <ProjectReference Include="..\DocGen.Requirements.Tests\DocGen.Requirements.Tests.csproj" />
     <ProjectReference Include="..\DocGen.Core.Tests\DocGen.Core.Tests.csproj" />
+    <ProjectReference Include="..\DocGen.Web.Tests\DocGen.Web.Tests.csproj" />
   </ItemGroup>
 
 </Project>

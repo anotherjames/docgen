@@ -7,21 +7,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using static DocGen.Web.WebBuilderExtensions;
 
-namespace DocGen.Web.Internal
+namespace DocGen.Web.Hosting.Impl
 {
     internal class Startup
     {
-        List<IWebModule> _webModules;
+        List<IHostModule> _modules;
 
-        public Startup(List<IWebModule> webModules)
+        public Startup(List<IHostModule> modules)
         {
-            _webModules = webModules;
+            _modules = modules;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            foreach(var module in _webModules) {
+            foreach(var module in _modules) {
                 module.ConfigureServices(services);
             }
         }
@@ -30,7 +30,7 @@ namespace DocGen.Web.Internal
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseDeveloperExceptionPage();
-            foreach(var module in _webModules) {
+            foreach(var module in _modules) {
                 module.Configure(app, env);
             }
         }

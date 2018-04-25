@@ -8,8 +8,7 @@ namespace DocGen.Web.Requirements
     {
         public static void Register(ServiceCollection services)
         {
-            System.Console.WriteLine("Sdf");
-            services.AddSingleton<IRequirementsWebBuilder, Impl.RequirementsWebBuilder>();
+            services.AddSingleton<IRequirementsConfiguration, Impl.RequirementsConfiguration>();
         }
     }
 }

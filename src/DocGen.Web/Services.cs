@@ -10,6 +10,7 @@ namespace DocGen.Web
         {
             services.AddSingleton<IWebBuilder, Impl.WebBuilder>();
             services.AddSingleton<IWebContextBuilder, Impl.WebContextBuilder>();
+            services.AddSingleton<Hosting.IHostBuilder, Hosting.Impl.HostBuilder>();
         }
     }
 }

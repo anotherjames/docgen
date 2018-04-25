@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using DocGen.Web.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -14,6 +15,8 @@ namespace DocGen.Web
 
         void RegisterServices(Action<IServiceCollection> action);
 
-        IWeb BuildWeb(int port = 8000);
+        IWebHost BuildWebHost(int port = 8000);
+
+        IVirtualHost BuildVirtualHost();
     }
 }

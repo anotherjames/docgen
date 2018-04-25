@@ -14,7 +14,8 @@ namespace DocGen.Tests.Cons
         {
             DocGen.Tests.TestExecutor.RunTests(
                 typeof(DocGen.Core.Tests.YamlParserTests).Assembly,
-                typeof(DocGen.Requirements.Tests.RequirementsParserTests).Assembly
+                typeof(DocGen.Requirements.Tests.RequirementsParserTests).Assembly,
+                typeof(DocGen.Web.Tests.HostingTests).Assembly
             );
         }
     }

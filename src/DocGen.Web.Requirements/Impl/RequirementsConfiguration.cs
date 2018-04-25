@@ -10,22 +10,17 @@ using Microsoft.Extensions.FileProviders;
 
 namespace DocGen.Web.Requirements.Impl
 {
-    public class RequirementsWebBuilder : IRequirementsWebBuilder
+    public class RequirementsConfiguration : IRequirementsConfiguration
     {
-        IServiceProvider _serviceProvider;
         IRequirementsBuilder _requirementsBuilder;
 
-        public RequirementsWebBuilder(IServiceProvider serviceProvider,
-            IRequirementsBuilder requirementsBuilder)
+        public RequirementsConfiguration(IRequirementsBuilder requirementsBuilder)
         {
-            _serviceProvider = serviceProvider;
             _requirementsBuilder = requirementsBuilder;
         }
 
-        public async Task<IWeb> Build(string contentDirectory, int port)
+        public async Task Configure(IWebBuilder builder, string contentDirectory)
         {
-            var webBuilder = _serviceProvider.GetRequiredService<IWebBuilder>();
-
             if(!Directory.Exists(contentDirectory))
                 throw new DocGenException($"Requirements directory {contentDirectory} doesn't exist");
 
@@ -40,29 +35,27 @@ namespace DocGen.Web.Requirements.Impl
 
             // Register our static files.
             var staticFiles = new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Requirements/Internal/Resources/wwwroot");
-            webBuilder.RegisterFiles(staticFiles);
+            builder.RegisterFiles(staticFiles);
 
             var userNeeds = await _requirementsBuilder.BuildRequirementsFromDirectory(requirementsDirectory);
             var pages = await Task.Run(() => Directory.GetFiles(pagesDirectory, "*.md", System.IO.SearchOption.AllDirectories));
             
             // TODO: register user needs and pages.
             foreach(var page in pages) {
-                webBuilder.RegisterMvc("/test", new {
+                builder.RegisterMvc("/test", new {
                     controller = "Markdown",
                     action = "Page",
                     page = "testp"
                 });
             }
 
-            webBuilder.RegisterServices(services => {
+            builder.RegisterServices(services => {
                 services.AddMvc();
                 services.Configure<RazorViewEngineOptions>(options =>
                 {
                     options.FileProviders.Add(new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Requirements/Internal/Resources"));
                 });
             });
-            
-            return webBuilder.BuildWeb(port);
         }
     }
 }

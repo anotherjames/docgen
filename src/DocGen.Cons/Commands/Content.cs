@@ -43,12 +43,15 @@ namespace DocGen.Cons.Commands
 
         public static async Task<int> Serve(IServiceProvider serviceProvider, string contentDirectory)
         {
-            var webBuilder = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsWebBuilder>();
+            var webBuilder = serviceProvider.GetRequiredService<DocGen.Web.IWebBuilder>();
+            var requirementsConfiguration = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsConfiguration>();
 
             if(string.IsNullOrEmpty(contentDirectory))
                 contentDirectory = Directory.GetCurrentDirectory();
 
-            using(var web = await webBuilder.Build(contentDirectory, DocGen.Web.WebDefaults.DefaultPort)) {
+            await requirementsConfiguration.Configure(webBuilder, contentDirectory);
+
+            using(var web = webBuilder.BuildWebHost(DocGen.Web.WebDefaults.DefaultPort)) {
                 web.Listen();
                 
                 Log.Information("Listening on port {Port}.", DocGen.Web.WebDefaults.DefaultPort);
@@ -64,7 +67,9 @@ namespace DocGen.Cons.Commands
             string contentDirectory,
             string destinationDirectory)
         {
-            var webBuilder = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsWebBuilder>();
+            var webBuilder = serviceProvider.GetRequiredService<DocGen.Web.IWebBuilder>();
+            var hostExporter = serviceProvider.GetRequiredService<DocGen.Web.IHostExporter>();
+            var requirementsConfiguration = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsConfiguration>();
 
             if(string.IsNullOrEmpty(contentDirectory))
                 contentDirectory = Directory.GetCurrentDirectory();
@@ -72,8 +77,10 @@ namespace DocGen.Cons.Commands
             if(string.IsNullOrEmpty(destinationDirectory))
                 destinationDirectory = Path.Combine(contentDirectory, "output");
 
-            using(var web = await webBuilder.Build(contentDirectory, DocGen.Web.WebDefaults.DefaultPort)) {
-                await web.ExportTo(destinationDirectory);
+            await requirementsConfiguration.Configure(webBuilder, contentDirectory);
+
+            using(var host = webBuilder.BuildVirtualHost()) {
+                await hostExporter.Export(host, destinationDirectory);
             }
 
             return 0;
