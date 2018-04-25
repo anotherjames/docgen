@@ -23,7 +23,11 @@ namespace DocGen.Web.Impl
 
             foreach(var path in host.Paths) {
                 using(var client = host.CreateClient()) {
-                    await SaveUrlToFile(client, path, $"{destinationDirectory}{path}");
+                    var destination = $"{destinationDirectory}{path}";
+                    if(string.IsNullOrEmpty(Path.GetExtension(destination))) {
+                        destination += "/index.html";
+                    }
+                    await SaveUrlToFile(client, path, destination);
                 }
             }
         }

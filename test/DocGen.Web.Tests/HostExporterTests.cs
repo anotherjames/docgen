@@ -42,6 +42,21 @@ namespace DocGen.Web.Tests
             }
         }
 
+        [Fact]
+        public async Task Files_without_extension_get_directory_with_default_file()
+        {
+            var module = BuildModuleForPath("/test", async context => {
+                await context.Response.WriteAsync("response");
+            });
+            using(var host = _hostBuilder.BuildVirtualHost(module)) {
+                using(var directory = new WorkingDirectorySession()) {
+                    await _hostExporter.Export(host, directory.Directory);
+                    Assert.True(Directory.Exists(Path.Combine(directory.Directory, "test")));
+                    Assert.Equal("response", File.ReadAllText(Path.Combine(directory.Directory, "test", "index.html")));
+                }
+            }
+        }
+
         private IHostModule BuildModuleForPath(string path, Func<HttpContext, Task> action)
         {
             var hostModule = new Mock<IHostModule>();
