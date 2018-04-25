@@ -22,24 +22,23 @@ namespace DocGen.Web.Impl
             }
 
             foreach(var path in host.Paths) {
-                // TODO:
-                //await SaveUrlToFile($"{_host}{path}", $"{directory}{path}");
+                using(var client = host.CreateClient()) {
+                    await SaveUrlToFile(client, path, $"{destinationDirectory}{path}");
+                }
             }
         }
 
-        private async Task SaveUrlToFile(string url, string file) {
+        private async Task SaveUrlToFile(HttpClient client, string url, string file) {
             // Ensure the file's parent directories are created.
             var parentDirectory = Path.GetDirectoryName(file);
             if(!(await Task.Run(() => Directory.Exists(parentDirectory)))) {
                 await Task.Run(() => Directory.CreateDirectory(parentDirectory));
             }
-            using(var client = new HttpClient()) {
-                var response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                using(var requestStream = await response.Content.ReadAsStreamAsync()) {
-                using(var fileStream = await Task.Run(() => File.OpenWrite(file)))
-                    await requestStream.CopyToAsync(fileStream);
-                }
+            var response = await client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            using(var requestStream = await response.Content.ReadAsStreamAsync()) {
+            using(var fileStream = await Task.Run(() => File.OpenWrite(file)))
+                await requestStream.CopyToAsync(fileStream);
             }
         }
     }

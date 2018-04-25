@@ -34,6 +34,7 @@ namespace DocGen.Web.Tests
             hostModule.Setup(x => x.Paths).Returns(new ReadOnlyCollection<string>(new List<string>{ "/test" }));
 
             using(var host = _hostBuilder.BuildWebHost(5002, hostModule.Object)) {
+                host.Listen();
                 using(var client = host.CreateClient()) {
                     var responseMessage = await client.GetAsync("/test");
                     responseMessage.EnsureSuccessStatusCode();
