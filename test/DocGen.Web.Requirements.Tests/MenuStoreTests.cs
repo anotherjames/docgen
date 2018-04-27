@@ -1,4 +1,5 @@
 using System;
+using DocGen.Requirements;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -89,6 +90,70 @@ namespace DocGen.Web.Requirements.Tests
             Assert.True(another.IsEmptyParent);
             Assert.False(test4.IsEmptyParent);
         }
-        
+
+        [Fact]
+        public void Can_return_selected_page()
+        {
+            _menuStore.AddPage("/", "Home", 0);
+            _menuStore.AddPage("/test1", "Test 1", 1);
+            _menuStore.AddPage("/test1/test2", "Test 2", 2);
+            _menuStore.AddPage("/test1/test3", "Test 3", 3);
+            _menuStore.AddPage("/test1/test4", "Test 4", 4);
+            _menuStore.AddPage("/test1/test4/test5", "Test 5", 5);
+
+            var menu = _menuStore.BuildMenu("/test1");
+            
+            Assert.Equal(1, menu.Children.Count);
+            var test1 = menu.Children[0];
+            Assert.Equal("/test1", test1.Path);
+            Assert.Equal(3, test1.Children.Count);
+            Assert.Equal("/test1/test2", test1.Children[0].Path);
+            Assert.Equal("/test1/test3", test1.Children[1].Path);
+            Assert.Equal("/test1/test4", test1.Children[2].Path);
+            var test4 = test1.Children[2];
+            Assert.Equal(0, test4.Children.Count);
+
+            menu = _menuStore.BuildMenu("/test1/test4");
+            Assert.Equal(1, menu.Children.Count);
+            test1 = menu.Children[0];
+            Assert.Equal("/test1", test1.Path);
+            Assert.Equal(1, test1.Children.Count);
+            test4 = test1.Children[0];
+            Assert.Equal("/test1/test4", test4.Path);
+            Assert.Equal(1, test4.Children.Count);
+            var test5 = test4.Children[0];
+            Assert.Equal("/test1/test4/test5", test5.Path);
+        }
+
+        [Fact]
+        public void Can_order_pages()
+        {
+            _menuStore.AddPage("/", "Home", 0);
+            _menuStore.AddPage("/test1", "Test 1", 1);
+            _menuStore.AddPage("/test1/test2", "Test 2", 2);
+            _menuStore.AddPage("/test1/test3", "Test 3", 0);
+            _menuStore.AddPage("/test1/test4", "Test 4", 1);
+            _menuStore.AddPage("/test1/test4/test5", "Test 5", 5);
+            _menuStore.AddPage("/test6", "Test 6", 0);
+
+            var menu = _menuStore.BuildMenu("/");
+            
+            Assert.Equal(2, menu.Children.Count);
+            var test1 = menu.Children[1];
+            var test6 = menu.Children[0];
+            Assert.Equal("/test1", test1.Path);
+            Assert.Equal("/test6", test6.Path);
+
+            menu = _menuStore.BuildMenu("/test1");
+            
+            Assert.Equal(1, menu.Children.Count);
+            test1 = menu.Children[0];
+            var test2 = test1.Children[2];
+            var test3 = test1.Children[0];
+            var test4 = test1.Children[1];
+            Assert.Equal("/test1/test2", test2.Path);
+            Assert.Equal("/test1/test3", test3.Path);
+            Assert.Equal("/test1/test4", test4.Path);
+        }
     }
 }

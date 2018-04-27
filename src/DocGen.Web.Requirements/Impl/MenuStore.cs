@@ -77,14 +77,15 @@ namespace DocGen.Web.Requirements.Impl
                     if (treeNode == directParentPage || newMenuItem.IsEmptyParent)
                     {
                         // This is the most direct parent, so let's render all children.
-                        foreach (var child in treeNode.Children.Values)
-                        {
-                            newMenuItem.Children.Add(BuildMenuItem(child));
-                        }
+                        var children = treeNode.Children.Values
+                            .OrderBy(x => x.Page?.Order ?? int.MaxValue)
+                            .Select(BuildMenuItem);
+                        newMenuItem.Children.AddRange(children);
                     }
                     else
                     {
-                        foreach (var child in treeNode.Children.Values)
+                        foreach (var child in treeNode.Children.Values
+                            .OrderBy(x => x.Page?.Order ?? int.MaxValue))
                         {
                             if (parents.Contains(child))
                             {
