@@ -6,6 +6,6 @@ namespace DocGen.Web.Requirements
     {
         void AddPage(string path, string title, int order);
 
-        MenuItem BuildMenu(string currentPath);
+        MenuItem BuildMenu(string currentPath, int alwaysEpandToLevel = 0);
     }
 }

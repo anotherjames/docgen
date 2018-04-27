@@ -184,5 +184,39 @@ namespace DocGen.Web.Requirements.Tests
             Assert.Equal("/test1", test1.Path);
             Assert.Equal(3, test1.Children.Count);
         }
+
+        [Fact]
+        public void Can_expand_first_levels_at_all_times()
+        {
+            _menuStore.AddPage("/", "Home", 0);
+            _menuStore.AddPage("/test1", "Test 1", 1);
+            _menuStore.AddPage("/test1/test2", "Test 2", 2);
+            _menuStore.AddPage("/test3", "Test 3", 3);
+            _menuStore.AddPage("/test3/test4", "Test 4", 4);
+
+            var menu = _menuStore.BuildMenu("/test1/test2", 1);
+            
+            Assert.Equal(2, menu.Children.Count);
+            var test1 = menu.Children[0];
+            var test3 = menu.Children[1];
+            Assert.Equal("/test1", test1.Path);
+            Assert.Equal("/test3", test3.Path);
+            Assert.Equal(1, test1.Children.Count);
+            Assert.Equal(0, test3.Children.Count);
+            
+            menu = _menuStore.BuildMenu("/test1/test2", 2);
+            
+            Assert.Equal(2, menu.Children.Count);
+            test1 = menu.Children[0];
+            test3 = menu.Children[1];
+            Assert.Equal("/test1", test1.Path);
+            Assert.Equal("/test3", test3.Path);
+            Assert.Equal(1, test1.Children.Count);
+            Assert.Equal(1, test3.Children.Count);
+            var test2 = test1.Children[0];
+            var test4 = test3.Children[0];
+            Assert.Equal("/test1/test2", test2.Path);
+            Assert.Equal("/test3/test4", test4.Path);
+        }
     }
 }

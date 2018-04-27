@@ -44,7 +44,7 @@ namespace DocGen.Web.Requirements.Impl
             current.Page = page;
         }
 
-        public MenuItem BuildMenu(string currentPath)
+        public MenuItem BuildMenu(string currentPath, int alwaysEpandToLevel = 0)
         {
             // Find the furthest leaf node
             var parents = new List<TreeNode> { _tree };
@@ -65,7 +65,7 @@ namespace DocGen.Web.Requirements.Impl
                 // Get first parent that has a page.
                 var directParentPage = parents.Last(x => x.Page != null) ?? _tree;
                 
-                MenuItem BuildMenuItem(TreeNode treeNode)
+                MenuItem BuildMenuItem(TreeNode treeNode, int level)
                 {
                     var newMenuItem = new MenuItem
                     {
@@ -79,25 +79,25 @@ namespace DocGen.Web.Requirements.Impl
                         // This is the most direct parent, so let's render all children.
                         var children = treeNode.Children.Values
                             .OrderBy(x => x.Page?.Order ?? int.MaxValue)
-                            .Select(BuildMenuItem);
+                            .Select(x => BuildMenuItem(x, level + 1));
                         newMenuItem.Children.AddRange(children);
                     }
                     else
                     {
-                        foreach (var child in treeNode.Children.Values
-                            .OrderBy(x => x.Page?.Order ?? int.MaxValue))
-                        {
-                            if (parents.Contains(child))
+                            foreach (var child in treeNode.Children.Values
+                                .OrderBy(x => x.Page?.Order ?? int.MaxValue))
                             {
-                                newMenuItem.Children.Add(BuildMenuItem(child));
+                                if (parents.Contains(child) || level <= alwaysEpandToLevel)
+                                {
+                                    newMenuItem.Children.Add(BuildMenuItem(child, level + 1));
+                                }
                             }
-                        }
                     }
 
                     return newMenuItem;
                 }
 
-                return BuildMenuItem(_tree);
+                return BuildMenuItem(_tree, 1);
             }
         }
 
