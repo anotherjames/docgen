@@ -8,7 +8,7 @@ namespace DocGen.Web.Requirements
     {
         public static void Register(ServiceCollection services)
         {
-            services.AddSingleton<IRequirementsConfiguration, Impl.RequirementsConfiguration>();
+            services.AddSingleton<IRequirementsContextBuilder, Impl.RequirementsContextBuilder>();
         }
     }
 }

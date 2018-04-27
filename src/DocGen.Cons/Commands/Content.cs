@@ -43,15 +43,14 @@ namespace DocGen.Cons.Commands
 
         private static async Task<int> Serve(IServiceProvider serviceProvider, string contentDirectory)
         {
-            var webBuilder = serviceProvider.GetRequiredService<DocGen.Web.IWebBuilder>();
-            var requirementsConfiguration = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsConfiguration>();
+            var requirementsContextBuilder = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsContextBuilder>();
 
             if(string.IsNullOrEmpty(contentDirectory))
                 contentDirectory = Directory.GetCurrentDirectory();
 
-            await requirementsConfiguration.Configure(webBuilder, contentDirectory);
+            var context = await requirementsContextBuilder.Build(contentDirectory);
 
-            using(var web = webBuilder.BuildWebHost()) {
+            using(var web = context.WebBuilder.BuildWebHost()) {
                 web.Listen();
                 
                 Log.Information("Listening on port {Port}.", WebDefaults.DefaultPort);
@@ -67,9 +66,8 @@ namespace DocGen.Cons.Commands
             string contentDirectory,
             string destinationDirectory)
         {
-            var webBuilder = serviceProvider.GetRequiredService<IWebBuilder>();
             var hostExporter = serviceProvider.GetRequiredService<IHostExporter>();
-            var requirementsConfiguration = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsConfiguration>();
+            var requirementsContextBuilder = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsContextBuilder>();
 
             if(string.IsNullOrEmpty(contentDirectory))
                 contentDirectory = Directory.GetCurrentDirectory();
@@ -77,9 +75,9 @@ namespace DocGen.Cons.Commands
             if(string.IsNullOrEmpty(destinationDirectory))
                 destinationDirectory = Path.Combine(contentDirectory, "output");
 
-            await requirementsConfiguration.Configure(webBuilder, contentDirectory);
+            var context = await requirementsContextBuilder.Build(contentDirectory);
 
-            using(var host = webBuilder.BuildVirtualHost()) {
+            using(var host = context.WebBuilder.BuildVirtualHost()) {
                 await hostExporter.Export(host, destinationDirectory);
             }
 

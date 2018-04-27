@@ -10,17 +10,22 @@ using Microsoft.Extensions.FileProviders;
 
 namespace DocGen.Web.Requirements.Impl
 {
-    public class RequirementsConfiguration : IRequirementsConfiguration
+    public class RequirementsContextBuilder : IRequirementsContextBuilder
     {
-        IRequirementsBuilder _requirementsBuilder;
+        readonly IRequirementsBuilder _requirementsBuilder;
+        readonly IServiceProvider _serviceProvider;
 
-        public RequirementsConfiguration(IRequirementsBuilder requirementsBuilder)
+        public RequirementsContextBuilder(IRequirementsBuilder requirementsBuilder,
+            IServiceProvider serviceProvider)
         {
             _requirementsBuilder = requirementsBuilder;
+            _serviceProvider = serviceProvider;
         }
 
-        public async Task Configure(IWebBuilder builder, string contentDirectory)
+        public async Task<RequirementsContext> Build(string contentDirectory)
         {
+            var builder = _serviceProvider.GetRequiredService<IWebBuilder>();
+            
             if(!Directory.Exists(contentDirectory))
                 throw new DocGenException($"Requirements directory {contentDirectory} doesn't exist");
 
@@ -39,13 +44,22 @@ namespace DocGen.Web.Requirements.Impl
 
             var userNeeds = await _requirementsBuilder.BuildRequirementsFromDirectory(requirementsDirectory);
             var pages = await Task.Run(() => Directory.GetFiles(pagesDirectory, "*.md", System.IO.SearchOption.AllDirectories));
+            var menuStore = new MenuStore();
             
-            // TODO: register user needs and pages.
-            foreach(var page in pages) {
-                builder.RegisterMvc("/test", new {
+            foreach(var page in pages)
+            {
+                var url = page.Replace("\\", "/").Substring(pagesDirectory.Length);
+                if (Path.GetFileNameWithoutExtension(page) == "index")
+                {
+                    // This is an extension-less url.
+                    url = url.Substring(0, url.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase));
+                    if (string.IsNullOrEmpty(url))
+                        url = "/";
+                }
+                builder.RegisterMvc(url, new {
                     controller = "Markdown",
                     action = "Page",
-                    page = "testp"
+                    page = page
                 });
             }
 
@@ -55,7 +69,14 @@ namespace DocGen.Web.Requirements.Impl
                 {
                     options.FileProviders.Add(new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Requirements/Internal/Resources"));
                 });
+                services.AddSingleton<IMenuStore>(menuStore);
             });
+
+            return new RequirementsContext
+            {
+                Menu = menuStore,
+                WebBuilder = builder
+            };
         }
     }
 }
