@@ -41,7 +41,7 @@ namespace DocGen.Cons.Commands
             });
         }
 
-        public static async Task<int> Serve(IServiceProvider serviceProvider, string contentDirectory)
+        private static async Task<int> Serve(IServiceProvider serviceProvider, string contentDirectory)
         {
             var webBuilder = serviceProvider.GetRequiredService<DocGen.Web.IWebBuilder>();
             var requirementsConfiguration = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsConfiguration>();
@@ -51,10 +51,10 @@ namespace DocGen.Cons.Commands
 
             await requirementsConfiguration.Configure(webBuilder, contentDirectory);
 
-            using(var web = webBuilder.BuildWebHost(DocGen.Web.WebDefaults.DefaultPort)) {
+            using(var web = webBuilder.BuildWebHost()) {
                 web.Listen();
                 
-                Log.Information("Listening on port {Port}.", DocGen.Web.WebDefaults.DefaultPort);
+                Log.Information("Listening on port {Port}.", WebDefaults.DefaultPort);
                 Log.Information("Press enter to exit...");
 
                 Console.ReadLine();
@@ -63,12 +63,12 @@ namespace DocGen.Cons.Commands
             return 0;
         }
 
-        public static async Task<int> Generate(IServiceProvider serviceProvider,
+        private static async Task<int> Generate(IServiceProvider serviceProvider,
             string contentDirectory,
             string destinationDirectory)
         {
-            var webBuilder = serviceProvider.GetRequiredService<DocGen.Web.IWebBuilder>();
-            var hostExporter = serviceProvider.GetRequiredService<DocGen.Web.IHostExporter>();
+            var webBuilder = serviceProvider.GetRequiredService<IWebBuilder>();
+            var hostExporter = serviceProvider.GetRequiredService<IHostExporter>();
             var requirementsConfiguration = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsConfiguration>();
 
             if(string.IsNullOrEmpty(contentDirectory))

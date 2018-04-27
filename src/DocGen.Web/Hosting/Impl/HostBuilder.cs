@@ -24,10 +24,10 @@ namespace DocGen.Web.Hosting.Impl
             return new InternalVirtualHost(modules.ToList());
         }
 
-        class InternalWebHost : IWebHost
+        private class InternalWebHost : IWebHost
         {
-            Microsoft.AspNetCore.Hosting.IWebHost _webHost;
-            int _port;
+            readonly Microsoft.AspNetCore.Hosting.IWebHost _webHost;
+            readonly int _port;
 
             public InternalWebHost(List<IHostModule> modules,
                 int port)
@@ -41,12 +41,12 @@ namespace DocGen.Web.Hosting.Impl
                         factory.AddConsole();
                     })
                     .ConfigureServices(services => {
-                        services.AddSingleton<DocGen.Web.Hosting.Impl.Startup>();
-                        services.AddSingleton<List<IHostModule>>(modules);
+                        services.AddSingleton<Startup>();
+                        services.AddSingleton(modules);
                         services.AddSingleton(typeof(IStartup), sp =>
                         {
                             var hostingEnvironment = sp.GetRequiredService<IHostingEnvironment>();
-                            return new ConventionBasedStartup(StartupLoader.LoadMethods(sp, typeof(DocGen.Web.Hosting.Impl.Startup), hostingEnvironment.EnvironmentName));
+                            return new ConventionBasedStartup(StartupLoader.LoadMethods(sp, typeof(Startup), hostingEnvironment.EnvironmentName));
                         });
                     })
                     .Build();
@@ -72,9 +72,9 @@ namespace DocGen.Web.Hosting.Impl
             }        
         }
 
-        class InternalVirtualHost : IVirtualHost
+        private class InternalVirtualHost : IVirtualHost
         {
-            TestServer _testServer;
+            readonly TestServer _testServer;
 
             public InternalVirtualHost(List<IHostModule> modules)
             {
@@ -85,12 +85,12 @@ namespace DocGen.Web.Hosting.Impl
                         factory.AddConsole();
                     })
                     .ConfigureServices(services => {
-                        services.AddSingleton<DocGen.Web.Hosting.Impl.Startup>();
-                        services.AddSingleton<List<IHostModule>>(modules);
+                        services.AddSingleton<Startup>();
+                        services.AddSingleton(modules);
                         services.AddSingleton(typeof(IStartup), sp =>
                         {
                             var hostingEnvironment = sp.GetRequiredService<IHostingEnvironment>();
-                            return new ConventionBasedStartup(StartupLoader.LoadMethods(sp, typeof(DocGen.Web.Hosting.Impl.Startup), hostingEnvironment.EnvironmentName));
+                            return new ConventionBasedStartup(StartupLoader.LoadMethods(sp, typeof(Startup), hostingEnvironment.EnvironmentName));
                         });
                     }));
             }

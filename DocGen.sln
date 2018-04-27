@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
@@ -28,6 +28,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocGen.Web.Tests", "test\DocGen.Web.Tests\DocGen.Web.Tests.csproj", "{A5EE8A20-0AC9-4D63-A77D-E2DC8D288D68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocGen.Tests", "test\DocGen.Tests\DocGen.Tests.csproj", "{F927497F-BD6C-43C3-82E9-5F8CD37FE1B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocGen.Web.Requirements.Tests", "test\DocGen.Web.Requirements.Tests\DocGen.Web.Requirements.Tests.csproj", "{57195C58-6A5A-4AE9-8123-77358296899F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,6 +176,18 @@ Global
 		{F927497F-BD6C-43C3-82E9-5F8CD37FE1B6}.Release|x64.Build.0 = Release|Any CPU
 		{F927497F-BD6C-43C3-82E9-5F8CD37FE1B6}.Release|x86.ActiveCfg = Release|Any CPU
 		{F927497F-BD6C-43C3-82E9-5F8CD37FE1B6}.Release|x86.Build.0 = Release|Any CPU
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Debug|x64.ActiveCfg = Debug|x64
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Debug|x64.Build.0 = Debug|x64
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Debug|x86.ActiveCfg = Debug|x86
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Debug|x86.Build.0 = Debug|x86
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Release|x64.ActiveCfg = Release|x64
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Release|x64.Build.0 = Release|x64
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Release|x86.ActiveCfg = Release|x86
+		{57195C58-6A5A-4AE9-8123-77358296899F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B4B3B49F-46CE-4F6A-ADAC-DBE4CA2AF7F7} = {9AECEFC8-E162-4CA5-8788-1AF451A75F0C}
@@ -187,5 +201,6 @@ Global
 		{83534DC2-27E4-498A-8309-DE0BD7FFBB48} = {9AECEFC8-E162-4CA5-8788-1AF451A75F0C}
 		{CE79E9C3-91C4-44C4-A7D7-5824E523FDD9} = {61F79B18-2CAF-4DBD-94BB-E78553A117CD}
 		{F927497F-BD6C-43C3-82E9-5F8CD37FE1B6} = {9AECEFC8-E162-4CA5-8788-1AF451A75F0C}
+		{57195C58-6A5A-4AE9-8123-77358296899F} = {9AECEFC8-E162-4CA5-8788-1AF451A75F0C}
 	EndGlobalSection
 EndGlobal
