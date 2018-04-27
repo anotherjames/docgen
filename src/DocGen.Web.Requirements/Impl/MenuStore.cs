@@ -69,9 +69,12 @@ namespace DocGen.Web.Requirements.Impl
                 {
                     var newMenuItem = new MenuItem
                     {
-                        Path = string.IsNullOrEmpty(treeNode.FullPath) ? "/" : treeNode.FullPath
+                        Path = string.IsNullOrEmpty(treeNode.FullPath) ? "/" : treeNode.FullPath,
+                        IsEmptyParent = treeNode.Page == null,
+                        Title = treeNode.Page?.Title
                     };
-                    if (treeNode == directParentPage)
+                    
+                    if (treeNode == directParentPage || newMenuItem.IsEmptyParent)
                     {
                         // This is the most direct parent, so let's render all children.
                         foreach (var child in treeNode.Children.Values)
