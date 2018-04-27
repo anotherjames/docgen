@@ -155,5 +155,34 @@ namespace DocGen.Web.Requirements.Tests
             Assert.Equal("/test1/test3", test3.Path);
             Assert.Equal("/test1/test4", test4.Path);
         }
+
+        [Fact]
+        public void Non_existant_path_uses_first_existing_as_context()
+        {
+            _menuStore.AddPage("/", "Home", 0);
+            _menuStore.AddPage("/test1", "Test 1", 1);
+            _menuStore.AddPage("/test1/test2", "Test 2", 2);
+            _menuStore.AddPage("/test1/test3", "Test 3", 3);
+            _menuStore.AddPage("/test1/test4", "Test 4", 4);
+            _menuStore.AddPage("/test1/test4/test5", "Test 5", 5);
+            _menuStore.AddPage("/test6", "Test 6", 6);
+
+            var menu = _menuStore.BuildMenu("/sdfa/we/sdfg/sdfg/");
+            
+            Assert.Equal(2, menu.Children.Count);
+            var test1 = menu.Children[0];
+            var test6 = menu.Children[1];
+            Assert.Equal("/test1", test1.Path);
+            Assert.Equal("/test6", test6.Path);
+            Assert.Equal(0, test1.Children.Count);
+            Assert.Equal(0, test6.Children.Count);
+            
+            menu = _menuStore.BuildMenu("/test1/sdf/weasd/sdfg/wef");
+            
+            Assert.Equal(1, menu.Children.Count);
+            test1 = menu.Children[0];
+            Assert.Equal("/test1", test1.Path);
+            Assert.Equal(3, test1.Children.Count);
+        }
     }
 }
