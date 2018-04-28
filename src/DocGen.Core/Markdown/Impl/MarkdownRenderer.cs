@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using Markdig;
 using Markdig.Extensions;
 
@@ -27,7 +29,14 @@ namespace DocGen.Core.Markdown.Impl
                 html = html.TrimEnd(Environment.NewLine.ToCharArray());
             }
 
-            return new MarkdownRenderResult(yaml.Yaml, html);
+            return new MarkdownRenderResult(yaml.Yaml ?? Newtonsoft.Json.JsonConvert.DeserializeObject("{}"), html);
+        }
+
+        public async Task<MarkdownRenderResult> RenderMarkdownFromFile(string file)
+        {
+            // TODO: cache this
+            var content = await Task.Run(() => File.ReadAllText(file));
+            return RenderMarkdown(content);
         }
     }
 }

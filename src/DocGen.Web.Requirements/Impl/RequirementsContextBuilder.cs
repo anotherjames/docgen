@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using DocGen.Core;
+using DocGen.Core.Markdown;
 using DocGen.Requirements;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Routing;
@@ -14,12 +15,15 @@ namespace DocGen.Web.Requirements.Impl
     {
         readonly IRequirementsBuilder _requirementsBuilder;
         readonly IServiceProvider _serviceProvider;
+        readonly IMarkdownRenderer _markdownRenderer;
 
         public RequirementsContextBuilder(IRequirementsBuilder requirementsBuilder,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IMarkdownRenderer markdownRenderer)
         {
             _requirementsBuilder = requirementsBuilder;
             _serviceProvider = serviceProvider;
+            _markdownRenderer = markdownRenderer;
         }
 
         public async Task<RequirementsContext> Build(string contentDirectory)
@@ -56,11 +60,15 @@ namespace DocGen.Web.Requirements.Impl
                     if (string.IsNullOrEmpty(url))
                         url = "/";
                 }
+
+                var markdown = await _markdownRenderer.RenderMarkdownFromFile(page);
+                
                 builder.RegisterMvc(url, new {
                     controller = "Markdown",
                     action = "Page",
                     page = page
                 });
+                menuStore.AddPage(url, (string)markdown.Yaml.Title, 0);
             }
 
             builder.RegisterServices(services => {
