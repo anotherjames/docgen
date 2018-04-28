@@ -4,11 +4,18 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Internal/Resources/**/*" />
+    <EmbeddedResource Remove="Internal/Resources/assets/**" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DocGen.Web\DocGen.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Internal/Resources/assets/**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Internal/Resources/assets/node_modules/**" />
   </ItemGroup>
 </Project>
