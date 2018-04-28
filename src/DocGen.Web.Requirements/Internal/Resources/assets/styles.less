@@ -1,0 +1,39 @@
+@import "bootstrap/bootstrap.less";
+@import "font-awesome/fontawesome.less";
+@import "font-awesome/fa-solid.less";
+@import "adminlte/AdminLTE.less";
+@import "adminlte/skins/skin-blue.less";
+
+// Hide the bars in desktop mode, since we are disabling support for collapsing.
+@media (min-width: @screen-sm) {
+  .sidebar-toggle {
+    display: none;
+  }
+}
+
+// Prevent the collapse css from actually collapsing the sidebar when in desktop mode.
+.main-sidebar {
+  body.sidebar-collapse & {
+    @media (min-width: @screen-sm) {
+      .translate(0, 0);
+    }
+  }
+}
+.content-wrapper,
+.main-footer {
+  .sidebar-collapse & {
+    @media (min-width: @screen-sm) {
+    .translate(@sidebar-width, 0);
+    }
+  }
+}
+
+body.no-sidebar {
+  .sidebar-toggle {
+    display: none;
+  }
+  .content-wrapper {
+    margin-left: 0px;
+    .transition(none);
+  }
+}
