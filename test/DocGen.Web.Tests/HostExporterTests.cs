@@ -33,7 +33,7 @@ namespace DocGen.Web.Tests
             var module = BuildModuleForPath("/test.js", async context => {
                 await context.Response.WriteAsync("response");
             });
-            using(var host = _hostBuilder.BuildVirtualHost(module)) {
+            using(var host = _hostBuilder.BuildVirtualHost("", module)) {
                 using(var directory = new WorkingDirectorySession()) {
                     await _hostExporter.Export(host, directory.Directory);
                     Assert.True(File.Exists(Path.Combine(directory.Directory, "test.js")));
@@ -48,7 +48,7 @@ namespace DocGen.Web.Tests
             var module = BuildModuleForPath("/test", async context => {
                 await context.Response.WriteAsync("response");
             });
-            using(var host = _hostBuilder.BuildVirtualHost(module)) {
+            using(var host = _hostBuilder.BuildVirtualHost("", module)) {
                 using(var directory = new WorkingDirectorySession()) {
                     await _hostExporter.Export(host, directory.Directory);
                     Assert.True(Directory.Exists(Path.Combine(directory.Directory, "test")));

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Reflection;
@@ -9,29 +10,37 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.TestHost;
 using System.Collections.ObjectModel;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace DocGen.Web.Hosting.Impl
 {
     public class HostBuilder : IHostBuilder
     {
-        public IWebHost BuildWebHost(int port, params IHostModule[] modules)
+        public IWebHost BuildWebHost(int port, PathString appBase, params IHostModule[] modules)
         {
-            return new InternalWebHost(modules.ToList(), port);
+            return new InternalWebHost(appBase, modules.ToList(), port);
         }
 
-        public IVirtualHost BuildVirtualHost(params IHostModule[] modules)
+        public IVirtualHost BuildVirtualHost(PathString appBase, params IHostModule[] modules)
         {
-            return new InternalVirtualHost(modules.ToList());
+            return new InternalVirtualHost(appBase, modules.ToList());
         }
 
         private class InternalWebHost : IWebHost
         {
             readonly Microsoft.AspNetCore.Hosting.IWebHost _webHost;
+            readonly PathString _appBase;
             readonly int _port;
 
-            public InternalWebHost(List<IHostModule> modules,
+            public InternalWebHost(
+                PathString appBase,
+                List<IHostModule> modules,
                 int port)
             {
+                _appBase = appBase;
                 _port = port;
                 Paths = new ReadOnlyCollection<string>(modules.SelectMany(x => x.Paths).ToList());
                 _webHost = WebHost.CreateDefaultBuilder(new string[]{})
@@ -56,9 +65,12 @@ namespace DocGen.Web.Hosting.Impl
 
             public HttpClient CreateClient()
             {
-                return new HttpClient {
-                    BaseAddress = new System.Uri($"http://localhost:{_port}")
+                var inner = new HttpClient() {
+                    BaseAddress = new Uri($"http://localhost:{_port}")
                 };
+                var wrapper = new HttpClient(new AppBaseAppendMessageHandler(inner, _appBase));
+                wrapper.BaseAddress = inner.BaseAddress;
+                return wrapper;
             }
 
             public void Listen()
@@ -69,15 +81,19 @@ namespace DocGen.Web.Hosting.Impl
             public void Dispose()
             {
                 _webHost.Dispose();
-            }        
+            }
         }
 
         private class InternalVirtualHost : IVirtualHost
         {
+            readonly PathString _appBase;
             readonly TestServer _testServer;
 
-            public InternalVirtualHost(List<IHostModule> modules)
+            public InternalVirtualHost(
+                PathString appBase,
+                List<IHostModule> modules)
             {
+                _appBase = appBase;
                 Paths = new ReadOnlyCollection<string>(modules.SelectMany(x => x.Paths).ToList());
                 _testServer = new TestServer(new WebHostBuilder()
                     .UseSetting(WebHostDefaults.ApplicationKey,  Assembly.GetEntryAssembly().GetName().Name)
@@ -99,7 +115,10 @@ namespace DocGen.Web.Hosting.Impl
 
             public HttpClient CreateClient()
             {
-                return _testServer.CreateClient();
+                var inner = _testServer.CreateClient();
+                var wrapper = new HttpClient(new AppBaseAppendMessageHandler(inner, _appBase));
+                wrapper.BaseAddress = inner.BaseAddress;
+                return wrapper;
             }
 
             public void Dispose()

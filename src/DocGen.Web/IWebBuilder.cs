@@ -15,8 +15,8 @@ namespace DocGen.Web
 
         void RegisterServices(Action<IServiceCollection> action);
 
-        IWebHost BuildWebHost(int port = 8000);
+        IWebHost BuildWebHost(string appBase = null, int port = 8000);
 
-        IVirtualHost BuildVirtualHost();
+        IVirtualHost BuildVirtualHost(string appBase = null);
     }
 }
