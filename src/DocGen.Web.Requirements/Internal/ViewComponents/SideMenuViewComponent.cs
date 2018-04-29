@@ -19,7 +19,7 @@ namespace DocGen.Web.Requirements.Internal.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             await Task.CompletedTask;
-            var menu = _menuStore.BuildMenu(HttpContext.Request.Path, 2);
+            var menu = _menuStore.BuildMenu(HttpContext.Request.Path, 5);
             
             Console.WriteLine("Side menu...");
             

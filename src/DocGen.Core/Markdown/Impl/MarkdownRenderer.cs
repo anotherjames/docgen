@@ -29,7 +29,7 @@ namespace DocGen.Core.Markdown.Impl
                 html = html.TrimEnd(Environment.NewLine.ToCharArray());
             }
 
-            return new MarkdownRenderResult(yaml.Yaml ?? Newtonsoft.Json.JsonConvert.DeserializeObject("{}"), html);
+            return new MarkdownRenderResult(yaml.Yaml, html);
         }
 
         public async Task<MarkdownRenderResult> RenderMarkdownFromFile(string file)
