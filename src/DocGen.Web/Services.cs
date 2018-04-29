@@ -6,7 +6,7 @@ namespace DocGen.Web
 {
     public static class Services
     {
-        public static void Register(ServiceCollection services)
+        public static void Register(IServiceCollection services)
         {
             services.AddTransient<IWebBuilder, Impl.WebBuilder>();
             services.AddSingleton<IWebContextBuilder, Impl.WebContextBuilder>();

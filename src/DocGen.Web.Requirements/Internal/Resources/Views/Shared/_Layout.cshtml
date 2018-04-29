@@ -1,9 +1,16 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <link href="@Url.Content("~/dist/styles.css")" rel="stylesheet" type="text/css" />
 </head>
-<body>
+<body class="skin-blue">
+<header class="main-header">
+    <a href="@Url.Content("~/")" class="logo"><span class="logo-lg"><b>Doc</b>Gen</span></a>
+    @await Component.InvokeAsync("TopMenu")
+</header>
+@await Component.InvokeAsync("SideMenu")
+<div class="content-wrapper">
     @RenderBody()
-    @await Component.InvokeAsync("Menu")
+</div>
 </body>
 </html>

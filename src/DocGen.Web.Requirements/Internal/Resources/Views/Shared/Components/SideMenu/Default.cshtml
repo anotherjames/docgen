@@ -1,0 +1,32 @@
+@using Microsoft.AspNetCore.Html
+@model DocGen.Web.Requirements.MenuItem
+@{
+    Func<DocGen.Web.Requirements.MenuItem, IHtmlContent> renderNode = null;
+    renderNode = 
+        @<li class="@(item.Active || item.Selected ? "active" : "")">
+            <a href="@Url.Content($"~{item.Path}")">@item.Title</a>
+            @if (item.Children.Count > 0)
+            {
+                <ul class="treeview-menu">
+                    @foreach (var child in item.Children)
+                    {
+                        @renderNode(child);
+                    }
+                </ul>
+            }
+        </li>;
+}
+
+@if (Model != null && Model.Children.Count > 0)
+{
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <ul class="tree sidebar-menu">
+                @foreach (var child in Model.Children)
+                {
+                    @renderNode(child)
+                }
+            </ul>
+        </section>
+    </aside>
+}

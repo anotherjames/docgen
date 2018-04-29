@@ -78,6 +78,9 @@ namespace DocGen.Web.Requirements.Impl
                     options.FileProviders.Add(new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Requirements/Internal/Resources"));
                 });
                 services.AddSingleton<IMenuStore>(menuStore);
+                // These regitrations are so that our controllers can inject core DocGen services.
+                DocGen.Core.Services.Register(services);
+                DocGen.Web.Services.Register(services);
             });
 
             return new RequirementsContext

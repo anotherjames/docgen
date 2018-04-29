@@ -1,0 +1,13 @@
+@model DocGen.Web.Requirements.MenuItem
+
+<nav class="navbar navbar-static-top">
+    <a href="javasript:void(0);" class="sidebar-toggle"></a>
+    <ul class="nav navbar-nav collapse navbar-collapse">
+        @foreach (var child in Model.Children)
+        {
+            <li class="@(child.Active ? "active" : "")">
+                <a href="@Url.Content($"~{child.Path}")">@child.Title</a>
+            </li>
+        }
+    </ul>
+</nav>
