@@ -218,5 +218,61 @@ namespace DocGen.Web.Requirements.Tests
             Assert.Equal("/test1/test2", test2.Path);
             Assert.Equal("/test3/test4", test4.Path);
         }
+
+        [Fact]
+        public void Can_mark_active_and_selected_path()
+        {
+            _menuStore.AddPage("/", "Home", 0);
+            _menuStore.AddPage("/test1", "Test 1", 1);
+            _menuStore.AddPage("/test1/test2", "Test 2", 2);
+            _menuStore.AddPage("/test3", "Test 3", 3);
+            _menuStore.AddPage("/test3/test4", "Test 4", 4);
+
+            MenuItem test1;
+            MenuItem test2;
+            MenuItem test3;
+            MenuItem test4;
+
+            void SetMenuItems(MenuItem menuItem)
+            {
+                test1 = menuItem.Children[0];
+                test2 = test1.Children[0];
+                test3 = menuItem.Children[1];
+                test4 = test3.Children[0];
+            }
+            
+            SetMenuItems(_menuStore.BuildMenu("/", 2));
+            
+            Assert.False(test1.Active);
+            Assert.False(test2.Active);
+            Assert.False(test3.Active);
+            Assert.False(test4.Active);
+            Assert.False(test1.Selected);
+            Assert.False(test2.Selected);
+            Assert.False(test3.Selected);
+            Assert.False(test4.Selected);
+
+            SetMenuItems(_menuStore.BuildMenu("/test1", 2));
+
+            Assert.True(test1.Active);
+            Assert.False(test2.Active);
+            Assert.False(test3.Active);
+            Assert.False(test4.Active);
+            Assert.True(test1.Selected);
+            Assert.False(test2.Selected);
+            Assert.False(test3.Selected);
+            Assert.False(test4.Selected);
+            
+            SetMenuItems(_menuStore.BuildMenu("/test1/test2", 2));
+
+            Assert.True(test1.Active);
+            Assert.True(test2.Active);
+            Assert.False(test3.Active);
+            Assert.False(test4.Active);
+            Assert.False(test1.Selected);
+            Assert.True(test2.Selected);
+            Assert.False(test3.Selected);
+            Assert.False(test4.Selected);
+        }
     }
 }

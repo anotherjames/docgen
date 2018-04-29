@@ -48,6 +48,7 @@ namespace DocGen.Web.Requirements.Impl
         {
             // Find the furthest leaf node
             var parents = new List<TreeNode> { _tree };
+            Page selectedPage = null;
             
             {
                 // Get all the parent nodes for this path
@@ -57,6 +58,7 @@ namespace DocGen.Web.Requirements.Impl
                     var potential = current.Resolve(part);
                     if (potential == null) continue;
                     current = potential;
+                    selectedPage = current.Page;
                     parents.Add(potential);
                 }
             }
@@ -73,6 +75,19 @@ namespace DocGen.Web.Requirements.Impl
                         IsEmptyParent = treeNode.Page == null,
                         Title = treeNode.Page?.Title
                     };
+
+                    if (parents.Contains(treeNode))
+                    {
+                        newMenuItem.Active = true;
+                    }
+
+                    if (selectedPage != null)
+                    {
+                        if (selectedPage.Path.Equals(treeNode.FullPath, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            newMenuItem.Selected = true;
+                        }
+                    }
                     
                     if (treeNode == directParentPage || newMenuItem.IsEmptyParent)
                     {
