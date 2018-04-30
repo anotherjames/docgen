@@ -26,9 +26,12 @@ targets.Add("test", () => {
 });
 
 targets.Add("deploy", SimpleTargets.DependsOn("clean"), () => {
-    Process.Run($"dotnet publish --output {Path.Expand("./output/osx-x64")} --runtime osx-x64 --configuration {options.Configuration}");
-    Process.Run($"dotnet publish --output {Path.Expand("./output/win-x64")} --runtime win-x64 --configuration {options.Configuration}");
-    Process.Run($"dotnet publish --output {Path.Expand("./output/linux-x64")} --runtime linux-x64 --configuration {options.Configuration}");
+    // Deploy the console project in each of our target runtimes.
+    Process.Run($"dotnet publish src/DocGen.Cons/ --output {Path.Expand("./output/console/osx-x64")} --runtime osx-x64 --configuration {options.Configuration}");
+    Process.Run($"dotnet publish src/DocGen.Cons/ --output {Path.Expand("./output/console/win-x64")} --runtime win-x64 --configuration {options.Configuration}");
+    Process.Run($"dotnet publish src/DocGen.Cons/ --output {Path.Expand("./output/console/linux-x64")} --runtime linux-x64 --configuration {options.Configuration}");
+    // Deploy nuget packages
+    Process.Run($"dotnet pack --output {Path.Expand("./output/nuget")} --configuration {options.Configuration}");   
 });
 
 targets.Add("default", SimpleTargets.DependsOn("build"));

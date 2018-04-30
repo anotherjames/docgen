@@ -1,10 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\common.props" />
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,5 +16,5 @@
     <ProjectReference Include="..\DocGen.Tests\DocGen.Tests.csproj" />
     <ProjectReference Include="..\..\src\DocGen.Web\DocGen.Web.csproj" />
   </ItemGroup>
-  
+
 </Project>

@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\common.props" />
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -21,5 +19,5 @@
   <ItemGroup>
     <ProjectReference Include="..\DocGen.Requirements\DocGen.Requirements.csproj" />
   </ItemGroup>
-  
+
 </Project>

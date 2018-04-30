@@ -71,17 +71,6 @@ namespace DocGen.Web.Hosting.Impl
 
             copy.Version = request.Version;
 
-            var uri = copy.RequestUri.ToString();
-
-            foreach (var component in Enum.GetValues(typeof(UriComponents)))
-            {
-                foreach (var format in Enum.GetValues(typeof(UriFormat)))
-                {
-                    var value = request.RequestUri.GetComponents((UriComponents) component, (UriFormat) format);
-                    Console.WriteLine($"{Enum.GetName(typeof(UriComponents), component)}:{Enum.GetName(typeof(UriFormat), format)}:{value}");
-                }
-            }
-
             if (!_appBase.HasValue) return _innerHttpClient.SendAsync(copy, cancellationToken);
             
             var pathString = _appBase;
