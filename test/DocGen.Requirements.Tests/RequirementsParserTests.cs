@@ -5,6 +5,8 @@ using DocGen.Requirements.Impl;
 using DocGen.Tests;
 using Xunit;
 
+#pragma warning disable xUnit2000
+
 namespace DocGen.Requirements.Tests
 {
     public class RequirementsParserTests
