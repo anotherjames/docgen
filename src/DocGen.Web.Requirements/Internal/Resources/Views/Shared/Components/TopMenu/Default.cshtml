@@ -1,7 +1,9 @@
 @model DocGen.Web.Requirements.MenuItem
 
 <nav class="navbar navbar-static-top">
-    <a href="javasript:void(0);" class="sidebar-toggle"></a>
+    <a href="javascript:void(0);" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+    </a>
     <ul class="nav navbar-nav collapse navbar-collapse">
         @foreach (var child in Model.Children)
         {

@@ -21,7 +21,7 @@
 {
     <aside class="main-sidebar">
         <section class="sidebar">
-            <ul class="tree sidebar-menu">
+            <ul class="tree sidebar-menu" data-widget="tree">
                 @foreach (var child in Model.Children)
                 {
                     @renderNode(child)

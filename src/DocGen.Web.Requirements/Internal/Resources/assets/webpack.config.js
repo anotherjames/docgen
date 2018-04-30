@@ -1,10 +1,12 @@
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-options: { minimize: true }
+var options = {
+    minimize: false
+};
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: './script.js',
   output: {
     filename: 'script.js',
@@ -19,7 +21,7 @@ module.exports = {
           use: [
             {
               loader: 'css-loader',
-              options: { minimize: true }
+              options: options
             },
             'less-loader'
           ]
@@ -32,7 +34,7 @@ module.exports = {
           use: [
             {
               loader: 'css-loader',
-              options: { minimize: true }
+              options: options
             }
           ]
         })
@@ -49,5 +51,6 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin("styles.css"),
-  ]
+  ],
+  watch: true
 };
