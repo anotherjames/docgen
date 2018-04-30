@@ -6,5 +6,6 @@ services:
   - docker
 before_install:
   - dotnet tool install -g dotnet-script
+  - export PATH=$PATH:$HOME/.dotnet/tools
 script:
   - ./build.sh build
