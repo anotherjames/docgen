@@ -52,4 +52,12 @@ public static class Travis
             return System.Environment.GetEnvironmentVariable("TRAVIS_TAG");
         }
     }
+
+    public static string Branch
+    {
+        get
+        {
+            return System.Environment.GetEnvironmentVariable("TRAVIS_BRANCH");
+        }
+    }
 }

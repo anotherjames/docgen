@@ -66,16 +66,15 @@ targets.Add("publish", () => {
     if(Travis.IsTravis)
     {
         // If we are on travis, we only want to deploy if this is a release tag.
-        if(!Travis.IsTagBuild)
+        if(Travis.EventType != Travis.EventTypeEnum.Push)
         {
-            Log.Warning("Build job wasn't a tag, skipping...");
-            return;
+            // Only pushes (no cron jobs/api/pull rqeuests) can deploy.
+            Log.Warning("Not a push build, skipping publish...");
         }
 
-        if(!System.Text.RegularExpressions.Regex.IsMatch(Travis.Tag, @"$v[0-9]\.[0-9]\.[0-9]^"))
+        if(Travis.Branch != "master")
         {
-            Log.Warning("Not a version tag, skipping...");
-            return;
+            Log.Warning("Not on master, skipping publish...");
         }
     }
 
