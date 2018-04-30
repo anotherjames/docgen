@@ -1,12 +1,12 @@
 #load "nuget:simple-targets-csx, 6.0.0"
-#load "scripts/build/process.csx"
-#load "scripts/build/directory.csx"
+#load "process.csx"
+#load "path.csx"
 using static SimpleTargets;
 
 var targets = new TargetDictionary();
 
 targets.Add("clean", () => {
-    Directory.Clean("");
+    Path.CleanDirectory(Path.Expand("./output"));
 });
 
 targets.Add("build", () => {
@@ -21,7 +21,7 @@ targets.Add("test", () => {
 });
 
 targets.Add("deploy", SimpleTargets.DependsOn("clean"), () => {
-    System.Console.WriteLine("Test");
+    Process.Run($"dotnet publish --output {Path.Expand("./output")}");
 });
 
 targets.Add("default", SimpleTargets.DependsOn("build"));

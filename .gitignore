@@ -330,3 +330,4 @@ ASALocalRun/
 
 lcov.info
 example/output/*
+output/
