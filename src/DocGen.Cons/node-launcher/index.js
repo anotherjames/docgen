@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { execSync, spawn } = require('child_process');
 
 function runPackage(package) {
@@ -7,7 +9,7 @@ function runPackage(package) {
     var args = [];
     process.argv.forEach((val, index) => {
         console.log(index);
-        if(index > 0) {
+        if(index > 1) {
             console.log("pushing " + val);
             args.push(val);
         }
@@ -21,11 +23,11 @@ function runPackage(package) {
 }
 
 if (process.platform === "darwin") {
-    runPackage("docgen-cli-linux-x64");
+    runPackage("docgen-cli-osx-xsixtyfour");
 } else if(process.platform === "win32") {
-    runPackage("docgen-cli-linux-x64");
+    runPackage("docgen-cli-win-xsixtyfour");
 } else if(process.platform === "linux") {
-    runPackage("docgen-cli-linux-x64");
+    runPackage("docgen-cli-linux-xsixtyfour");
 } else {
     console.log("Unsupported platform: " + process.platform);
     process.exit(1);
