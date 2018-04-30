@@ -11,7 +11,7 @@ public static class GitVersion
         dynamic json = Newtonsoft.Json.JsonConvert.DeserializeObject(output);
         var result = new GitVersion.GitVersionResult
         {
-            Version = json.SemVer,
+            Version = json.MajorMinorPatch,
             PreReleaseTag = json.PreReleaseTag
         };
         if(!string.IsNullOrEmpty(result.PreReleaseTag))

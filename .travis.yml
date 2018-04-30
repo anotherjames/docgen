@@ -9,5 +9,6 @@ services:
 before_install:
   - dotnet tool install -g dotnet-script
   - export PATH=$PATH:$HOME/.dotnet/tools
+  - printf "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}\n" >> .npmrc
 script:
-  - ./build.sh test
+  - ./build.sh ci
