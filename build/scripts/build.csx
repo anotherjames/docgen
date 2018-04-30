@@ -4,6 +4,7 @@
 #load "runner.csx"
 #load "gitversion.csx"
 #load "log.csx"
+#load "travis.csx"
 
 using static SimpleTargets;
 using static Runner;
@@ -62,6 +63,22 @@ $@"<Project>
 });
 
 targets.Add("publish", () => {
+    if(Travis.IsTravis)
+    {
+        // If we are on travis, we only want to deploy if this is a release tag.
+        if(!Travis.IsTagBuild)
+        {
+            Log.Warning("Build job wasn't a tag, skipping...");
+            return;
+        }
+
+        if(!System.Text.RegularExpressions.Regex.IsMatch(Travis.Tag, @"$v[0-9]\.[0-9]\.[0-9]^"))
+        {
+            Log.Warning("Not a version tag, skipping...");
+            return;
+        }
+    }
+
     // For now, we are only deploying npm packages.
     Process.Run("cd ./output/console/ && npm publish");
     Process.Run("cd ./output/console/osx-x64/ && npm publish");
@@ -69,8 +86,8 @@ targets.Add("publish", () => {
     Process.Run("cd ./output/console/linux-x64/ && npm publish");
 });
 
-targets.Add("ci", DependsOn("update-version", "test", "deploy"), () => {
-
+targets.Add("ci", DependsOn("update-version", "test", "deploy", "publish"), () => {
+    
 });
 
 targets.Add("default", SimpleTargets.DependsOn("build"));

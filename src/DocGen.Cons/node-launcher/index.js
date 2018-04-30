@@ -8,9 +8,7 @@ function runPackage(package) {
     // Skip the first entry of argv (which is the name of the current process).
     var args = [];
     process.argv.forEach((val, index) => {
-        console.log(index);
         if(index > 1) {
-            console.log("pushing " + val);
             args.push(val);
         }
     });
