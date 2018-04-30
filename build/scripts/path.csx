@@ -26,4 +26,19 @@ public static class Path
             dir.Delete(true); 
         }
     }
+
+    public static bool FileExists(string path)
+    {
+        return System.IO.File.Exists(path);
+    }
+
+    public static void DeleteFile(string file)
+    {
+        System.IO.File.Delete(file);
+    }
+
+    public static void WriteFile(string file, string content)
+    {
+        System.IO.File.WriteAllText(file, content);
+    }
 }
