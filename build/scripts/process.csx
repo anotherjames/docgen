@@ -34,21 +34,18 @@ public static class Process
             Arguments = $"bash -c \"{escapedArgs}\"",
             UseShellExecute = false,
             CreateNoWindow = true,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true
+            RedirectStandardOutput = true
         };
 
         using (var process = System.Diagnostics.Process.Start(processStartInfo))
         {
             string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
 
             process.WaitForExit();
 
             if (process.ExitCode != 0)
             {
-                Log.Failure($"Standard output: {output}");
-                Log.Failure($"Error output: {error}");
+                Log.Failure($"Output: {output}");
                 throw new Exception(string.Format("Exit code {0} from {1}", process.ExitCode, command));
             }
             
