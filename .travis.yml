@@ -1,0 +1,9 @@
+sudo: required
+language: csharp
+dotnet: "2.1.300-preview2"
+services:
+  - docker
+before_install:
+  - dotnet tool install -g dotnet-script
+script:
+  - ./build.sh build
