@@ -61,6 +61,18 @@ $@"<Project>
 </Project>");
 });
 
+targets.Add("publish", () => {
+    // For now, we are only deploying npm packages.
+    Process.Run("cd ./output/console/ && npm publish");
+    Process.Run("cd ./output/console/osx-x64/ && npm publish");
+    Process.Run("cd ./output/console/win-x64/ && npm publish");
+    Process.Run("cd ./output/console/linux-x64/ && npm publish");
+});
+
+targets.Add("ci", DependsOn("update-version", "test", "deploy"), () => {
+
+});
+
 targets.Add("default", SimpleTargets.DependsOn("build"));
 
 Runner.Run(options, targets);
