@@ -37,8 +37,18 @@ targets.Add("deploy", SimpleTargets.DependsOn("clean"), () => {
     Process.Run($"dotnet publish src/DocGen.Cons/ --output {Path.Expand("./output/console/osx-x64")} --runtime osx-x64 {commandBuildArgs}");
     Process.Run($"dotnet publish src/DocGen.Cons/ --output {Path.Expand("./output/console/win-x64")} --runtime win-x64 {commandBuildArgs}");
     Process.Run($"dotnet publish src/DocGen.Cons/ --output {Path.Expand("./output/console/linux-x64")} --runtime linux-x64 {commandBuildArgs}");
-    // Deploy nuget packages
-    Process.Run($"dotnet pack --output {Path.Expand("./output/nuget")} {commandBuildArgs}");   
+    // Deploy our nuget packages.
+    Process.Run($"dotnet pack --output {Path.Expand("./output/nuget")} {commandBuildArgs}"); 
+    // Deploy our node scripts/configuration for later publish to npm. 
+    Process.Run("cp -r ./src/DocGen.Cons/node-launcher/. ./output/console/");
+    foreach(var file in new string[] {
+        "./output/console/package.json",
+        "./output/console/osx-x64/package.json",
+        "./output/console/win-x64/package.json",
+        "./output/console/linux-x64/package.json"
+    }) {
+        Path.ReplaceInFile(file, "VERSION", gitversion.FullVersion);
+    }
 });
 
 targets.Add("update-version", () => {
@@ -48,8 +58,7 @@ $@"<Project>
     <PropertyGroup>
         <VersionPrefix>{gitversion.Version}</VersionPrefix>
     </PropertyGroup>
-</Project>"
-);
+</Project>");
 });
 
 targets.Add("default", SimpleTargets.DependsOn("build"));

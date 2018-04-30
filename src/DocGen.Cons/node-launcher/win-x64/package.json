@@ -1,0 +1,15 @@
+{
+  "name": "docgen-cli-win-x64",
+  "version": "VERSION",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pauldotknopf/docgen.git"
+  },
+  "author": "Paul Knopf",
+  "bugs": {
+    "url": "https://github.com/pauldotknopf/docgen/issues"
+  },
+  "homepage": "https://github.com/pauldotknopf/docgen"
+}

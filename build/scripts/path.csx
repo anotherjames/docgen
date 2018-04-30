@@ -41,4 +41,11 @@ public static class Path
     {
         System.IO.File.WriteAllText(file, content);
     }
+
+    public static void ReplaceInFile(string file, string oldValue, string newValue)
+    {
+        string text = System.IO.File.ReadAllText(file);
+        text = text.Replace(oldValue, newValue);
+        System.IO.File.WriteAllText(file, text);
+    }
 }

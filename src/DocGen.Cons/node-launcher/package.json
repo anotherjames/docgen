@@ -1,0 +1,19 @@
+{
+  "name": "docgen-cli",
+  "version": "VERSION",
+  "description": "DocGen console",
+  "main": "index.js",
+  "bin": {
+    "docgen": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pauldotknopf/docgen.git"
+  },
+  "author": "Paul Knopf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pauldotknopf/docgen/issues"
+  },
+  "homepage": "https://github.com/pauldotknopf/docgen"
+}
