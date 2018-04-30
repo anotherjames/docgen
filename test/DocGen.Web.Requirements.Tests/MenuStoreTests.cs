@@ -3,6 +3,8 @@ using DocGen.Requirements;
 using Newtonsoft.Json;
 using Xunit;
 
+#pragma warning disable xUnit2013
+
 namespace DocGen.Web.Requirements.Tests
 {
     public class MenuStoreTests
