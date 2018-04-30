@@ -1,5 +1,5 @@
 const path = require("path");
 
-model.export = {
-    path = path.join(__dirname, "DocGen.Cons")
+module.exports = {
+    path: path.join(__dirname, "DocGen.Cons")
 };
