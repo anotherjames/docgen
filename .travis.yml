@@ -2,8 +2,6 @@ sudo: required
 language: csharp
 mono: none
 dotnet: 2.1.300-preview2-008533
-git:
-  depth: 9999999
 services:
   - docker
 before_install:
