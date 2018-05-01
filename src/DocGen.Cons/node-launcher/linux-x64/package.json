@@ -3,6 +3,9 @@
   "version": "VERSION",
   "license": "MIT",
   "main": "index.js",
+  "scripts": {
+    "postinstall": "chmod +x DocGen.Cons"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pauldotknopf/docgen.git"
