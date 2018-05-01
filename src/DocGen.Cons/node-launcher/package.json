@@ -6,6 +6,11 @@
   "bin": {
     "docgen": "./index.js"
   },
+  "optionalDependencies": {
+    "docgen-cli-linux-xsixtyfour": "VERSION",
+    "docgen-cli-osx-xsixtyfour": "VERSION",
+    "docgen-cli-win-xsixtyfour": "VERSION"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pauldotknopf/docgen.git"

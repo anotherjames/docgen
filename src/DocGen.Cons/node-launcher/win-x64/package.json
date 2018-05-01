@@ -3,6 +3,7 @@
   "version": "VERSION",
   "license": "MIT",
   "main": "index.js",
+  "os" : [ "win32" ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pauldotknopf/docgen.git"
