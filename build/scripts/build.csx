@@ -38,6 +38,9 @@ targets.Add("deploy", SimpleTargets.DependsOn("clean"), () => {
     Process.Run($"dotnet publish src/DocGen.Cons/ --output {Path.Expand("./output/console/osx-x64")} --runtime osx-x64 {commandBuildArgs}");
     Process.Run($"dotnet publish src/DocGen.Cons/ --output {Path.Expand("./output/console/win-x64")} --runtime win-x64 {commandBuildArgs}");
     Process.Run($"dotnet publish src/DocGen.Cons/ --output {Path.Expand("./output/console/linux-x64")} --runtime linux-x64 {commandBuildArgs}");
+    // The dotnet cli doesn't publish the entry points with executable permissions. No idea why.
+    Process.Run($"chmod +x ./output/console/osx-x64/DocGen.Cons");
+    Process.Run($"chmod +x ./output/console/linux-x64/DocGen.Cons");
     // Deploy our nuget packages.
     Process.Run($"dotnet pack --output {Path.Expand("./output/nuget")} {commandBuildArgs}"); 
     // Deploy our node scripts/configuration for later publish to npm. 

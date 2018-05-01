@@ -28,8 +28,6 @@ namespace DocGen.Cons
                 .WriteTo.Console()
                 .CreateLogger();
 
-            Log.Error("test");
-
             var app = new CommandLineApplication();
             app.Name = "docgen";
             app.FullName = "A tool to generate documentation from a source directory";
