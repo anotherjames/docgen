@@ -73,11 +73,13 @@ targets.Add("publish", () => {
         {
             // Only pushes (no cron jobs/api/pull rqeuests) can deploy.
             Log.Warning("Not a push build, skipping publish...");
+            return;
         }
 
         if(Travis.Branch != "master")
         {
             Log.Warning("Not on master, skipping publish...");
+            return;
         }
     }
 
