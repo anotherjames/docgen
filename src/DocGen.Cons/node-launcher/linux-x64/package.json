@@ -6,6 +6,7 @@
   "scripts": {
     "postinstall": "chmod +x DocGen.Cons"
   },
+  "os" : [ "linux" ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pauldotknopf/docgen.git"
