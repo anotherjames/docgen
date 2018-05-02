@@ -821,5 +821,28 @@ namespace DocGen.Requirements.Tests
                 Assert.Equal(ex.Message, "Content '# Random' should be within a action or expected");
             });
         }
+
+        [Fact]
+        public void Can_parse_single_digit_as_number()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.AppendLine("---");
+            document.AppendLine("# User Need");
+            document.AppendLine("User need content....");
+            document.AppendLine("# Validation Method");
+            document.AppendLine("Validation content...");
+
+            var result = _requirementsParser.ParseUserNeed(document.ToString());
+
+            Assert.Equal(result.Number, new Version(1, 0));
+            Assert.Equal(result.Title, "Test title");
+            Assert.Equal(result.Category, "Test category");
+            Assert.Equal(result.Description, "User need content....");
+            Assert.Equal(result.ValidationMethod, "Validation content...");
+        }
     }
 }
