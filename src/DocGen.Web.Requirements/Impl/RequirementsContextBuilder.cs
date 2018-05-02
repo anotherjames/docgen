@@ -62,13 +62,13 @@ namespace DocGen.Web.Requirements.Impl
                 }
 
                 var markdown = await _markdownRenderer.RenderMarkdownFromFile(page);
-                
+
                 builder.RegisterMvc(url, new {
                     controller = "Markdown",
                     action = "Page",
                     page = page
                 });
-                menuStore.AddPage(url, (string)markdown.Yaml.Title, 0);
+                menuStore.AddPage(url, (string)markdown.Yaml?.Title, 0);
             }
 
             builder.RegisterServices(services => {

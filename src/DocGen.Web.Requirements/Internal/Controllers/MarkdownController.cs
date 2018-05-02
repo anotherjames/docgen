@@ -19,7 +19,7 @@ namespace DocGen.Web.Requirements.Internal.Controllers
             var markdown = await _markdownRenderer.RenderMarkdownFromFile(page);
             
             var model = new MarkdownModel();
-            model.Title = markdown.Yaml.Title;
+            model.Title = markdown.Yaml?.Title;
             model.Markdown = markdown.Html;
             
             return View(model);

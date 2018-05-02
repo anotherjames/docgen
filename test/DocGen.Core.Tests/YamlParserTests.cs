@@ -67,5 +67,43 @@ namespace DocGen.Core.Tests
             expected.AppendLine("Validation content...");
             Assert.Equal(expected.ToString(), result.Markdown);
         }
+
+        [Fact]
+        public void Can_ignore_first_new_line_for_unix()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.Append("---\n");
+            document.Append("Markdown content...");
+
+            Console.WriteLine(document.ToString());
+            Console.WriteLine("sdf");
+            
+            var result = _yamlParser.ParseYaml(document.ToString());
+            
+            Assert.Equal("Markdown content...", result.Markdown);
+        }
+        
+        [Fact]
+        public void Can_ignore_first_new_line_for_windows()
+        {
+            var document = new StringBuilder();
+            document.AppendLine("---");
+            document.AppendLine("Number: 1.0");
+            document.AppendLine("Title: Test title");
+            document.AppendLine("Category: Test category");
+            document.Append("---\r\n");
+            document.Append("Markdown content...");
+
+            Console.WriteLine(document.ToString());
+            Console.WriteLine("sdf");
+            
+            var result = _yamlParser.ParseYaml(document.ToString());
+            
+            Assert.Equal("Markdown content...", result.Markdown);
+        }
     }
 }
