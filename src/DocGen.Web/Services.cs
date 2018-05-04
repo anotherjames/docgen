@@ -9,7 +9,6 @@ namespace DocGen.Web
         public static void Register(IServiceCollection services)
         {
             services.AddTransient<IWebBuilder, Impl.WebBuilder>();
-            services.AddSingleton<IWebContextBuilder, Impl.WebContextBuilder>();
             services.AddSingleton<Hosting.IHostBuilder, Hosting.Impl.HostBuilder>();
             services.AddSingleton<IHostExporter, Impl.HostExporter>();
         }

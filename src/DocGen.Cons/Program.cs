@@ -20,6 +20,7 @@ namespace DocGen.Cons
                 DocGen.Requirements.Services.Register(services);
                 DocGen.Web.Services.Register(services);
                 DocGen.Web.Requirements.Services.Register(services);
+                DocGen.Web.Manual.Services.Register(services);
                 serviceProvider = services.BuildServiceProvider();
             }
 
@@ -34,7 +35,8 @@ namespace DocGen.Cons
 
             app.HelpOption("-? | -h | --help");
 
-            Commands.Content.Configure(app, serviceProvider);
+            Commands.Dhf.Configure(app, serviceProvider);
+            Commands.Manual.Configure(app, serviceProvider);
 
             app.OnExecute(() =>
             {
