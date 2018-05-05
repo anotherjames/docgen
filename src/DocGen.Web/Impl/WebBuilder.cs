@@ -35,11 +35,16 @@ namespace DocGen.Web.Impl
 
         public void RegisterFiles(IFileProvider fileProvider)
         {
+            RegisterFiles("/", fileProvider);
+        }
+
+        public void RegisterFiles(string prefix, IFileProvider fileProvider)
+        {
             var contents = fileProvider.GetDirectoryContents("/");
             if(contents == null || !contents.Exists) return;
 
             foreach(var file in contents) {
-                RegisterFileInfo(fileProvider, "/", file);
+                RegisterFileInfo(fileProvider, prefix, "/", file);
             }
         }
 
@@ -70,7 +75,7 @@ namespace DocGen.Web.Impl
         }
 
 
-        private void RegisterFileInfo(IFileProvider fileProvider, string basePath, IFileInfo fileInfo)
+        private void RegisterFileInfo(IFileProvider fileProvider, string prefix, string basePath, IFileInfo fileInfo)
         {
             if(fileInfo.IsDirectory)  {
                 var content = fileProvider.GetDirectoryContents(fileInfo.Name);
@@ -80,19 +85,31 @@ namespace DocGen.Web.Impl
                 }
 
                 foreach(var child in content) {
-                    RegisterFileInfo(fileProvider, Path.Combine(basePath,fileInfo.Name), child);
+                    RegisterFileInfo(fileProvider, prefix, Path.Combine(basePath,fileInfo.Name), child);
                 }
-            } else  {
-                // We are passing NULL so that the middleware
-                // will fall through and use the static file middleware.
-                Register(Path.Combine(basePath, fileInfo.Name), async context =>
+            } else
+            {
+                var path = new PathString().Add(prefix)
+                    .Add(basePath)
+                    .Add("/" + fileInfo.Name);
+                Register(path.Value, async context =>
                 {
                     var env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
                     var options = Options.Create(new StaticFileOptions());
                     options.Value.FileProvider = fileProvider;
                     var loggerFactory = context.RequestServices.GetRequiredService<ILoggerFactory>();
                     var middleware = new StaticFileMiddleware(_ => Task.CompletedTask, env, options, loggerFactory);
-                    await middleware.Invoke(context);
+
+                    var oldPath = context.Request.Path;
+                    try
+                    {
+                        context.Request.Path = Path.Combine(basePath, fileInfo.Name);
+                        await middleware.Invoke(context);
+                    }
+                    finally
+                    {
+                        context.Request.Path = oldPath;
+                    }
                 });
             }
         }
