@@ -3,11 +3,20 @@
 }
 
 @page {
-    @bottom {
-        content: element(pagenumber);
-    }
     @top {
         content: element(pagetitle);
+    }
+}
+
+@page :left {
+    @bottom {
+        content: element(pagenumberleft);
+    }
+}
+
+@page :right {
+    @bottom {
+        content: element(pagenumberright);
     }
 }
 
@@ -19,8 +28,18 @@ body {
     page-break-after: always;
 }
 
+.page-number-container.left {
+    position: running(pagenumberleft);
+    text-align: left;
+}
+
+.page-number-container.right {
+    position: running(pagenumberright);
+    text-align: right;
+}
+
 .page-number {
-    position: running(pagenumber);
+    content: counter(page);
 }
 
 .toc {
