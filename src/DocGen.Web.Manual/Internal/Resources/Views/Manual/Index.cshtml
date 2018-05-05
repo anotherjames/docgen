@@ -1,5 +1,16 @@
 ﻿@model ManualModel
-@foreach (var section in Model.Sections)
-{
-    @Html.Raw(section.Html)
-}
+
+<div>
+    <h1>Coversheet</h1>
+    <p>Product image: @Model.Coversheet.ProductImage</p>
+    <p>Product logo: @Model.Coversheet.ProductLogo</p>
+    <p>Model: @Model.Coversheet.Model</p>
+    <p>Text: @Model.Coversheet.Text</p>
+</div>
+
+<div>
+    @foreach (var section in Model.Sections)
+    {
+        @Html.Raw(section.Html)
+    }
+</div>

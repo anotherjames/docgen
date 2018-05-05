@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json;
 
 namespace DocGen.Web.Manual.Impl
 {
@@ -33,24 +34,60 @@ namespace DocGen.Web.Manual.Impl
             if(!await Task.Run(() => Directory.Exists(contentDirectory)))
                 throw new DocGenException($"Manual directory {contentDirectory} doesn't exist");
 
-            // Find all the markdown files, and sort them by the order.
-            webBuilder.RegisterMvc("/", new {
+            webBuilder.RegisterMvc("/", new
+            {
                 controller = "Manual",
                 action = "Index"
             });
+            webBuilder.RegisterMvc("/pdf", new
+            {
+                controller = "Archive",
+                action = "Pdf"
+            });
+            webBuilder.RegisterMvc("/archive.zip", new
+            {
+                controller = "Archive",
+                action = "Index"
+            });
+            
+            // Register our static files.
+            var staticFiles = new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Manual/Internal/Resources/wwwroot");
+            webBuilder.RegisterFiles(staticFiles);
 
+            CoversheetConfig coversheet = null;
             var sections = new ManualSectionStore();
             foreach (var markdownFile in await Task.Run(() => Directory.GetFiles(contentDirectory, "*.md")))
             {
                 var content = await Task.Run(() => File.ReadAllText(markdownFile));
                 var yaml = _yamlParser.ParseYaml(content);
-                int order = 0;
-                if (yaml.Yaml != null)
+                if (yaml.Yaml == null) yaml = new YamlParseResult(JsonConvert.DeserializeObject("{}"), yaml.Markdown);
+                
+                var type = "Content";
+                if (!string.IsNullOrEmpty((string)yaml.Yaml.Type))
                 {
-                    order = yaml.Yaml.Order;
+                    type = yaml.Yaml.Type;
                 }
-                sections.AddMarkdown(order, yaml.Markdown, markdownFile);
+                
+                switch (type)
+                {
+                    case "Coversheet":
+                        if(coversheet != null) throw new DocGenException("Multiple coversheets detected");
+                        coversheet = new CoversheetConfig();
+                        coversheet.ProductImage = yaml.Yaml.ProductImage;
+                        coversheet.ProductLogo = yaml.Yaml.ProductLogo;
+                        coversheet.Model = yaml.Yaml.Model;
+                        coversheet.Text = yaml.Yaml.Text;
+                        break;
+                    case "Content":
+                        var order = (int?)yaml.Yaml.Order;
+                        sections.AddMarkdown(order ?? 0, yaml.Markdown, markdownFile);
+                        break;
+                    default:
+                        throw new DocGenException("Unknown contente type");
+                }
             }
+            
+            if(coversheet == null) throw new DocGenException("You must provide a coversheet");
             
             webBuilder.RegisterServices(services => {
                 services.AddMvc();
@@ -59,6 +96,7 @@ namespace DocGen.Web.Manual.Impl
                     options.FileProviders.Add(new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Manual/Internal/Resources"));
                 });
                 services.AddSingleton(sections);
+                services.AddSingleton(coversheet);
                 // These regitrations are so that our controllers can inject core DocGen services.
                 DocGen.Core.Services.Register(services);
                 DocGen.Web.Services.Register(services);

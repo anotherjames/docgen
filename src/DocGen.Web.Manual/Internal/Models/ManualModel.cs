@@ -9,6 +9,8 @@ namespace DocGen.Web.Manual.Internal.Models
             Sections = new List<SectionModel>();
         }
         
+        public CoversheetConfig Coversheet { get; set; }
+        
         public List<SectionModel> Sections { get; }
     }
 }

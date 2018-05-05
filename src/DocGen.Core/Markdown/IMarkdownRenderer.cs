@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DocGen.Core.Markdown
@@ -10,5 +11,7 @@ namespace DocGen.Core.Markdown
         Task<MarkdownRenderResult> RenderMarkdownFromFile(string file);
 
         string TransformMarkdown(string markdown, Func<string, string> replacement);
+
+        List<TocEntry> ExtractTocEntries(string markdown);
     }
 }

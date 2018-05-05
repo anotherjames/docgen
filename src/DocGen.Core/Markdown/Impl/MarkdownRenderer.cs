@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Markdig;
@@ -63,6 +64,35 @@ namespace DocGen.Core.Markdown.Impl
                 stringWriter.Flush();
                 return stringWriter.ToString().TrimEnd(Environment.NewLine.ToCharArray());
             }
+        }
+
+        public List<TocEntry> ExtractTocEntries(string markdown)
+        {
+            var pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()
+                .Build();
+            var document = Markdig.Markdown.Parse(markdown, pipeline);
+
+            var result = new List<TocEntry>();
+            
+            void WalkBlock(Block block)
+            {
+                if (block is HeadingBlock headingBlock)
+                {
+                    result.Add(new TocEntry
+                    {
+                        Level = headingBlock.Level,
+                        Title = MarkdownHelpers.RenderLeafInlineRaw(headingBlock)
+                    });
+                }
+            }
+
+            foreach (var item in document)
+            {
+                WalkBlock(item);
+            }
+
+            return result;
         }
         
         public class TextReplacementRenderer : TextRendererBase<TextReplacementRenderer>

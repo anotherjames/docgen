@@ -71,5 +71,43 @@ namespace DocGen.Core.Tests
             content.Append("</table>");
             Assert.Equal(content.ToString(), result);
         }
+
+        [Fact]
+        public void Can_extract_toc()
+        {
+            var content = new StringBuilder();
+            content.AppendLine("# Test1");
+            content.AppendLine("sdfsdf");
+            content.AppendLine("## Test2");
+            content.AppendLine("sdfsdf");
+            content.AppendLine("### Test3");
+            content.AppendLine("sdfsdf");
+            content.AppendLine("#### Test4");
+            content.AppendLine("sdfsdf");
+            content.AppendLine("##### Test5");
+            content.AppendLine("sdfsdf");
+            content.AppendLine("## Test6");
+            content.AppendLine("sdfsdf");
+            content.AppendLine("# Test*7*");
+            content.AppendLine("sdfsdf");
+
+            var toc = _markdownRenderer.ExtractTocEntries(content.ToString());
+            
+            Assert.Equal(7, toc.Count);
+            Assert.Equal("Test1", toc[0].Title);
+            Assert.Equal(1, toc[0].Level);
+            Assert.Equal("Test2", toc[1].Title);
+            Assert.Equal(2, toc[1].Level);
+            Assert.Equal("Test3", toc[2].Title);
+            Assert.Equal(3, toc[2].Level);
+            Assert.Equal("Test4", toc[3].Title);
+            Assert.Equal(4, toc[3].Level);
+            Assert.Equal("Test5", toc[4].Title);
+            Assert.Equal(5, toc[4].Level);
+            Assert.Equal("Test6", toc[5].Title);
+            Assert.Equal(2, toc[5].Level);
+            Assert.Equal("Test7", toc[6].Title);
+            Assert.Equal(1, toc[6].Level);
+        }
     }
 }
