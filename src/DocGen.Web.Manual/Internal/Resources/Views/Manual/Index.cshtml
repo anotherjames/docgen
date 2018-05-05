@@ -10,10 +10,10 @@
 
 @*This is after the coversheet, since it isn't on the first page.*@
 <div class="page-number-container left">
-    Page number <span class="page-number"></span>
+    Page number <span class="page-number-text"></span>
 </div>
 <div class="page-number-container right">
-    Page number <span class="page-number"></span>
+    Page number <span class="page-number-text"></span>
 </div>
 
 <div class="toc">
@@ -28,10 +28,18 @@
     }
 </div>
 
+
 <div>
     @foreach (var section in Model.Sections)
     {
         <div class="section">
+            <p class="figure">
+                Test <span class="figure-text">value</span>
+            </p>
+
+            <p class="figure">
+                Test <span class="figure-text">value</span>
+            </p>
             @Html.Raw(section.Html)
         </div>
     }

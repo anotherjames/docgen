@@ -38,7 +38,7 @@ body {
     text-align: right;
 }
 
-.page-number {
+.page-number-text {
     content: counter(page);
 }
 
@@ -48,6 +48,20 @@ body {
 
 .toc .entry a::after {
     content: leader(".") target-counter(attr(href), page);
+}
+
+.section {
+    counter-increment: section;
+    counter-reset: figuire;
+}
+
+.section .figure {
+    counter-increment: figure;
+    font-weight: bold;
+}
+
+.section .figure-text {
+    content: counter(section) "-" counter(figure);
 }
 
 .section h1 {
