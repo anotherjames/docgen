@@ -39,15 +39,20 @@ namespace DocGen.Web.Manual.Impl
                 controller = "Manual",
                 action = "Index"
             });
-            webBuilder.RegisterMvc("/pdf", new
+            webBuilder.RegisterMvc("/pdfreactor/output.pdf", new
             {
-                controller = "Archive",
+                controller = "PDFreactor",
                 action = "Pdf"
             });
-            webBuilder.RegisterMvc("/archive.zip", new
+            webBuilder.RegisterMvc("/pdfreactor/output.zip", new
             {
-                controller = "Archive",
-                action = "Index"
+                controller = "PDFreactor",
+                action = "Archive"
+            });
+            webBuilder.RegisterMvc("/prince/output.pdf", new
+            {
+                controller = "Prince",
+                action = "Pdf"
             });
             
             // Register our static files.

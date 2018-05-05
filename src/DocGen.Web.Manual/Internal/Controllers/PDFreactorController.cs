@@ -10,9 +10,9 @@ using Newtonsoft.Json;
 
 namespace DocGen.Web.Manual.Internal.Controllers
 {
-    public class ArchiveController : Controller
+    public class PDFreactorController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Archive()
         {
             return new ArchiveActionResult();
         }
