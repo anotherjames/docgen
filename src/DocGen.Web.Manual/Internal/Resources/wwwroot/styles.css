@@ -1,0 +1,33 @@
+@page {
+    margin: 2cm;
+}
+
+@page {
+    @bottom {
+        content: element(pagenumber);
+    }
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.coversheet {
+    page-break-after: always;
+}
+
+.page-number {
+    position: running(pagenumber);
+}
+
+.toc {
+    page-break-after: always;
+}
+
+.toc .entry a::after {
+    content: leader(".") target-counter(attr(href), page);
+}
+
+h1 {
+    page-break-before: always;
+}

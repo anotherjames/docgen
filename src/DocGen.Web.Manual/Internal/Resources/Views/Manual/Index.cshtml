@@ -1,11 +1,28 @@
 ﻿@model ManualModel
 
-<div>
+<div class="coversheet">
     <h1>Coversheet</h1>
     <p>Product image: @Model.Coversheet.ProductImage</p>
     <p>Product logo: @Model.Coversheet.ProductLogo</p>
     <p>Model: @Model.Coversheet.Model</p>
     <p>Text: @Model.Coversheet.Text</p>
+</div>
+
+@*This is after the coversheet, since it isn't on the first page.*@
+<div class="page-number">
+    Page number
+</div>
+
+<div class="toc">
+    @foreach (var section in Model.Sections)
+    {
+        foreach (var tocEntry in section.TableOfContents)
+        {
+            <div class="entry level-@tocEntry.Level">
+                <a href="#@tocEntry.Id">@tocEntry.Title</a>
+            </div>
+        }
+    }
 </div>
 
 <div>

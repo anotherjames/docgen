@@ -4,6 +4,8 @@
     {
         public string Title { get; set; }
         
+        public string Id { get; set; }
+        
         public int Level { get; set; }
     }
 }

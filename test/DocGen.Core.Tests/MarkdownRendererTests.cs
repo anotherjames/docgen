@@ -95,6 +95,7 @@ namespace DocGen.Core.Tests
             
             Assert.Equal(7, toc.Count);
             Assert.Equal("Test1", toc[0].Title);
+            Assert.Equal("test1", toc[0].Id);
             Assert.Equal(1, toc[0].Level);
             Assert.Equal("Test2", toc[1].Title);
             Assert.Equal(2, toc[1].Level);
@@ -107,6 +108,7 @@ namespace DocGen.Core.Tests
             Assert.Equal("Test6", toc[5].Title);
             Assert.Equal(2, toc[5].Level);
             Assert.Equal("Test7", toc[6].Title);
+            Assert.Equal("test7", toc[6].Id);
             Assert.Equal(1, toc[6].Level);
         }
     }

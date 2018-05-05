@@ -6,6 +6,7 @@ using Markdig;
 using Markdig.Extensions;
 using Markdig.Helpers;
 using Markdig.Renderers;
+using Markdig.Renderers.Html;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 
@@ -82,6 +83,7 @@ namespace DocGen.Core.Markdown.Impl
                     result.Add(new TocEntry
                     {
                         Level = headingBlock.Level,
+                        Id = headingBlock.TryGetAttributes().Id,
                         Title = MarkdownHelpers.RenderLeafInlineRaw(headingBlock)
                     });
                 }
