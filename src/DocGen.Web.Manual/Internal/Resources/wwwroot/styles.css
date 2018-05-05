@@ -6,6 +6,9 @@
     @bottom {
         content: element(pagenumber);
     }
+    @top {
+        content: element(pagetitle);
+    }
 }
 
 body {
@@ -28,6 +31,10 @@ body {
     content: leader(".") target-counter(attr(href), page);
 }
 
-h1 {
+.section h1 {
     page-break-before: always;
+}
+
+.section h1:first-child {
+    position: running(pagetitle);
 }

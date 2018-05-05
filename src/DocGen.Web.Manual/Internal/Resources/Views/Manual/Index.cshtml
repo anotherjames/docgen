@@ -28,6 +28,8 @@
 <div>
     @foreach (var section in Model.Sections)
     {
-        @Html.Raw(section.Html)
+        <div class="section">
+            @Html.Raw(section.Html)
+        </div>
     }
 </div>
