@@ -29,7 +29,6 @@ targets.Add("build", () => {
 targets.Add("test", () => {
     Process.Run($"dotnet test test/DocGen.Core.Tests/");
     Process.Run($"dotnet test test/DocGen.Requirements.Tests/");
-    Process.Run($"dotnet test test/DocGen.Web.Tests/");
     Process.Run($"dotnet test test/DocGen.Web.Requirements.Tests/");
 });
 
