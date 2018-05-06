@@ -1,11 +1,10 @@
-﻿using System;
-using DocGen.Web.Hosting;
+﻿using Statik.Hosting;
 
 namespace DocGen.Web.Manual
 {
     public interface IManualWeb
     {
-        IWebHost BuildWebHost(string appBase = null, int port = WebDefaults.DefaultPort);
+        IWebHost BuildWebHost(string appBase = null, int port = Statik.StatikDefaults.DefaultPort);
 
         IVirtualHost BuildVirtualHost(string appBase = null);
     }

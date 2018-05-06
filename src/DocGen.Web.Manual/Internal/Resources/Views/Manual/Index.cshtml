@@ -1,11 +1,14 @@
 ﻿@model ManualModel
 
 <div class="coversheet">
-    <h1>Coversheet</h1>
-    <p>Product image: @Model.Coversheet.ProductImage</p>
-    <p>Product logo: @Model.Coversheet.ProductLogo</p>
-    <p>Model: @Model.Coversheet.Model</p>
-    <p>Text: @Model.Coversheet.Text</p>
+    <p>
+        <img style="width: 100%" src="@Model.Coversheet.ProductImage" />
+    </p>
+    <p>
+        <img style="width: 100%;" src="@Model.Coversheet.ProductLogo" />
+    </p>
+    <p>@Model.Coversheet.Model</p>
+    <p>@Model.Coversheet.Text</p>
 </div>
 
 @*This is after the coversheet, since it isn't on the first page.*@
@@ -15,6 +18,7 @@
 <div class="page-number-container right">
     Page number <span class="page-number-text"></span>
 </div>
+
 
 <div class="toc">
     @foreach (var section in Model.Sections)
@@ -28,19 +32,17 @@
     }
 </div>
 
-
 <div>
     @foreach (var section in Model.Sections)
     {
         <div class="section">
-            <p class="figure">
-                Test <span class="figure-text">value</span>
-            </p>
-
-            <p class="figure">
-                Test <span class="figure-text">value</span>
-            </p>
             @Html.Raw(section.Html)
+            <p class="figure">
+                Test <span class="figure-text">value</span>
+            </p>
+            <p class="figure">
+                Test <span class="figure-text">value</span>
+            </p>
         </div>
     }
 </div>

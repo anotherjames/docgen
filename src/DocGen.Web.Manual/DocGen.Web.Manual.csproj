@@ -4,6 +4,5 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\DocGen.Core\DocGen.Core.csproj" />
-    <ProjectReference Include="..\DocGen.Web\DocGen.Web.csproj" />
   </ItemGroup>
 </Project>

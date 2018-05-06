@@ -1,8 +1,28 @@
-@page {
-    margin: 2cm;
+h1, h2, h3, h4, h5, h6, p {
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 24px;
+}
+h2 {
+    font-size: 22px;
+}
+h3 {
+    font-size: 20px;
+}
+h4 {
+    font-size: 18px;
+}
+h5 {
+    font-size: 16px;
+}
+h6 {
+    font-size: 14px;
 }
 
 @page {
+    margin: 2cm;
     @top {
         content: element(pagetitle);
     }
@@ -20,12 +40,17 @@
     }
 }
 
+@page Coversheet {
+    margin: 0;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
 }
 
 .coversheet {
     page-break-after: always;
+    page: Coversheet;
 }
 
 .page-number-container.left {
@@ -46,8 +71,23 @@ body {
     page-break-after: always;
 }
 
+.toc a {
+    color: inherit; /* blue colors for links too */
+    text-decoration: inherit; /* no underline */
+}
+
 .toc .entry a::after {
     content: leader(".") target-counter(attr(href), page);
+}
+
+.toc .entry.level-1 {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.toc .entry.level-2 {
+    margin-left: 10px;
+    font-weight: lighter;
 }
 
 .section {

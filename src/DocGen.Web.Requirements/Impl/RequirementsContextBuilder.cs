@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Statik.Files;
+using Statik.Mvc;
+using Statik.Web;
 
 namespace DocGen.Web.Requirements.Impl
 {
@@ -47,8 +50,7 @@ namespace DocGen.Web.Requirements.Impl
                 throw new DocGenException($"Pages directory {pagesDirectory} doesn't exist");
 
             // Register our static files.
-            var staticFiles = new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Requirements/Internal/Resources/wwwroot");
-            builder.RegisterFiles(staticFiles);
+            builder.RegisterDirectory("/Users/pknopf/git/docgen/src/DocGen.Web.Requirements/Internal/Resources/wwwroot");
 
             var userNeeds = await _requirementsBuilder.BuildRequirementsFromDirectory(requirementsDirectory);
             var pages = await Task.Run(() => Directory.GetFiles(pagesDirectory, "*.md", System.IO.SearchOption.AllDirectories));
@@ -129,7 +131,6 @@ namespace DocGen.Web.Requirements.Impl
                 services.AddSingleton<IMenuStore>(menuStore);
                 // These regitrations are so that our controllers can inject core DocGen services.
                 DocGen.Core.Services.Register(services);
-                DocGen.Web.Services.Register(services);
             });
 
             return new RequirementsContext

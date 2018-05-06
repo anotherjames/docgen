@@ -16,11 +16,10 @@ namespace DocGen.Cons
 
             {
                 var services = new ServiceCollection();
-                DocGen.Core.Services.Register(services);
-                DocGen.Requirements.Services.Register(services);
-                DocGen.Web.Services.Register(services);
-                DocGen.Web.Requirements.Services.Register(services);
-                DocGen.Web.Manual.Services.Register(services);
+                Services.Register(services);
+                Requirements.Services.Register(services);
+                Web.Requirements.Services.Register(services);
+                Web.Manual.Services.Register(services);
                 serviceProvider = services.BuildServiceProvider();
             }
 

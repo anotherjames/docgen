@@ -1,4 +1,6 @@
-﻿namespace DocGen.Web.Requirements
+﻿using Statik.Web;
+
+namespace DocGen.Web.Requirements
 {
     public class RequirementsContext
     {

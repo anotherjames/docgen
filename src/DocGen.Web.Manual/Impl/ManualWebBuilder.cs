@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using DocGen.Core;
 using DocGen.Core.Markdown;
-using DocGen.Requirements;
-using DocGen.Web.Hosting;
 using DocGen.Web.Manual.Internal;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
+using Statik.Files;
+using Statik.Hosting;
+using Statik.Mvc;
+using Statik.Web;
 
 namespace DocGen.Web.Manual.Impl
 {
@@ -34,6 +34,12 @@ namespace DocGen.Web.Manual.Impl
             if(!await Task.Run(() => Directory.Exists(contentDirectory)))
                 throw new DocGenException($"Manual directory {contentDirectory} doesn't exist");
 
+            
+
+            var resourcesDirectory = Path.Combine(contentDirectory, "resources");
+            if(await Task.Run(() => Directory.Exists(resourcesDirectory)))
+                webBuilder.RegisterDirectory("/resources", resourcesDirectory);
+         
             webBuilder.RegisterMvc("/", new
             {
                 controller = "Manual",
@@ -56,8 +62,7 @@ namespace DocGen.Web.Manual.Impl
             });
             
             // Register our static files.
-            var staticFiles = new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Manual/Internal/Resources/wwwroot");
-            webBuilder.RegisterFiles(staticFiles);
+            webBuilder.RegisterDirectory("/Users/pknopf/git/docgen/src/DocGen.Web.Manual/Internal/Resources/wwwroot");
 
             CoversheetConfig coversheet = null;
             var sections = new ManualSectionStore();
@@ -104,7 +109,6 @@ namespace DocGen.Web.Manual.Impl
                 services.AddSingleton(coversheet);
                 // These regitrations are so that our controllers can inject core DocGen services.
                 DocGen.Core.Services.Register(services);
-                DocGen.Web.Services.Register(services);
             });
             
             return new ManualWeb(webBuilder);
@@ -119,7 +123,7 @@ namespace DocGen.Web.Manual.Impl
                 _webBuilder = webBuilder;
             }
             
-            public IWebHost BuildWebHost(string appBase = null, int port = WebDefaults.DefaultPort)
+            public IWebHost BuildWebHost(string appBase = null, int port = Statik.StatikDefaults.DefaultPort)
             {
                 return _webBuilder.BuildWebHost(appBase, port);
             }

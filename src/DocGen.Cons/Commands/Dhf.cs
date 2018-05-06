@@ -5,6 +5,7 @@ using DocGen.Web;
 using Microsoft.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Statik.Hosting;
 
 namespace DocGen.Cons.Commands
 {
@@ -68,7 +69,7 @@ namespace DocGen.Cons.Commands
                 using(var web = context.WebBuilder.BuildWebHost()) {
                     web.Listen();
                     
-                    Log.Information("Listening on port {Port}.", WebDefaults.DefaultPort);
+                    Log.Information("Listening on port {Port}.", Statik.StatikDefaults.DefaultPort);
                     Log.Information("Press enter to exit...");
     
                     Console.ReadLine();
