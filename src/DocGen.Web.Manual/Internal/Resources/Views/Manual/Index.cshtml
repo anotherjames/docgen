@@ -1,12 +1,8 @@
 ﻿@model ManualModel
 
 <div class="coversheet">
-    <p>
-        <img style="width: 100%" src="@Model.Coversheet.ProductImage" />
-    </p>
-    <p>
-        <img style="width: 100%;" src="@Model.Coversheet.ProductLogo" />
-    </p>
+    <img class="product" src="@Model.Coversheet.ProductImage" />
+    <img class="logo" style="width: 100%;" src="@Model.Coversheet.ProductLogo" />
     <p>@Model.Coversheet.Model</p>
     <p>@Model.Coversheet.Text</p>
 </div>
