@@ -34,8 +34,6 @@ namespace DocGen.Web.Manual.Impl
             if(!await Task.Run(() => Directory.Exists(contentDirectory)))
                 throw new DocGenException($"Manual directory {contentDirectory} doesn't exist");
 
-            
-
             var resourcesDirectory = Path.Combine(contentDirectory, "resources");
             if(await Task.Run(() => Directory.Exists(resourcesDirectory)))
                 webBuilder.RegisterDirectory("/resources", resourcesDirectory);

@@ -1,32 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using DocGen.Web;
+using DocGen.Web.Manual;
 using Microsoft.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Statik.Hosting;
 
+// ReSharper disable once MemberHidesStaticFromOuterClass
+
 namespace DocGen.Cons.Commands
 {
-    public class Dhf
+    public partial class Manual
     {
-        public static void Configure(CommandLineApplication app, IServiceProvider serviceProvider)
-        {
-            app.Command("dfh", application =>
-            {
-                application.HelpOption("-? | -h | --help");
-
-                Content.Configure(application, serviceProvider);
-    
-                application.OnExecute(() =>
-                {
-                    application.ShowHelp();
-                    return 0;
-                });
-            });
-        }
-
         private static class Content
         {
             public static void Configure(CommandLineApplication app, IServiceProvider serviceProvider)
@@ -65,14 +51,14 @@ namespace DocGen.Cons.Commands
     
             private static async Task<int> Serve(IServiceProvider serviceProvider, string contentDirectory)
             {
-                var requirementsContextBuilder = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsContextBuilder>();
+                var builder = serviceProvider.GetRequiredService<IManualWebBuilder>();
     
                 if(string.IsNullOrEmpty(contentDirectory))
                     contentDirectory = Directory.GetCurrentDirectory();
+
+                var manual = await builder.BuildManual(contentDirectory);
     
-                var context = await requirementsContextBuilder.Build(contentDirectory);
-    
-                using(var web = context.WebBuilder.BuildWebHost())
+                using(var web = manual.BuildWebHost())
                 {
                     web.Listen();
                     
@@ -90,7 +76,7 @@ namespace DocGen.Cons.Commands
                 string destinationDirectory)
             {
                 var hostExporter = serviceProvider.GetRequiredService<IHostExporter>();
-                var requirementsContextBuilder = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsContextBuilder>();
+                var builder = serviceProvider.GetRequiredService<IManualWebBuilder>();
     
                 if(string.IsNullOrEmpty(contentDirectory))
                     contentDirectory = Directory.GetCurrentDirectory();
@@ -98,9 +84,9 @@ namespace DocGen.Cons.Commands
                 if(string.IsNullOrEmpty(destinationDirectory))
                     destinationDirectory = Path.Combine(contentDirectory, "output");
     
-                var context = await requirementsContextBuilder.Build(contentDirectory);
+                var context = await builder.BuildManual(contentDirectory);
     
-                using(var host = context.WebBuilder.BuildVirtualHost())
+                using(var host = context.BuildVirtualHost())
                     await hostExporter.Export(host, destinationDirectory);
     
                 return 0;

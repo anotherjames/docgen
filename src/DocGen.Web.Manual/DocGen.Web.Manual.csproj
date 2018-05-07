@@ -5,4 +5,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DocGen.Core\DocGen.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MarkdownTranslator" Version="0.4.0" />
+  </ItemGroup>
 </Project>
