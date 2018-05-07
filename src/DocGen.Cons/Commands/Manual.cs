@@ -12,14 +12,14 @@ namespace DocGen.Cons.Commands
 {
     public partial class Manual
     {
-        public static void Configure(CommandLineApplication app, IServiceProvider serviceProvider)
+        public static void Configure(CommandLineApplication app)
         {
             app.Command("manual", application =>
             {
                 application.HelpOption("-? | -h | --help");
 
-                Content.Configure(application, serviceProvider);
-                Translations.Configure(application, serviceProvider);
+                Content.Configure(application);
+                Translations.Configure(application);
                     
                 application.OnExecute(() =>
                 {

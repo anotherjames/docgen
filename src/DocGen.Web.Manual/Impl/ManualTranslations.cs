@@ -7,6 +7,7 @@ using DocGen.Web.Manual.Internal;
 using MarkdownTranslator;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace DocGen.Web.Manual.Impl
@@ -15,22 +16,23 @@ namespace DocGen.Web.Manual.Impl
     {
         readonly IMarkdownTransformer _markdownTransformer;
         readonly IYamlParser _yamlParser;
+        readonly DocGenOptions _options;
 
-        public ManualTranslations(IMarkdownTransformer markdownTransformer,
+        public ManualTranslations(
+            IOptions<DocGenOptions> options,
+            IMarkdownTransformer markdownTransformer,
             IYamlParser yamlParser)
         {
+            _options = options.Value;
             _markdownTransformer = markdownTransformer;
             _yamlParser = yamlParser;
         }
         
-        public async Task RegenerateTemplate(string contentDirectory)
+        public async Task RegenerateTemplate()
         {
-            if(!await Task.Run(() => Directory.Exists(contentDirectory)))
-                throw new DocGenException($"Manual directory {contentDirectory} doesn't exist");
-
             var translations = new List<string>();
             
-            foreach (var markdownFile in await Task.Run(() => Directory.GetFiles(contentDirectory, "*.md")))
+            foreach (var markdownFile in await Task.Run(() => Directory.GetFiles(_options.ContentDirectory, "*.md")))
             {
                 var content = await Task.Run(() => File.ReadAllText(markdownFile));
                 var yaml = _yamlParser.ParseYaml(content);
@@ -59,7 +61,7 @@ namespace DocGen.Web.Manual.Impl
             }
             
             // Now that we have the translations of all of our documents, let's generate the POT file.
-            var destination = Path.Combine(contentDirectory, "translations", "template.pot");
+            var destination = Path.Combine(_options.ContentDirectory, "translations", "template.pot");
             await Task.Run(() =>
             {
                 var parentDirectory = Path.GetDirectoryName(destination) ?? "";
@@ -71,6 +73,11 @@ namespace DocGen.Web.Manual.Impl
                 using (var writer = new StreamWriter(file))
                     _markdownTransformer.CreatePotFile(translations, writer);
             });
+        }
+
+        public List<string> GetLanguages()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

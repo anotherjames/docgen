@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using DocGen.Core;
 using DocGen.Web.Manual;
 using Microsoft.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Statik.Hosting;
 
@@ -15,7 +17,7 @@ namespace DocGen.Cons.Commands
     {
         private static class Content
         {
-            public static void Configure(CommandLineApplication app, IServiceProvider serviceProvider)
+            public static void Configure(CommandLineApplication app)
             {
                 app.Command("content", application =>
                 {
@@ -24,21 +26,17 @@ namespace DocGen.Cons.Commands
                     application.Command("serve", serveApp =>
                     {
                         serveApp.HelpOption("-? | -h | --help");
-                        var contentDirectoryOption = serveApp.Option("-c |--content <content>", "The location of the content directory. Defaults to the current directory", CommandOptionType.SingleValue);
-    
-                        serveApp.OnExecute(() => Serve(serviceProvider,
-                            contentDirectoryOption.Value()));
+                       
+                        serveApp.OnExecute(() => Serve());
                     });
     
                     application.Command("gen", genApp =>
                     {
                         genApp.HelpOption("-? | -h | --help");
-                        var contentDirectoryOption = genApp.Option("-c |--content <content>", "The location of the content directory. Defaults to the current directory", CommandOptionType.SingleValue);
+                        
                         var destDirectoryOption = genApp.Option("-d |--dest <dest>", "The destination that the files will be written to.", CommandOptionType.SingleValue);
     
-                        genApp.OnExecute(() => Generate(serviceProvider,
-                            contentDirectoryOption.Value(),
-                            destDirectoryOption.Value()));
+                        genApp.OnExecute(() => Generate(destDirectoryOption.Value()));
                     });
     
                     application.OnExecute(() =>
@@ -49,14 +47,11 @@ namespace DocGen.Cons.Commands
                 });
             }
     
-            private static async Task<int> Serve(IServiceProvider serviceProvider, string contentDirectory)
+            private static async Task<int> Serve()
             {
-                var builder = serviceProvider.GetRequiredService<IManualWebBuilder>();
+                var builder = Program.GetServiceProvider().GetRequiredService<IManualWebBuilder>();
     
-                if(string.IsNullOrEmpty(contentDirectory))
-                    contentDirectory = Directory.GetCurrentDirectory();
-
-                var manual = await builder.BuildManual(contentDirectory);
+                var manual = await builder.BuildManual();
     
                 using(var web = manual.BuildWebHost())
                 {
@@ -71,20 +66,17 @@ namespace DocGen.Cons.Commands
                 return 0;
             }
     
-            private static async Task<int> Generate(IServiceProvider serviceProvider,
-                string contentDirectory,
-                string destinationDirectory)
+            private static async Task<int> Generate(string destinationDirectory)
             {
+                var serviceProvider = Program.GetServiceProvider();
                 var hostExporter = serviceProvider.GetRequiredService<IHostExporter>();
                 var builder = serviceProvider.GetRequiredService<IManualWebBuilder>();
-    
-                if(string.IsNullOrEmpty(contentDirectory))
-                    contentDirectory = Directory.GetCurrentDirectory();
-    
+                var options = serviceProvider.GetRequiredService<IOptions<DocGenOptions>>().Value;
+                
                 if(string.IsNullOrEmpty(destinationDirectory))
-                    destinationDirectory = Path.Combine(contentDirectory, "output");
+                    destinationDirectory = Path.Combine(options.ContentDirectory, "output");
     
-                var context = await builder.BuildManual(contentDirectory);
+                var context = await builder.BuildManual();
     
                 using(var host = context.BuildVirtualHost())
                     await hostExporter.Export(host, destinationDirectory);

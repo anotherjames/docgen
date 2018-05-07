@@ -13,7 +13,7 @@ namespace DocGen.Cons.Commands
     {
         private static class Translations
         {
-            public static void Configure(CommandLineApplication app, IServiceProvider serviceProvider)
+            public static void Configure(CommandLineApplication app)
             {
                 app.Command("translations", application =>
                 {
@@ -22,10 +22,8 @@ namespace DocGen.Cons.Commands
                     application.Command("update", serveApp =>
                     {
                         serveApp.HelpOption("-? | -h | --help");
-                        var contentDirectoryOption = serveApp.Option("-c |--content <content>", "The location of the content directory. Defaults to the current directory", CommandOptionType.SingleValue);
-    
-                        serveApp.OnExecute(() => Update(serviceProvider,
-                            contentDirectoryOption.Value()));
+                       
+                        serveApp.OnExecute(() => Update());
                     });
     
                     application.OnExecute(() =>
@@ -36,14 +34,11 @@ namespace DocGen.Cons.Commands
                 });
             }
     
-            private static async Task<int> Update(IServiceProvider serviceProvider, string contentDirectory)
+            private static async Task<int> Update()
             {
-                var translations = serviceProvider.GetRequiredService<IManualTranslations>();
+                var translations = Program.GetServiceProvider().GetRequiredService<IManualTranslations>();
     
-                if(string.IsNullOrEmpty(contentDirectory))
-                    contentDirectory = Directory.GetCurrentDirectory();
-
-                await translations.RegenerateTemplate(contentDirectory);
+                await translations.RegenerateTemplate();
 
                 return 0;
             }

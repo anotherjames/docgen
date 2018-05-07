@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using DocGen.Core;
 using DocGen.Web;
+using DocGen.Web.Requirements;
 using Microsoft.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Statik.Hosting;
 
@@ -11,13 +14,13 @@ namespace DocGen.Cons.Commands
 {
     public class Dhf
     {
-        public static void Configure(CommandLineApplication app, IServiceProvider serviceProvider)
+        public static void Configure(CommandLineApplication app)
         {
             app.Command("dfh", application =>
             {
                 application.HelpOption("-? | -h | --help");
 
-                Content.Configure(application, serviceProvider);
+                Content.Configure(application);
     
                 application.OnExecute(() =>
                 {
@@ -29,7 +32,7 @@ namespace DocGen.Cons.Commands
 
         private static class Content
         {
-            public static void Configure(CommandLineApplication app, IServiceProvider serviceProvider)
+            public static void Configure(CommandLineApplication app)
             {
                 app.Command("content", application =>
                 {
@@ -38,21 +41,17 @@ namespace DocGen.Cons.Commands
                     application.Command("serve", serveApp =>
                     {
                         serveApp.HelpOption("-? | -h | --help");
-                        var contentDirectoryOption = serveApp.Option("-c |--content <content>", "The location of the content directory. Defaults to the current directory", CommandOptionType.SingleValue);
-    
-                        serveApp.OnExecute(() => Serve(serviceProvider,
-                            contentDirectoryOption.Value()));
+                        
+                        serveApp.OnExecute(() => Serve());
                     });
     
                     application.Command("gen", genApp =>
                     {
                         genApp.HelpOption("-? | -h | --help");
-                        var contentDirectoryOption = genApp.Option("-c |--content <content>", "The location of the content directory. Defaults to the current directory", CommandOptionType.SingleValue);
+                        
                         var destDirectoryOption = genApp.Option("-d |--dest <dest>", "The destination that the files will be written to.", CommandOptionType.SingleValue);
     
-                        genApp.OnExecute(() => Generate(serviceProvider,
-                            contentDirectoryOption.Value(),
-                            destDirectoryOption.Value()));
+                        genApp.OnExecute(() => Generate(destDirectoryOption.Value()));
                     });
     
                     application.OnExecute(() =>
@@ -63,14 +62,12 @@ namespace DocGen.Cons.Commands
                 });
             }
     
-            private static async Task<int> Serve(IServiceProvider serviceProvider, string contentDirectory)
+            private static async Task<int> Serve()
             {
-                var requirementsContextBuilder = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsContextBuilder>();
+                var requirementsContextBuilder = Program.GetServiceProvider()
+                    .GetRequiredService<IRequirementsContextBuilder>();
     
-                if(string.IsNullOrEmpty(contentDirectory))
-                    contentDirectory = Directory.GetCurrentDirectory();
-    
-                var context = await requirementsContextBuilder.Build(contentDirectory);
+                var context = await requirementsContextBuilder.Build();
     
                 using(var web = context.WebBuilder.BuildWebHost())
                 {
@@ -85,20 +82,18 @@ namespace DocGen.Cons.Commands
                 return 0;
             }
     
-            private static async Task<int> Generate(IServiceProvider serviceProvider,
-                string contentDirectory,
-                string destinationDirectory)
+            private static async Task<int> Generate(string destinationDirectory)
             {
+                var serviceProvider = Program.GetServiceProvider();
+                
                 var hostExporter = serviceProvider.GetRequiredService<IHostExporter>();
-                var requirementsContextBuilder = serviceProvider.GetRequiredService<DocGen.Web.Requirements.IRequirementsContextBuilder>();
-    
-                if(string.IsNullOrEmpty(contentDirectory))
-                    contentDirectory = Directory.GetCurrentDirectory();
-    
+                var requirementsContextBuilder = serviceProvider.GetRequiredService<IRequirementsContextBuilder>();
+                var options = serviceProvider.GetRequiredService<IOptions<DocGenOptions>>().Value;
+                
                 if(string.IsNullOrEmpty(destinationDirectory))
-                    destinationDirectory = Path.Combine(contentDirectory, "output");
+                    destinationDirectory = Path.Combine(options.ContentDirectory, "output");
     
-                var context = await requirementsContextBuilder.Build(contentDirectory);
+                var context = await requirementsContextBuilder.Build();
     
                 using(var host = context.WebBuilder.BuildVirtualHost())
                     await hostExporter.Export(host, destinationDirectory);

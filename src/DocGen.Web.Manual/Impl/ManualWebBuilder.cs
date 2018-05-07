@@ -7,6 +7,7 @@ using DocGen.Web.Manual.Internal;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Statik.Files;
 using Statik.Hosting;
@@ -17,24 +18,25 @@ namespace DocGen.Web.Manual.Impl
 {
     public class ManualWebBuilder : IManualWebBuilder
     {
+        readonly DocGenOptions _options;
         readonly IServiceProvider _serviceProvider;
         readonly IYamlParser _yamlParser;
 
-        public ManualWebBuilder(IServiceProvider serviceProvider,
+        public ManualWebBuilder(
+            IOptions<DocGenOptions> options,
+            IServiceProvider serviceProvider,
             IYamlParser yamlParser)
         {
+            _options = options.Value;
             _serviceProvider = serviceProvider;
             _yamlParser = yamlParser;
         }
         
-        public async Task<IManualWeb> BuildManual(string contentDirectory)
+        public async Task<IManualWeb> BuildManual()
         {
             var webBuilder = _serviceProvider.GetRequiredService<IWebBuilder>();
             
-            if(!await Task.Run(() => Directory.Exists(contentDirectory)))
-                throw new DocGenException($"Manual directory {contentDirectory} doesn't exist");
-
-            var resourcesDirectory = Path.Combine(contentDirectory, "resources");
+            var resourcesDirectory = Path.Combine(_options.ContentDirectory, "resources");
             if(await Task.Run(() => Directory.Exists(resourcesDirectory)))
                 webBuilder.RegisterDirectory("/resources", resourcesDirectory);
          
@@ -64,7 +66,7 @@ namespace DocGen.Web.Manual.Impl
 
             CoversheetConfig coversheet = null;
             var sections = new ManualSectionStore();
-            foreach (var markdownFile in await Task.Run(() => Directory.GetFiles(contentDirectory, "*.md")))
+            foreach (var markdownFile in await Task.Run(() => Directory.GetFiles(_options.ContentDirectory, "*.md")))
             {
                 var content = await Task.Run(() => File.ReadAllText(markdownFile));
                 var yaml = _yamlParser.ParseYaml(content);

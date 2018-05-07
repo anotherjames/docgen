@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DocGen.Web.Manual
 {
     public interface IManualTranslations
     {
-        Task RegenerateTemplate(string contentDirectory);
+        Task RegenerateTemplate();
+
+        List<string> GetLanguages();
     }
 }

@@ -4,6 +4,6 @@ namespace DocGen.Web.Manual
 {
     public interface IManualWebBuilder
     {
-        Task<IManualWeb> BuildManual(string contentDirectory);
+        Task<IManualWeb> BuildManual();
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using Statik.Files;
 using Statik.Mvc;
 using Statik.Web;
@@ -20,28 +21,29 @@ namespace DocGen.Web.Requirements.Impl
 {
     public class RequirementsContextBuilder : IRequirementsContextBuilder
     {
+        readonly DocGenOptions _options;
         readonly IRequirementsBuilder _requirementsBuilder;
         readonly IServiceProvider _serviceProvider;
         readonly IMarkdownRenderer _markdownRenderer;
 
-        public RequirementsContextBuilder(IRequirementsBuilder requirementsBuilder,
+        public RequirementsContextBuilder(
+            IOptions<DocGenOptions> options,
+            IRequirementsBuilder requirementsBuilder,
             IServiceProvider serviceProvider,
             IMarkdownRenderer markdownRenderer)
         {
+            _options = options.Value;
             _requirementsBuilder = requirementsBuilder;
             _serviceProvider = serviceProvider;
             _markdownRenderer = markdownRenderer;
         }
 
-        public async Task<RequirementsContext> Build(string contentDirectory)
+        public async Task<RequirementsContext> Build()
         {
             var builder = _serviceProvider.GetRequiredService<IWebBuilder>();
             
-            if(!Directory.Exists(contentDirectory))
-                throw new DocGenException($"Requirements directory {contentDirectory} doesn't exist");
-
-            var requirementsDirectory = Path.Combine(contentDirectory, "requirements");
-            var pagesDirectory = Path.Combine(contentDirectory, "pages");
+            var requirementsDirectory = Path.Combine(_options.ContentDirectory, "requirements");
+            var pagesDirectory = Path.Combine(_options.ContentDirectory, "pages");
 
             if(!Directory.Exists(requirementsDirectory))
                 throw new DocGenException($"Requirements directory {requirementsDirectory} doesn't exist");
