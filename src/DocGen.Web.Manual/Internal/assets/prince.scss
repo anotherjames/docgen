@@ -1,3 +1,7 @@
+$font-weight-light: 100;
+$font-weight-normal: 300;
+$font-weight-bold: 900;
+$font-family-base: 'Roboto', sans-serif;
 $icon-font-path: "~bootstrap/assets/fonts/bootstrap/";
 $enable-print-styles: false;
 @import "~bootstrap/scss/bootstrap";
@@ -32,20 +36,39 @@ body {
   background-color: #e5e6e5;
 }
 
-body {
-  font-family: 'Roboto', sans-serif;
-}
-
 .coversheet {
   page-break-after: always;
   page: Coversheet;
-}
+  
+  .product {
+    max-width: 500pt;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+  
+  .info {
+    width: 300pt;
+    margin-right: 100pt;
+    .logo {
+      width: 100%;
+    }
+    .user-manual {
+      text-transform: uppercase;
+      font-weight: $font-weight-bold;
+      margin: 0;
+    }
+    .model, .text {
+      text-align: right;
+      margin: 0;
+    }
+  }
+  
+  
 
-.coversheet .product, .coversheet .logo {
-  max-width: 500pt;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
+  .info {
+    @include float-right;
+  }
 }
 
 .page-number-container.left {

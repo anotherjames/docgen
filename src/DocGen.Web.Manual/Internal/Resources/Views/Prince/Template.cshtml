@@ -5,9 +5,12 @@
 }
 <div class="coversheet">
     <img class="product" src="@Model.Coversheet.ProductImage" />
-    <img class="logo" style="width: 100%;" src="@Model.Coversheet.ProductLogo" />
-    <p>@Model.Coversheet.Model</p>
-    <p>@Model.Coversheet.Text</p>
+    <div class="info">
+        <img class="logo" src="@Model.Coversheet.ProductLogo" />
+        <p class="user-manual">User Manual</p>
+        <p class="model">@Model.Coversheet.Model</p>
+        <p class="text">@Model.Coversheet.Text</p>
+    </div>
 </div>
 
 @*This is after the coversheet, since it isn't on the first page.*@
