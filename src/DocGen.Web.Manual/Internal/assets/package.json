@@ -10,7 +10,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "bootstrap-scss": "^4.1.1",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",

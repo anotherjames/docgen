@@ -19,7 +19,7 @@ namespace DocGen.Web.Manual.Internal.Controllers
             _coversheetConfig = coversheetConfig;
         }
         
-        public ActionResult Index()
+        public ActionResult Pdf()
         {
             var model = new ManualModel();
             

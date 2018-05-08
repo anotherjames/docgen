@@ -1,35 +1,39 @@
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+var stylesCss = new ExtractTextPlugin("[name].css");
+
 var options = {
     minimize: false
 };
 
 module.exports = {
   mode: 'development',
-  entry: './script.js',
+  entry: {
+      prince: './prince.scss',
+      web: './web.scss'
+  },
   output: {
-    filename: 'script.js',
-    path: path.resolve(__dirname, '..', 'wwwroot', 'dist')
+    path: path.resolve(__dirname, '..', 'Resources', 'wwwroot', 'dist')
   },
   module: {
     rules: [
       {
-        test: /\.less$/,
-        use: ExtractTextPlugin.extract({
+        test: /\.scss/,
+        use: stylesCss.extract({
           fallback: "style-loader",
           use: [
             {
               loader: 'css-loader',
               options: options
             },
-            'less-loader'
+            'sass-loader'
           ]
         })
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
+        use: stylesCss.extract({
           fallback: "style-loader",
           use: [
             {
@@ -50,6 +54,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin("styles.css"),
+      stylesCss
   ]
 };

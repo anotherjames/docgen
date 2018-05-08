@@ -1,5 +1,8 @@
 ﻿@model ManualModel
-
+@{
+    var layout = "_LayoutPrince";
+    Layout = layout;
+}
 <div class="coversheet">
     <img class="product" src="@Model.Coversheet.ProductImage" />
     <img class="logo" style="width: 100%;" src="@Model.Coversheet.ProductLogo" />

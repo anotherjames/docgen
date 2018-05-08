@@ -331,3 +331,5 @@ ASALocalRun/
 lcov.info
 example/output/*
 output/
+src/DocGen.Web.Manual/Internal/Resources/wwwroot/dist/prince.js
+src/DocGen.Web.Manual/Internal/Resources/wwwroot/dist/web.js

@@ -42,19 +42,16 @@ namespace DocGen.Web.Manual.Impl
          
             webBuilder.RegisterMvc("/", new
             {
-                controller = "Manual",
+                controller = "Home",
                 action = "Index"
             });
-            webBuilder.RegisterMvc("/pdfreactor/output.pdf", new
+            
+            webBuilder.RegisterMvc("/prince/template", new
             {
-                controller = "PDFreactor",
-                action = "Pdf"
+                controller = "Prince",
+                action = "Template"
             });
-            webBuilder.RegisterMvc("/pdfreactor/output.zip", new
-            {
-                controller = "PDFreactor",
-                action = "Archive"
-            });
+            
             webBuilder.RegisterMvc("/prince/output.pdf", new
             {
                 controller = "Prince",

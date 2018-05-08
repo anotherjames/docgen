@@ -8,4 +8,9 @@
   <ItemGroup>
     <PackageReference Include="MarkdownTranslator" Version="0.4.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Internal\assets\node_modules\**" />
+    <EmbeddedResource Remove="Internal\assets\node_modules\**" />
+    <None Remove="Internal\assets\node_modules\**" />
+  </ItemGroup>
 </Project>
