@@ -1,5 +1,7 @@
 .toc {
   page-break-after: always;
+  column-count: 2;
+  column-fill: auto;
   h1 {
     string-set: page-title content();
   }
