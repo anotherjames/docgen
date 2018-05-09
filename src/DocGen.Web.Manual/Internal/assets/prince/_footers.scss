@@ -5,7 +5,7 @@
   &.left {
     position: running(page-number-left);
     float: left;
-    padding-left: 60pt;
+    padding-left: 80pt;
     padding-right: 20pt;
   }
 
@@ -13,7 +13,7 @@
     position: running(page-number-right);
     float: right;
     padding-left: 20pt;
-    padding-right: 60pt;
+    padding-right: 80pt;
   }
   
   .text {
@@ -24,11 +24,13 @@
 @page :left {
   @bottom-left-corner {
     content: element(page-number-left);
+    margin-left: -20pt;
   }
 }
 
 @page :right {
   @bottom-right-corner {
     content: element(page-number-right);
+    margin-right: -20pt;
   }
 }
