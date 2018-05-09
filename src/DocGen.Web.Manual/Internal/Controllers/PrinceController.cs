@@ -33,6 +33,7 @@ namespace DocGen.Web.Manual.Internal.Controllers
                 var markdown = _markdownRenderer.RenderMarkdown(section.Markdown);
                 var toc = _markdownRenderer.ExtractTocEntries(section.Markdown);
 
+                sectionModel.Title = section.Title;
                 sectionModel.Html = markdown.Html;
                 sectionModel.TableOfContents.AddRange(toc);
                 

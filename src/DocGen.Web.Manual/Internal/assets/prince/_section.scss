@@ -4,6 +4,7 @@
   column-count: 2;
 }
 
+
 .section .figure {
   counter-increment: figure;
   font-weight: bold;
@@ -14,10 +15,11 @@
 }
 
 .section {
-  h1 {
-    page-break-before: always;
-  }
+  page-break-before: always;
   h1, h2, h3, h4, h5, h6 {
-     column-break-before: always;
+    column-break-before: always;
+  }
+  p {
+    text-align: justify;
   }
 }

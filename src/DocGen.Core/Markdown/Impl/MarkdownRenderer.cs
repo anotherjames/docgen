@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Markdig;
 using Markdig.Extensions;
+using Markdig.Extensions.CustomContainers;
 using Markdig.Helpers;
 using Markdig.Renderers;
 using Markdig.Renderers.Html;
@@ -26,10 +27,7 @@ namespace DocGen.Core.Markdown.Impl
         {
             var yaml = _yamlParser.ParseYaml(markdown);
 
-            var html = Markdig.Markdown.ToHtml(yaml.Markdown,
-                new Markdig.MarkdownPipelineBuilder()
-                    .UseAdvancedExtensions()
-                    .Build());
+            var html = Markdig.Markdown.ToHtml(yaml.Markdown, DocgenDefaults.GetDefaultPipeline());
             
             if(!string.IsNullOrEmpty(html))
             {
@@ -48,9 +46,7 @@ namespace DocGen.Core.Markdown.Impl
 
         public List<TocEntry> ExtractTocEntries(string markdown)
         {
-            var pipeline = new MarkdownPipelineBuilder()
-                .UseAdvancedExtensions()
-                .Build();
+            var pipeline = DocgenDefaults.GetDefaultPipeline();
             var document = Markdig.Markdown.Parse(markdown, pipeline);
 
             var result = new List<TocEntry>();
@@ -65,6 +61,13 @@ namespace DocGen.Core.Markdown.Impl
                         Id = headingBlock.TryGetAttributes().Id,
                         Title = MarkdownHelpers.RenderLeafInlineRaw(headingBlock)
                     });
+                }
+                if (block is CustomContainer customContainer)
+                {
+                    foreach (var child in customContainer)
+                    {
+                        WalkBlock(child);
+                    }
                 }
             }
 

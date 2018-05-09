@@ -1,6 +1,9 @@
 .print-header {
   content: string(page-title);
   text-transform: uppercase;
+  color: #A1ABB2;
+  font-size: 10pt;
+  font-weight: 900;
   
   &.left {
     position: running(print-header-left);
@@ -28,10 +31,5 @@
 .toc {
   h1 {
     string-set: page-title content();
-    display: none;
   }
-}
-
-.section h1:first-child {
-  string-set: page-title content();
 }

@@ -10,6 +10,8 @@ namespace DocGen.Web.Manual.Internal.Models
             TableOfContents = new List<TocEntry>();
         }
         
+        public string Title { get; set; }
+        
         public string Html { get; set; }
         
         public List<TocEntry> TableOfContents { get; set; }

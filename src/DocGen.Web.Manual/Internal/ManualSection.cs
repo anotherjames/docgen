@@ -2,12 +2,15 @@
 {
     public class ManualSection
     {
-        public ManualSection(int order, string markdown, string file)
+        public ManualSection(string title, int order, string markdown, string file)
         {
+            Title = title;
             Order = order;
             Markdown = markdown;
             File = file;
         }
+        
+        public string Title { get; }
         
         public int Order { get; }
         

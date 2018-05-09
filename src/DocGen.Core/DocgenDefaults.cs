@@ -6,7 +6,10 @@ namespace DocGen.Core
     {
         public static MarkdownPipeline GetDefaultPipeline()
         {
-            return new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            return new MarkdownPipelineBuilder()
+                .UseCustomContainers()
+                .UseAdvancedExtensions()
+                .Build();
         }
     }
 }

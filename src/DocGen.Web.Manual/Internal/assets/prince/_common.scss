@@ -14,3 +14,26 @@ html {
   prince-bleed: 0.25in;
   prince-trim: 0.25in;
 }
+
+.span-page {
+  column-span: all;
+  img {
+    width: 100%;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: 10pt;
+  color: #282829;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+b, strong {
+  font-weight: 700;
+}
+
+ul, ol {
+  margin-left: 15pt;
+  padding-left: 0;
+}

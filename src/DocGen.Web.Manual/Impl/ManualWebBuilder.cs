@@ -87,7 +87,10 @@ namespace DocGen.Web.Manual.Impl
                         break;
                     case "Content":
                         var order = (int?)yaml.Yaml.Order;
-                        sections.AddMarkdown(order ?? 0, yaml.Markdown, markdownFile);
+                        var title = (string) yaml.Yaml.Title;
+                        if (string.IsNullOrEmpty(title))
+                            throw new DocGenException($"The file {markdownFile} needs a title.");
+                        sections.AddMarkdown(title, order ?? 0, yaml.Markdown, markdownFile);
                         break;
                     default:
                         throw new DocGenException("Unknown contente type");
