@@ -12533,6 +12533,30 @@ a.text-dark:hover, a.text-dark:focus {
 .section h1:first-child {
   string-set: page-title content(); }
 
+.page-number {
+  background-color: #A1ABB2;
+  color: white; }
+  .page-number.left {
+    position: running(page-number-left);
+    float: left;
+    padding-left: 60pt;
+    padding-right: 20pt; }
+  .page-number.right {
+    position: running(page-number-right);
+    float: right;
+    padding-left: 20pt;
+    padding-right: 60pt; }
+  .page-number .text {
+    content: counter(page); }
+
+@page :left {
+  @bottom-left-corner {
+    content: element(page-number-left); } }
+
+@page :right {
+  @bottom-right-corner {
+    content: element(page-number-right); } }
+
 @page Coversheet {
   margin: 0;
   background-color: #e5e6e5; }
@@ -12586,7 +12610,7 @@ body {
   background-color: inherit; }
 
 @page {
-  margin: 2cm;
+  margin: 60pt;
   width: 612pt;
   height: 792pt; }
 

@@ -6,6 +6,7 @@ $icon-font-path: "~bootstrap/assets/fonts/bootstrap/";
 $enable-print-styles: false;
 @import "~bootstrap/scss/bootstrap";
 @import "prince/headers.scss";
+@import "prince/footers.scss";
 @import "prince/coversheet";
 @import "prince/toc";
 
@@ -14,7 +15,7 @@ body {
 }
 
 @page {
-  margin: 2cm;
+  margin: 60pt;
   width: 612pt;
   height: 792pt;
 }
