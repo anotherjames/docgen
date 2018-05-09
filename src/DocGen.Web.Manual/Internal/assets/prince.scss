@@ -14,20 +14,22 @@ body {
   margin: 2cm;
   width: 612pt;
   height: 792pt;
-  @top {
-    content: element(pagetitle);
-  }
 }
 
 @page :left {
   @bottom {
     content: element(pagenumberleft);
   }
+  @top-left {
+    content: string(page-title);
 }
 
 @page :right {
   @bottom {
     content: element(pagenumberright);
+  }
+  @top-right {
+    content: string(page-title);
   }
 }
 
@@ -64,8 +66,6 @@ body {
     }
   }
   
-  
-
   .info {
     @include float-right;
   }
@@ -85,8 +85,15 @@ body {
   content: counter(page);
 }
 
+%section-header {
+  text-transform: uppercase;
+}
+
 .toc {
   page-break-after: always;
+  h1 {
+    string-set: page-title content();
+  }
 }
 
 .toc a {
@@ -127,5 +134,5 @@ body {
 }
 
 .section h1:first-child {
-  position: running(pagetitle);
+  string-set: page-title content();
 }

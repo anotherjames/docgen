@@ -12514,17 +12514,24 @@ body {
 @page {
   margin: 2cm;
   width: 612pt;
-  height: 792pt;
-  @top {
-    content: element(pagetitle); } }
+  height: 792pt; }
 
 @page :left {
   @bottom {
-    content: element(pagenumberleft); } }
+    content: element(pagenumberleft); }
+  @top-left {
+    content: string(page-title);
+    text-transform: uppercase;
+    background: red;
+    display: block;
+    float: left; } }
 
 @page :right {
   @bottom {
-    content: element(pagenumberright); } }
+    content: element(pagenumberright); }
+  @top-right {
+    content: string(page-title);
+    text-transform: uppercase; } }
 
 @page Coversheet {
   margin: 0;
@@ -12566,6 +12573,8 @@ body {
 
 .toc {
   page-break-after: always; }
+  .toc h1 {
+    string-set: page-title content(); }
 
 .toc a {
   color: inherit;
@@ -12599,4 +12608,4 @@ body {
   page-break-before: always; }
 
 .section h1:first-child {
-  position: running(pagetitle); }
+  string-set: page-title content(); }

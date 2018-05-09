@@ -1,0 +1,26 @@
+
+.toc {
+  page-break-after: always;
+  h1 {
+    string-set: page-title content();
+  }
+}
+
+.toc a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
+.toc .entry a::after {
+  content: leader(".") target-counter(attr(href), page);
+}
+
+.toc .entry.level-1 {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.toc .entry.level-2 {
+  margin-left: 10px;
+  font-weight: lighter;
+}

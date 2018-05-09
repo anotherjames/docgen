@@ -21,8 +21,10 @@
     Page number <span class="page-number-text"></span>
 </div>
 
+<div class="print-header"></div>
 
 <div class="toc">
+    <h1>Table of contents</h1>
     @foreach (var section in Model.Sections)
     {
         foreach (var tocEntry in section.TableOfContents)
