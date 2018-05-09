@@ -1,0 +1,37 @@
+.print-header {
+  content: string(page-title);
+  text-transform: uppercase;
+  
+  &.left {
+    position: running(print-header-left);
+    float: left;
+  }
+  
+  &.right {
+    position: running(print-header-right);
+    float: right;
+  }
+}
+
+@page :left {
+  @top-left {
+    content: element(print-header-left);
+  }
+}
+
+@page :right {
+  @top-right {
+    content: element(print-header-right);
+  }
+}
+
+.toc {
+  h1 {
+    string-set: page-title content();
+    display: none;
+  }
+}
+
+.section h1:first-child {
+  string-set: page-title content();
+}

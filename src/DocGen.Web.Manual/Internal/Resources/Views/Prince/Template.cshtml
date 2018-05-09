@@ -3,6 +3,7 @@
     var layout = "_LayoutPrince";
     Layout = layout;
 }
+
 <div class="coversheet">
     <img class="product" src="@Model.Coversheet.ProductImage" />
     <div class="info">
@@ -13,6 +14,9 @@
     </div>
 </div>
 
+<div class="print-header left">left</div>
+<div class="print-header right">right</div>
+
 @*This is after the coversheet, since it isn't on the first page.*@
 <div class="page-number-container left">
     Page number <span class="page-number-text"></span>
@@ -20,8 +24,6 @@
 <div class="page-number-container right">
     Page number <span class="page-number-text"></span>
 </div>
-
-<div class="print-header"></div>
 
 <div class="toc">
     <h1>Table of contents</h1>

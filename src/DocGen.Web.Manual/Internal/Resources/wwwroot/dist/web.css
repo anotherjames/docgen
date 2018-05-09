@@ -12508,30 +12508,30 @@ a.text-dark:hover, a.text-dark:focus {
 .invisible {
   visibility: hidden !important; }
 
-body {
-  background-color: inherit; }
-
-@page {
-  margin: 2cm;
-  width: 612pt;
-  height: 792pt; }
+.print-header {
+  content: string(page-title);
+  text-transform: uppercase; }
+  .print-header.left {
+    position: running(print-header-left);
+    float: left; }
+  .print-header.right {
+    position: running(print-header-right);
+    float: right; }
 
 @page :left {
-  @bottom {
-    content: element(pagenumberleft); }
   @top-left {
-    content: string(page-title);
-    text-transform: uppercase;
-    background: red;
-    display: block;
-    float: left; } }
+    content: element(print-header-left); } }
 
 @page :right {
-  @bottom {
-    content: element(pagenumberright); }
   @top-right {
-    content: string(page-title);
-    text-transform: uppercase; } }
+    content: element(print-header-right); } }
+
+.toc h1 {
+  string-set: page-title content();
+  display: none; }
+
+.section h1:first-child {
+  string-set: page-title content(); }
 
 @page Coversheet {
   margin: 0;
@@ -12560,17 +12560,6 @@ body {
   .coversheet .info {
     float: right !important; }
 
-.page-number-container.left {
-  position: running(pagenumberleft);
-  text-align: left; }
-
-.page-number-container.right {
-  position: running(pagenumberright);
-  text-align: right; }
-
-.page-number-text {
-  content: counter(page); }
-
 .toc {
   page-break-after: always; }
   .toc h1 {
@@ -12593,6 +12582,33 @@ body {
   margin-left: 10px;
   font-weight: lighter; }
 
+body {
+  background-color: inherit; }
+
+@page {
+  margin: 2cm;
+  width: 612pt;
+  height: 792pt; }
+
+@page :left {
+  @bottom {
+    content: element(pagenumberleft); } }
+
+@page :right {
+  @bottom {
+    content: element(pagenumberright); } }
+
+.page-number-container.left {
+  position: running(pagenumberleft);
+  text-align: left; }
+
+.page-number-container.right {
+  position: running(pagenumberright);
+  text-align: right; }
+
+.page-number-text {
+  content: counter(page); }
+
 .section {
   counter-increment: section;
   counter-reset: figuire; }
@@ -12606,6 +12622,3 @@ body {
 
 .section h1 {
   page-break-before: always; }
-
-.section h1:first-child {
-  string-set: page-title content(); }
