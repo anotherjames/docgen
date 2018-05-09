@@ -1,0 +1,17 @@
+.section {
+  counter-increment: section;
+  counter-reset: figuire;
+}
+
+.section .figure {
+  counter-increment: figure;
+  font-weight: bold;
+}
+
+.section .figure-text {
+  content: counter(section) "-" counter(figure);
+}
+
+.section h1 {
+  page-break-before: always;
+}

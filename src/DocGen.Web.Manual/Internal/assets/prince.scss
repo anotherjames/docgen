@@ -5,65 +5,10 @@ $font-family-base: 'Roboto', sans-serif;
 $icon-font-path: "~bootstrap/assets/fonts/bootstrap/";
 $enable-print-styles: false;
 @import "~bootstrap/scss/bootstrap";
+
+@import "prince/common";
 @import "prince/headers.scss";
 @import "prince/footers.scss";
 @import "prince/coversheet";
 @import "prince/toc";
-
-body {
-  background-color: inherit;
-}
-
-@page {
-  margin: 60pt;
-  width: 612pt;
-  height: 792pt;
-}
-
-@page :left {
-  @bottom {
-    content: element(pagenumberleft);
-  }
-}
-
-@page :right {
-  @bottom {
-    content: element(pagenumberright);
-  }
-}
-
-.page-number-container.left {
-  position: running(pagenumberleft);
-  text-align: left;
-}
-
-.page-number-container.right {
-  position: running(pagenumberright);
-  text-align: right;
-}
-
-.page-number-text {
-  content: counter(page);
-}
-
-%section-header {
-  text-transform: uppercase;
-}
-
-.section {
-  counter-increment: section;
-  counter-reset: figuire;
-}
-
-.section .figure {
-  counter-increment: figure;
-  font-weight: bold;
-}
-
-.section .figure-text {
-  content: counter(section) "-" counter(figure);
-}
-
-.section h1 {
-  page-break-before: always;
-}
+@import "prince/section";
