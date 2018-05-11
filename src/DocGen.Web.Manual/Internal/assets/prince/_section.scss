@@ -2,6 +2,12 @@
   counter-increment: section;
   counter-reset: figuire;
   column-count: 2;
+  
+  figure {
+    img {
+      width: 100%;
+    }
+  }
 }
 
 
@@ -20,6 +26,16 @@
     column-break-before: always;
   }
   p {
+    // Try to expand the text the entire column, if possible.
     text-align: justify;
+    /*prevent from spanning multiple columns.*/
+    page-break-inside: avoid;
+  }
+  .span-page {
+    // If we are spanning all content, instead of column breaking,
+    // we need to page break.
+    h1 {
+      page-break-before: always;
+    }
   }
 }
