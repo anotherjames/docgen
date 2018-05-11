@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using DocGen.Core;
 using DocGen.Core.Markdown;
 using DocGen.Web.Manual.Internal.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -24,17 +26,43 @@ namespace DocGen.Web.Manual.Internal.Controllers
         public ActionResult Template()
         {
             var model = new ManualModel();
+
+            model.Coversheet = new CoversheetConfig
+            {
+                ProductImage = _coversheetConfig.ProductImage,
+                ProductLogo = _coversheetConfig.ProductLogo,
+                Model = _coversheetConfig.Model,
+                Text = _coversheetConfig.Text
+            };
+
+            model.Coversheet.ProductImage = Helpers.ResolvePathPart("/", model.Coversheet.ProductImage);
+            model.Coversheet.ProductLogo = Helpers.ResolvePathPart("/", model.Coversheet.ProductLogo);
+
+            model.Coversheet.ProductImage = Url.Content($"~{model.Coversheet.ProductImage}");
+            model.Coversheet.ProductLogo = Url.Content($"~{model.Coversheet.ProductLogo}");
             
-            model.Coversheet = _coversheetConfig;
             foreach (var section in _manualSectionStore.GetSections())
             {
                 var sectionModel = new SectionModel();
+
+                var markdown = section.Markdown;
                 
-                var markdown = _markdownRenderer.RenderMarkdown(section.Markdown);
+                // Update the links in the rendered markdown document.
+                
+                markdown = _markdownRenderer.TransformLinks(markdown, link =>
+                {
+                    // Since all markdown files are in root,
+                    // let's base the urls off of "/".
+                    var resolved = Helpers.ResolvePathPart("/", link);
+                    // This will append our app base to the url, if any.
+                    return Url.Content($"~{resolved}");
+                });
+                
+                var markdownResult = _markdownRenderer.RenderMarkdown(markdown);
                 var toc = _markdownRenderer.ExtractTocEntries(section.Markdown);
 
                 sectionModel.Title = section.Title;
-                sectionModel.Html = markdown.Html;
+                sectionModel.Html = markdownResult.Html;
                 sectionModel.TableOfContents.AddRange(toc);
                 
                 model.Sections.Add(sectionModel);

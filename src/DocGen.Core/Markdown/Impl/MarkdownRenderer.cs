@@ -11,6 +11,7 @@ using Markdig.Renderers.Html;
 using Markdig.Renderers.Normalize;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
+using MarkdownTranslator.Utilities;
 
 namespace DocGen.Core.Markdown.Impl
 {
@@ -77,6 +78,58 @@ namespace DocGen.Core.Markdown.Impl
             }
 
             return result;
+        }
+
+        public string TransformLinks(string markdown, Func<string, string> func)
+        {
+            using (var stringWriter = new StringWriter())
+            {
+                var transformRenderer = new MarkdownTransformRenderer(stringWriter, markdown);
+                transformRenderer.ObjectRenderers.Add(new LinkTransformRenderer(func));
+
+                var document = Markdig.Markdown.Parse(markdown, DocgenDefaults.GetDefaultPipeline());
+
+                transformRenderer.Render(document);
+
+                // Flush any remaining markdown content.
+                transformRenderer.Writer.Write(transformRenderer.TakeNext(transformRenderer.OriginalMarkdown.Length - transformRenderer.LastWrittenIndex));
+                
+                stringWriter.Flush();
+                
+                return stringWriter.ToString();
+            }
+        }
+
+        class LinkTransformRenderer : MarkdownObjectRenderer<MarkdownTransformRenderer, LinkInline>
+        {
+            readonly Func<string, string> _func;
+
+            public LinkTransformRenderer(Func<string, string> func)
+            {
+                _func = func;
+            }
+            
+            protected override void Write(MarkdownTransformRenderer renderer, LinkInline obj)
+            {
+                if (obj.IsAutoLink)
+                {
+                    return;
+                }
+                
+                if (!obj.UrlSpan.HasValue)
+                {
+                    renderer.WriteChildren(obj);
+                    return;
+                }
+
+                // Make sure we flush everything up to the url, which we will replace.
+                renderer.Write(renderer.TakeNext(obj.UrlSpan.Value.Start - renderer.LastWrittenIndex));
+                    
+                var url = renderer.TakeNext(obj.UrlSpan.Value.Length);
+                var newUrl = _func(url);
+                
+                renderer.Write(newUrl);
+            }
         }
     }
 }

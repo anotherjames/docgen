@@ -10,7 +10,6 @@ namespace DocGen.Web.Manual
         {
             services.AddSingleton<IManualWebBuilder, Impl.ManualWebBuilder>();
             services.AddSingleton<IManualTranslations, Impl.ManualTranslations>();
-            services.AddSingleton<IMarkdownTransformer, MarkdownTransformer>();
         }
     }
 }

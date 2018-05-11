@@ -11,5 +11,7 @@ namespace DocGen.Core.Markdown
         Task<MarkdownRenderResult> RenderMarkdownFromFile(string file);
 
         List<TocEntry> ExtractTocEntries(string markdown);
+
+        string TransformLinks(string markdown, Func<string, string> func);
     }
 }

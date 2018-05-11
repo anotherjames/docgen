@@ -80,5 +80,15 @@ namespace DocGen.Core.Tests
             Assert.Equal("test7", toc[6].Id);
             Assert.Equal(1, toc[6].Level);
         }
+
+        [Fact]
+        public void Can_translate_links()
+        {
+            var markdown = "[test](link.html)";
+
+            var result = _markdownRenderer.TransformLinks(markdown, link => Helpers.ResolvePathPart("/test", link));
+            
+            Assert.Equal("[test](/test/link.html)", result);
+        }
     }
 }
