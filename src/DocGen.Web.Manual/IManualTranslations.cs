@@ -7,6 +7,8 @@ namespace DocGen.Web.Manual
     {
         Task RegenerateTemplate();
 
-        List<string> GetLanguages();
+        Task AddLanguage(string cultureCode);
+
+        Task<List<string>> GetLanguages();
     }
 }

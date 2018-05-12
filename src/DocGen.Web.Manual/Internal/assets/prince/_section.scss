@@ -2,8 +2,9 @@
   counter-increment: section;
   counter-reset: figuire;
   column-count: 2;
-  
   figure {
+    // Prevent a figure from spanning multiple pages.
+    page-break-inside: avoid;
     img {
       width: 100%;
     }

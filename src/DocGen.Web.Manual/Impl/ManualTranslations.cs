@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using DocGen.Core;
@@ -9,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using static SimpleExec.Command;
 
 namespace DocGen.Web.Manual.Impl
 {
@@ -75,9 +79,48 @@ namespace DocGen.Web.Manual.Impl
             });
         }
 
-        public List<string> GetLanguages()
+        public async Task AddLanguage(string cultureCode)
         {
-            throw new System.NotImplementedException();
+            var found = false;
+            foreach (var culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
+            {
+                Debug.WriteLine(culture.Name);
+                found = culture.Name == cultureCode;
+                if(found) break;
+            }
+            
+            if (!found)
+            {
+                throw new DocGenException($"Invalid culture code $\"{cultureCode}\"");
+            }
+            
+            var destination = Path.Combine(_options.ContentDirectory, "translations", $"{cultureCode}.po");
+
+            if(await Task.Run(() => File.Exists(destination)))
+            {
+                throw new Exception($"Language already created for {cultureCode}");
+            }
+
+            var template = Path.Combine(_options.ContentDirectory, "translations", "template.pot");
+            
+            await RunAsync("msginit", $"-i \"{template}\" -o \"{destination}\" -l \"{cultureCode}\" --no-translator");
+        }
+        
+        public async Task<List<string>> GetLanguages()
+        {
+            var languages = new List<string>();
+            languages.Add("en-US");
+
+            var translationDirectory = Path.Combine(_options.ContentDirectory, "translations");
+            await Task.Run(() =>
+            {
+                foreach (var language in Directory.GetFiles(translationDirectory, "*.mo"))
+                {
+                    languages.Add(Path.GetFileNameWithoutExtension(language));
+                }
+            });
+            
+            return languages;
         }
     }
 }
