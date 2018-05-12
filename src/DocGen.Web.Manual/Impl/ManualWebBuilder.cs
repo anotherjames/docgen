@@ -5,6 +5,7 @@ using DocGen.Core;
 using DocGen.Core.Markdown;
 using DocGen.Web.Manual.Internal;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
@@ -21,15 +22,18 @@ namespace DocGen.Web.Manual.Impl
         readonly DocGenOptions _options;
         readonly IServiceProvider _serviceProvider;
         readonly IYamlParser _yamlParser;
+        readonly ISymbolGlossaryStore _symbolGlossaryStore;
 
         public ManualWebBuilder(
             IOptions<DocGenOptions> options,
             IServiceProvider serviceProvider,
-            IYamlParser yamlParser)
+            IYamlParser yamlParser,
+            ISymbolGlossaryStore symbolGlossaryStore)
         {
             _options = options.Value;
             _serviceProvider = serviceProvider;
             _yamlParser = yamlParser;
+            _symbolGlossaryStore = symbolGlossaryStore;
         }
         
         public async Task<IManualWeb> BuildManual()
@@ -107,6 +111,7 @@ namespace DocGen.Web.Manual.Impl
                 });
                 services.AddSingleton(sections);
                 services.AddSingleton(coversheet);
+                services.AddSingleton(_symbolGlossaryStore);
                 // These regitrations are so that our controllers can inject core DocGen services.
                 DocGen.Core.Services.Register(services);
             });

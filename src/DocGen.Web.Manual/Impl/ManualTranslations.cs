@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using DocGen.Core;
 using DocGen.Core.Markdown;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using SharpGettext;
 using static SimpleExec.Command;
 
 namespace DocGen.Web.Manual.Impl
@@ -75,7 +77,25 @@ namespace DocGen.Web.Manual.Impl
                     File.Delete(destination);
                 using (var file = File.OpenWrite(destination))
                 using (var writer = new StreamWriter(file))
-                    _markdownTransformer.CreatePotFile(translations, writer);
+                    SharpGettext.SharpGettext.GeneratePOT(
+                        new POTemplateHeader
+                        {
+                            Language = "en-US"
+                        },
+                        translations.Select(x => new POTranslation
+                        {
+                            Text = x
+                        }).ToList(),
+                        writer);
+            });
+            
+            // Now that we have our POT files, let's update all of our translations.
+            await Task.Run(async () =>
+            {
+                foreach (var file in Directory.GetFiles(Path.Combine(_options.ContentDirectory, "translations"), "*.po"))
+                {
+                    await RunAsync("msgmerge", $"-U \"{file}\" \"{destination}\"");
+                }
             });
         }
 

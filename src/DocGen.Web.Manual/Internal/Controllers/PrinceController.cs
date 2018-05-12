@@ -1,10 +1,18 @@
 ﻿using System;
+using System.IO;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using DocGen.Core;
 using DocGen.Core.Markdown;
 using DocGen.Web.Manual.Internal.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DocGen.Web.Manual.Internal.Controllers
 {
@@ -23,7 +31,7 @@ namespace DocGen.Web.Manual.Internal.Controllers
             _coversheetConfig = coversheetConfig;
         }
         
-        public ActionResult Template()
+        public async Task<ActionResult> Template()
         {
             var model = new ManualModel();
 
@@ -65,10 +73,39 @@ namespace DocGen.Web.Manual.Internal.Controllers
                 sectionModel.Html = markdownResult.Html;
                 sectionModel.TableOfContents.AddRange(toc);
                 
+                // Replace some tokens in the markdown with some things we generate.
+                if (sectionModel.Html.Contains("{{symbol-glossary}}"))
+                {
+                    var symbolGlossary = await RenderViewComponent("SymbolGlossary", new { });
+                    sectionModel.Html = sectionModel.Html.Replace("{{symbol-glossary}}", symbolGlossary);
+                }
+                
                 model.Sections.Add(sectionModel);
             }
             
             return View(model);
+        }
+
+        public async Task<string> RenderViewComponent(string viewComponent, object args)
+        {
+            var sp = HttpContext.RequestServices;
+            
+            var helper = new DefaultViewComponentHelper(
+                sp.GetRequiredService<IViewComponentDescriptorCollectionProvider>(),
+                HtmlEncoder.Default,
+                sp.GetRequiredService<IViewComponentSelector>(),
+                sp.GetRequiredService<IViewComponentInvokerFactory>(),
+                sp.GetRequiredService<IViewBufferScope>());
+
+            using (var writer = new StringWriter())
+            {
+                var context = new ViewContext(ControllerContext, NullView.Instance, ViewData, TempData, writer, new HtmlHelperOptions());
+                helper.Contextualize(context);
+                var result = await helper.InvokeAsync(viewComponent, args);
+                result.WriteTo(writer, HtmlEncoder.Default);
+                await writer.FlushAsync();
+                return writer.ToString();
+            }
         }
         
         public IActionResult Pdf()
