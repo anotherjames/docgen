@@ -122,5 +122,31 @@ namespace DocGen.Web.Manual.Impl
             
             return languages;
         }
+
+        public async Task CompileLanguages()
+        {
+            // Clean all the existing .mo files.
+            var translationDirectory = Path.Combine(_options.ContentDirectory, "translations");
+            await Task.Run(() =>
+            {
+                foreach (var language in Directory.GetFiles(translationDirectory, "*.mo"))
+                {
+                    File.Delete(language);
+                }
+            });
+            
+            await Task.Run(() =>
+            {
+                foreach (var language in Directory.GetFiles(translationDirectory, "*.po"))
+                {
+                    var destination = Path.Combine(
+                        // ReSharper disable AssignNullToNotNullAttribute
+                        Path.GetDirectoryName(language),
+                        // ReSharper restore AssignNullToNotNullAttribute
+                        Path.GetFileNameWithoutExtension(language) + ".mo");
+                    RunAsync("msgfmt", $"-o \"{destination}\" \"{language}\"");
+                }
+            });
+        }
     }
 }

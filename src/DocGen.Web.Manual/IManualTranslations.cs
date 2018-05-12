@@ -10,5 +10,7 @@ namespace DocGen.Web.Manual
         Task AddLanguage(string cultureCode);
 
         Task<List<string>> GetLanguages();
+
+        Task CompileLanguages();
     }
 }

@@ -34,6 +34,13 @@ namespace DocGen.Cons.Commands
                         
                         addApp.OnExecute(() => Add(cultureCode.Value()));
                     });
+                    
+                    application.Command("compile", compileApp =>
+                    {
+                        compileApp.HelpOption("-? | -h | --help");
+                       
+                        compileApp.OnExecute(() => Compile());
+                    });
     
                     application.OnExecute(() =>
                     {
@@ -57,6 +64,15 @@ namespace DocGen.Cons.Commands
                 var translations = Program.GetServiceProvider().GetRequiredService<IManualTranslations>();
     
                 await translations.RegenerateTemplate();
+
+                return 0;
+            }
+
+            private static async Task<int> Compile()
+            {
+                var translations = Program.GetServiceProvider().GetRequiredService<IManualTranslations>();
+    
+                await translations.CompileLanguages();
 
                 return 0;
             }
