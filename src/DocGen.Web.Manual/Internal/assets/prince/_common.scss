@@ -21,6 +21,12 @@ html {
 
 .page-break {
   page-break-before: always;
+  page-break-after: always;
+}
+
+.full-page {
+  @extend .span-page;
+  @extend .page-break;
 }
 
 h1, h2, h3, h4, h5, h6 {

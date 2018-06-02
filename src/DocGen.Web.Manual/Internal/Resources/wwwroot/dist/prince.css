@@ -6358,11 +6358,12 @@ html {
   prince-bleed: 0.25in;
   prince-trim: 0.25in; }
 
-.span-page {
+.span-page, .full-page {
   column-span: all; }
 
-.page-break {
-  page-break-before: always; }
+.page-break, .full-page {
+  page-break-before: always;
+  page-break-after: always; }
 
 h1, h2, h3, h4, h5, h6 {
   font-size: 10pt;
@@ -6503,5 +6504,5 @@ ul, ol {
     text-align: justify;
     /*prevent from spanning multiple columns.*/
     page-break-inside: avoid; }
-  .section .span-page h1 {
+  .section .span-page h1, .section .full-page h1 {
     page-break-before: always; }
