@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DocGen.Core;
 using DocGen.Core.Markdown;
@@ -78,6 +80,17 @@ namespace DocGen.Web.Manual.Internal.Controllers
                 {
                     var symbolGlossary = await RenderViewComponent("SymbolGlossary", new { });
                     sectionModel.Html = sectionModel.Html.Replace("{{symbol-glossary}}", symbolGlossary);
+                }
+
+                var matches = Regex.Matches(sectionModel.Html, "{{content:(.+)}}");
+                foreach (Match match in matches)
+                {
+                    var contentName = match.Groups[1].Value;
+                    var content = await RenderViewComponent("SharedContent", new
+                    {
+                        templateName = contentName
+                    });
+                    sectionModel.Html = Regex.Replace(sectionModel.Html, match.Value, content);
                 }
                 
                 model.Sections.Add(sectionModel);

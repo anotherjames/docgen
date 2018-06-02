@@ -12645,6 +12645,9 @@ html {
 .span-page {
   column-span: all; }
 
+.page-break {
+  page-break-before: always; }
+
 h1, h2, h3, h4, h5, h6 {
   font-size: 10pt;
   color: #282829;
