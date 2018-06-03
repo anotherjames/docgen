@@ -4,9 +4,12 @@
 }
 
 .coversheet {
-  page-break-after: always;
   page: Coversheet;
+}
 
+.inside-empty-page, .coversheet {
+  page-break-after: always;
+  
   .product {
     max-width: 500pt;
     margin-left: auto;
@@ -33,5 +36,13 @@
 
   .info {
     @include float-right;
+  }
+}
+
+.inside-empty-page {
+  .info {
+    margin-top: 300pt;
+    margin-right: 0;
+    float: right;
   }
 }

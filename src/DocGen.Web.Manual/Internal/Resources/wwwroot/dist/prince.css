@@ -6434,27 +6434,34 @@ ul, ol {
   background-color: #e5e6e5; }
 
 .coversheet {
-  page-break-after: always;
   page: Coversheet; }
-  .coversheet .product {
+
+.inside-empty-page, .coversheet {
+  page-break-after: always; }
+  .inside-empty-page .product, .coversheet .product {
     max-width: 500pt;
     margin-left: auto;
     margin-right: auto;
     display: block; }
-  .coversheet .info {
+  .inside-empty-page .info, .coversheet .info {
     width: 300pt;
     margin-right: 100pt; }
-    .coversheet .info .logo {
+    .inside-empty-page .info .logo, .coversheet .info .logo {
       width: 100%; }
-    .coversheet .info .user-manual {
+    .inside-empty-page .info .user-manual, .coversheet .info .user-manual {
       text-transform: uppercase;
       font-weight: 900;
       margin: 0; }
-    .coversheet .info .model, .coversheet .info .text {
+    .inside-empty-page .info .model, .inside-empty-page .info .text, .coversheet .info .model, .coversheet .info .text {
       text-align: right;
       margin: 0; }
-  .coversheet .info {
+  .inside-empty-page .info, .coversheet .info {
     float: right !important; }
+
+.inside-empty-page .info {
+  margin-top: 300pt;
+  margin-right: 0;
+  float: right; }
 
 .toc {
   page-break-after: always;
