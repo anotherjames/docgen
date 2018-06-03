@@ -23,17 +23,20 @@ namespace DocGen.Web.Manual.Impl
         readonly IServiceProvider _serviceProvider;
         readonly IYamlParser _yamlParser;
         readonly ISymbolGlossaryStore _symbolGlossaryStore;
+        readonly IManualTranslations _manualTranslations;
 
         public ManualWebBuilder(
             IOptions<DocGenOptions> options,
             IServiceProvider serviceProvider,
             IYamlParser yamlParser,
-            ISymbolGlossaryStore symbolGlossaryStore)
+            ISymbolGlossaryStore symbolGlossaryStore,
+            IManualTranslations manualTranslations)
         {
             _options = options.Value;
             _serviceProvider = serviceProvider;
             _yamlParser = yamlParser;
             _symbolGlossaryStore = symbolGlossaryStore;
+            _manualTranslations = manualTranslations;
         }
         
         public async Task<IManualWeb> BuildManual()
@@ -49,18 +52,23 @@ namespace DocGen.Web.Manual.Impl
                 controller = "Home",
                 action = "Index"
             });
-            
-            webBuilder.RegisterMvc("/prince/template", new
+
+            foreach (var language in await _manualTranslations.GetLanguages())
             {
-                controller = "Prince",
-                action = "Template"
-            });
-            
-            webBuilder.RegisterMvc("/prince/output.pdf", new
-            {
-                controller = "Prince",
-                action = "Pdf"
-            });
+                webBuilder.RegisterMvc($"/prince/{language}/template", new
+                {
+                    controller = "Prince",
+                    action = "Template",
+                    language
+                });
+                
+                webBuilder.RegisterMvc($"/prince/{language}/output.pdf", new
+                {
+                    controller = "Prince",
+                    action = "Pdf",
+                    language
+                });
+            }
             
             // Register our static files.
             webBuilder.RegisterDirectory("/Users/pknopf/git/docgen/src/DocGen.Web.Manual/Internal/Resources/wwwroot");
@@ -109,6 +117,7 @@ namespace DocGen.Web.Manual.Impl
                 {
                     options.FileProviders.Add(new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Manual/Internal/Resources"));
                 });
+                services.AddSingleton(_manualTranslations);
                 services.AddSingleton(sections);
                 services.AddSingleton(coversheet);
                 services.AddSingleton(_symbolGlossaryStore);

@@ -33,7 +33,7 @@ namespace DocGen.Web.Manual.Internal.Controllers
             _coversheetConfig = coversheetConfig;
         }
         
-        public async Task<ActionResult> Template()
+        public async Task<ActionResult> Template(string language)
         {
             var model = new ManualModel();
 
@@ -121,20 +121,26 @@ namespace DocGen.Web.Manual.Internal.Controllers
             }
         }
         
-        public IActionResult Pdf()
+        public IActionResult Pdf(string language)
         {
-            return new PrinceActionResult();
+            return new PrinceActionResult(language);
         }
 
         class PrinceActionResult : IActionResult
         {
+            readonly string _language;
+
+            public PrinceActionResult(string language)
+            {
+                _language = language;
+            }
+            
             public Task ExecuteResultAsync(ActionContext context)
             {
                 context.HttpContext.Response.ContentType = "application/pdf";
                 var prince = new DocGen.Web.Manual.Prince.Prince("/usr/local/bin/prince");
                 var url = new UrlHelper(context);
-                prince.Convert(url.ServerBaseUrl() + "/prince/template", context.HttpContext.Response.Body);
-                //prince.SetBaseURL(url.ServerBaseUrl());
+                prince.Convert(url.ServerBaseUrl() + $"/prince/{_language}/template", context.HttpContext.Response.Body);
                 return Task.CompletedTask;
             }
         }
