@@ -1,8 +1,11 @@
-﻿@model ManualModel
+﻿@using DocGen.Web.Manual
+@model ManualModel
 @{
     var layout = "_LayoutPrince";
     Layout = layout;
 }
+
+@inject ITranslator Translator
 
 <div class="coversheet">
     <img class="product" src="@Model.Coversheet.ProductImage" />
@@ -33,7 +36,7 @@
 </div>
 
 <div class="toc">
-    <h1>Table of contents</h1>
+    <h1>@Translator.Translate(Model.Language, "Table of contents")</h1>
     @foreach (var section in Model.Sections)
     {
         <div class="entry level-0">

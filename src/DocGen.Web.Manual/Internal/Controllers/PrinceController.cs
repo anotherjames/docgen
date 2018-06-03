@@ -37,6 +37,8 @@ namespace DocGen.Web.Manual.Internal.Controllers
         {
             var model = new ManualModel();
 
+            model.Language = language;
+            
             model.Coversheet = new CoversheetConfig
             {
                 ProductImage = _coversheetConfig.ProductImage,
@@ -51,7 +53,7 @@ namespace DocGen.Web.Manual.Internal.Controllers
             model.Coversheet.ProductImage = Url.Content($"~{model.Coversheet.ProductImage}");
             model.Coversheet.ProductLogo = Url.Content($"~{model.Coversheet.ProductLogo}");
             
-            foreach (var section in _manualSectionStore.GetSections())
+            foreach (var section in _manualSectionStore.GetSections(language))
             {
                 var sectionModel = new SectionModel();
 

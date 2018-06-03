@@ -66,6 +66,10 @@ namespace DocGen.Web.Manual.Impl
                 }
             }
             
+            // Add some translations that we have hardcoded in our templates.
+            if(!translations.Contains("Table of contents"))
+                translations.Add("Table of contents");
+            
             // Now that we have the translations of all of our documents, let's generate the POT file.
             var destination = Path.Combine(_options.ContentDirectory, "translations", "template.pot");
             await Task.Run(() =>

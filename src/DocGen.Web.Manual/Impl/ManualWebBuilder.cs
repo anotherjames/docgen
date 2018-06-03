@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DocGen.Core;
 using DocGen.Core.Markdown;
 using DocGen.Web.Manual.Internal;
+using MarkdownTranslator;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,19 +25,25 @@ namespace DocGen.Web.Manual.Impl
         readonly IYamlParser _yamlParser;
         readonly ISymbolGlossaryStore _symbolGlossaryStore;
         readonly IManualTranslations _manualTranslations;
+        readonly ITranslator _translator;
+        readonly IMarkdownTransformer _markdownTransformer;
 
         public ManualWebBuilder(
             IOptions<DocGenOptions> options,
             IServiceProvider serviceProvider,
             IYamlParser yamlParser,
             ISymbolGlossaryStore symbolGlossaryStore,
-            IManualTranslations manualTranslations)
+            IManualTranslations manualTranslations,
+            ITranslator translator,
+            IMarkdownTransformer markdownTransformer)
         {
             _options = options.Value;
             _serviceProvider = serviceProvider;
             _yamlParser = yamlParser;
             _symbolGlossaryStore = symbolGlossaryStore;
             _manualTranslations = manualTranslations;
+            _translator = translator;
+            _markdownTransformer = markdownTransformer;
         }
         
         public async Task<IManualWeb> BuildManual()
@@ -53,7 +60,9 @@ namespace DocGen.Web.Manual.Impl
                 action = "Index"
             });
 
-            foreach (var language in await _manualTranslations.GetLanguages())
+            var languages = await _manualTranslations.GetLanguages();
+            
+            foreach (var language in languages)
             {
                 webBuilder.RegisterMvc($"/prince/{language}/template", new
                 {
@@ -102,7 +111,17 @@ namespace DocGen.Web.Manual.Impl
                         var title = (string) yaml.Yaml.Title;
                         if (string.IsNullOrEmpty(title))
                             throw new DocGenException($"The file {markdownFile} needs a title.");
-                        sections.AddMarkdown(title, order ?? 0, yaml.Markdown, markdownFile);
+                        foreach (var language in languages)
+                        {
+                            sections.AddMarkdown(language,
+                                _translator.Translate(language, title)
+                                , order ?? 0,
+                                _markdownTransformer.TransformMarkdown(
+                                    yaml.Markdown,
+                                    DocgenDefaults.GetDefaultPipeline(),
+                                    x => _translator.Translate(language, x)),
+                                markdownFile);
+                        }
                         break;
                     default:
                         throw new DocGenException("Unknown contente type");
@@ -117,6 +136,7 @@ namespace DocGen.Web.Manual.Impl
                 {
                     options.FileProviders.Add(new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Manual/Internal/Resources"));
                 });
+                services.AddSingleton(_translator);
                 services.AddSingleton(_manualTranslations);
                 services.AddSingleton(sections);
                 services.AddSingleton(coversheet);
