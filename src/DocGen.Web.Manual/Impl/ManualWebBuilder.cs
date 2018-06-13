@@ -135,6 +135,9 @@ namespace DocGen.Web.Manual.Impl
                 services.Configure<RazorViewEngineOptions>(options =>
                 {
                     options.FileProviders.Add(new PhysicalFileProvider("/Users/pknopf/git/docgen/src/DocGen.Web.Manual/Internal/Resources"));
+                    var templateDirectory = Path.Combine(_options.ContentDirectory, "templates");
+                    if(Directory.Exists(templateDirectory))
+                        options.FileProviders.Add(new PhysicalFileProvider(templateDirectory));
                 });
                 services.AddSingleton(_translator);
                 services.AddSingleton(_manualTranslations);

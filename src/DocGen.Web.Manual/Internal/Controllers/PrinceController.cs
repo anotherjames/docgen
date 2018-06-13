@@ -90,7 +90,8 @@ namespace DocGen.Web.Manual.Internal.Controllers
                     var contentName = match.Groups[1].Value;
                     var content = await RenderViewComponent("SharedContent", new
                     {
-                        templateName = contentName
+                        templateName = contentName,
+                        language
                     });
                     sectionModel.Html = Regex.Replace(sectionModel.Html, match.Value, content);
                 }
