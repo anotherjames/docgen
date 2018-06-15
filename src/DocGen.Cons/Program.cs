@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using DocGen.Core;
 using Microsoft.Extensions.CommandLineUtils;
@@ -14,27 +15,47 @@ namespace DocGen.Cons
         {
             IServiceProvider serviceProvider;
 
-            {
-                var services = new ServiceCollection();
-                DocGen.Core.Services.Register(services);
-                DocGen.Requirements.Services.Register(services);
-                DocGen.Web.Services.Register(services);
-                DocGen.Web.Requirements.Services.Register(services);
-                serviceProvider = services.BuildServiceProvider();
-            }
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .WriteTo.Console()
-                .CreateLogger();
-
             var app = new CommandLineApplication();
             app.Name = "docgen";
             app.FullName = "A tool to generate documentation from a source directory";
 
             app.HelpOption("-? | -h | --help");
 
-            Commands.Content.Configure(app, serviceProvider);
+            var contentDirectoryOption = app.Option("-c |--content <content>",
+                "The location of the content directory. Defaults to the current directory.",
+                CommandOptionType.SingleValue,
+                true);
+
+            GetServiceProvider = () =>
+            {
+                var services = new ServiceCollection();
+                
+                Services.Register(services);
+                Requirements.Services.Register(services);
+                Web.Requirements.Services.Register(services);
+                Web.Manual.Services.Register(services);
+
+                services.AddOptions();
+                
+                var contentDirectory = contentDirectoryOption.Value();
+                if (string.IsNullOrEmpty(contentDirectory))
+                    contentDirectory = Directory.GetCurrentDirectory();
+
+                services.Configure<DocGenOptions>(options =>
+                {
+                    options.ContentDirectory = contentDirectory;
+                });
+                
+                Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Information()
+                    .WriteTo.Console()
+                    .CreateLogger();
+
+                return serviceProvider = services.BuildServiceProvider();
+            };
+            
+            Commands.Dhf.Configure(app);
+            Commands.Manual.Configure(app);
 
             app.OnExecute(() =>
             {
@@ -89,5 +110,7 @@ namespace DocGen.Cons
                 return Task.FromResult(-1);
             }
         }
+
+        public static Func<IServiceProvider> GetServiceProvider = null;
     }
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DocGen.Core.Markdown
@@ -7,5 +9,9 @@ namespace DocGen.Core.Markdown
         MarkdownRenderResult RenderMarkdown(string markdown);
 
         Task<MarkdownRenderResult> RenderMarkdownFromFile(string file);
+
+        List<TocEntry> ExtractTocEntries(string markdown);
+
+        string TransformLinks(string markdown, Func<string, string> func);
     }
 }

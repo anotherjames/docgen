@@ -1,0 +1,17 @@
+$FontPath: "./fonts" !default;
+@import "fonts/roboto";
+
+$font-weight-light: 100;
+$font-weight-normal: 300;
+$font-weight-bold: 900;
+$font-family-base: 'Roboto', sans-serif;
+$icon-font-path: "~bootstrap/assets/fonts/bootstrap/";
+$enable-print-styles: false;
+@import "~bootstrap/scss/bootstrap";
+
+@import "prince/common";
+@import "prince/headers.scss";
+@import "prince/footers.scss";
+@import "prince/coversheet";
+@import "prince/toc";
+@import "prince/section";

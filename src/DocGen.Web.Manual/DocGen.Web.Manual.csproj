@@ -1,7 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\DocGen.Core\DocGen.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Internal\assets\node_modules\**" />
+    <EmbeddedResource Remove="Internal\assets\node_modules\**" />
+    <None Remove="Internal\assets\node_modules\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NGettext" Version="0.6.3" />
+    <PackageReference Include="SharpGettext" Version="0.3.1" />
+    <PackageReference Include="SimpleExec" Version="2.0.0" />
+  </ItemGroup>
 </Project>

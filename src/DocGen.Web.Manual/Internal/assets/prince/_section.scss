@@ -1,0 +1,42 @@
+.section {
+  counter-increment: section;
+  counter-reset: figuire;
+  column-count: 2;
+  figure {
+    // Prevent a figure from spanning multiple pages.
+    page-break-inside: avoid;
+    img {
+      width: 100%;
+    }
+  }
+}
+
+
+.section .figure {
+  counter-increment: figure;
+  font-weight: bold;
+}
+
+.section .figure-text {
+  content: counter(section) "-" counter(figure);
+}
+
+.section {
+  page-break-before: always;
+  h1, h2, h3, h4, h5, h6 {
+    column-break-before: always;
+  }
+  p {
+    // Try to expand the text the entire column, if possible.
+    text-align: justify;
+    /*prevent from spanning multiple columns.*/
+    page-break-inside: avoid;
+  }
+  .span-page {
+    // If we are spanning all content, instead of column breaking,
+    // we need to page break.
+    h1 {
+      page-break-before: always;
+    }
+  }
+}

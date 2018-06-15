@@ -1,0 +1,61 @@
+﻿@using DocGen.Web.Manual
+@model ManualModel
+@{
+    var layout = "_LayoutPrince";
+    Layout = layout;
+}
+
+@inject ITranslator Translator
+
+<div class="coversheet">
+    <img class="product" src="@Model.Coversheet.ProductImage" />
+    <div class="info">
+        <img class="logo" src="@Model.Coversheet.ProductLogo" />
+        <p class="user-manual">User Manual</p>
+        <p class="model">@Model.Coversheet.Model</p>
+        <p class="text">@Model.Coversheet.Text</p>
+    </div>
+</div>
+
+<div class="inside-empty-page">
+    <div class="info">
+        <img class="logo" src="@Model.Coversheet.ProductLogo" />
+        <p class="user-manual">User Manual</p>
+        <p class="model">@Model.Coversheet.Model</p>
+        <p class="text">@Model.Coversheet.Text</p>
+    </div>
+</div>
+
+<div class="print-header left"></div>
+<div class="print-header right"></div>
+<div class="page-number left">
+    PG<span class="text"></span>
+</div>
+<div class="page-number right">
+    PG<span class="text"></span>
+</div>
+
+<div class="toc">
+    <h1>@Translator.Translate(Model.Language, "Table of contents")</h1>
+    @foreach (var section in Model.Sections)
+    {
+        <div class="entry level-0">
+            <a href="#@(section.Title)">@(section.Title)</a>
+        </div>
+        foreach (var tocEntry in section.TableOfContents)
+        {
+            <div class="entry level-@tocEntry.Level">
+                <a href="#@tocEntry.Id">@tocEntry.Title</a>
+            </div>
+        }
+    }
+</div>
+
+<div>
+    @foreach (var section in Model.Sections)
+    {
+        <div class="section" id="@(section.Title)" style="string-set: page-title '@(section.Title)';">
+            @Html.Raw(section.Html)
+        </div>
+    }
+</div>

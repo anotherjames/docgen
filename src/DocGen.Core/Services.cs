@@ -8,6 +8,8 @@ namespace DocGen.Core
         {
             services.AddSingleton<Markdown.IMarkdownRenderer, Markdown.Impl.MarkdownRenderer>();
             services.AddSingleton<Markdown.IYamlParser, Markdown.Impl.YamlParser>();
+            services.AddSingleton<MarkdownTranslator.IMarkdownTransformer, MarkdownTranslator.Impl.MarkdownTransformer>();
+            Statik.Statik.RegisterServices(services);
         }
     }
 }

@@ -1,29 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Internal/Resources/**/*" />
-    <EmbeddedResource Remove="Internal/Resources/assets/**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DocGen.Web\DocGen.Web.csproj" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.3" />
   </ItemGroup>
-
   <ItemGroup>
-    <Compile Remove="Internal/Resources/assets/**" />
-    <Compile Remove="Internal/example/**" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Compile Remove="Internal/Resources/assets/node_modules/**" />
+    <Content Remove="Internal/Resources/assets/node_modules/**" />
+    <EmbeddedResource Remove="Internal/Resources/assets/node_modules/**" />
     <None Remove="Internal/Resources/assets/node_modules/**" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\DocGen.Requirements\DocGen.Requirements.csproj" />
+  </ItemGroup>
 </Project>

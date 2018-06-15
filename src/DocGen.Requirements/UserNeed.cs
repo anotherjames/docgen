@@ -12,8 +12,10 @@ namespace DocGen.Requirements
         }
         
         public string Key { get; set; }
-
+        
         public Version Number { get; set; }
+
+        public string NumberFullyQualified => Number.ToString();
 
         public string Title { get; set; }
 

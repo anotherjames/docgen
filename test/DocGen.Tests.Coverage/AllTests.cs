@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace DocGen.Tests.Coverage
@@ -8,9 +7,10 @@ namespace DocGen.Tests.Coverage
         [Fact]
         public void Run_all_tests()
         {
-            DocGen.Tests.TestExecutor.RunTests(
+            TestExecutor.RunTests(
                 typeof(DocGen.Core.Tests.YamlParserTests).Assembly,
-                typeof(DocGen.Requirements.Tests.RequirementsParserTests).Assembly
+                typeof(DocGen.Requirements.Tests.RequirementsParserTests).Assembly,
+                typeof(DocGen.Web.Requirements.Tests.MenuStoreTests).Assembly
             );
         }
     }

@@ -51,6 +51,5 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin("styles.css"),
-  ],
-  watch: true
+  ]
 };

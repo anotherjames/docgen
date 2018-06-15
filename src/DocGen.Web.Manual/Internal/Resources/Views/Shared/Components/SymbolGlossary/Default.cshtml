@@ -1,0 +1,33 @@
+@using DocGen.Web.Manual
+@model List<SymbolEntry>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Symbol</th>
+        <th>Reference(s)</th>
+        <th>Title</th>
+        <th>Symbol</th>
+        <th>Reference(s)</th>
+        <th>Title</th>
+    </tr>
+    @foreach (var entry in Model)
+    {
+        if (Model.IndexOf(entry) % 2 == 0)
+        {
+            @Html.Raw("<tr>")
+        }
+        
+        <td><img src="@Url.Content($"~{entry.Symbol}")" /></td>
+        <td>@entry.References</td>
+        <td>@entry.Title</td>
+        
+        if (Model.IndexOf(entry) % 2 == 1)
+        {
+            @Html.Raw("</tr>")
+        }
+    }
+    @if (Model.Count % 2 == 1)
+    {
+        @Html.Raw("</tr>")
+    }
+</table>

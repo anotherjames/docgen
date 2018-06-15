@@ -1,15 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageReference Include="MarkdownTranslator" Version="0.4.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Serilog" Version="2.6.0" />
+    <PackageReference Include="Statik" Version="0.3.0-beta.14" />
+    <PackageReference Include="Statik.Files" Version="0.3.0-beta.14" />
+    <PackageReference Include="Statik.Mvc" Version="0.3.0-beta.14" />
     <PackageReference Include="Markdig" Version="0.15.0" />
     <PackageReference Include="YamlDotNet" Version="4.3.1" />
   </ItemGroup>
-
 </Project>

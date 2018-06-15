@@ -8,6 +8,17 @@ namespace DocGen.Requirements
 
         public Version Number { get; set; }
 
+        public string NumberFullyQualified
+        {
+            get
+            {
+                if (UserNeed != null) return $"{UserNeed.NumberFullyQualified}-t{Number}";
+                if (ProductRequirement != null) return $"{ProductRequirement.NumberFullyQualified}-t{Number}";
+                if (SoftwareSpecification != null) return $"{SoftwareSpecification.NumberFullyQualified}-t{Number}";
+                return Number.ToString();
+            }
+        }
+
         public TestCaseResponseTypeEnum ResponseType { get; set; }
 
         public TestCaseValidationTypeEnum ValidationType { get; set; }

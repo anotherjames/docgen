@@ -14,6 +14,15 @@ namespace DocGen.Requirements
 
         public Version Number { get; set; }
 
+        public string NumberFullyQualified
+        {
+            get
+            {
+                if (ProductRequirement == null) return Number.ToString();
+                return $"{ProductRequirement.NumberFullyQualified}-{Number}";
+            }
+        }
+        
         public string Title { get; set; }
 
         public string Requirement { get; set; }

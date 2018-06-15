@@ -1,0 +1,6 @@
+﻿@model HomeViewModel
+
+@foreach (var language in Model.Languages)
+{
+    <a href="@Url.Content($"~/prince/{language}/output.pdf")">@language</a>
+}

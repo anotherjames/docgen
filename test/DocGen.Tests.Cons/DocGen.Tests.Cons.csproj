@@ -1,15 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\DocGen.Tests\DocGen.Tests.csproj" />
     <ProjectReference Include="..\DocGen.Requirements.Tests\DocGen.Requirements.Tests.csproj" />
     <ProjectReference Include="..\DocGen.Core.Tests\DocGen.Core.Tests.csproj" />
-    <ProjectReference Include="..\DocGen.Web.Tests\DocGen.Web.Tests.csproj" />
+    <ProjectReference Include="..\DocGen.Web.Requirements.Tests\DocGen.Web.Requirements.Tests.csproj" />
   </ItemGroup>
-
 </Project>

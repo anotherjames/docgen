@@ -1,14 +1,12 @@
 sudo: required
 language: csharp
 mono: none
-dotnet: 2.1.300-preview2-008533
+dotnet: 2.1.300
 if: tag IS blank
 services:
   - docker
 before_install:
   - git fetch --unshallow
-  - dotnet tool install -g dotnet-script
-  - export PATH=$PATH:$HOME/.dotnet/tools
   - printf "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}\n" >> ~/.npmrc
 script:
   - ./build.sh ci

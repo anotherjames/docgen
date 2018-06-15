@@ -58,7 +58,7 @@ namespace DocGen.Requirements.Impl
             string number = yaml.Yaml?.Number;
             if (string.IsNullOrEmpty(number))
                 throw new DocGenException("You must provider a number");
-            if (!Version.TryParse(number, out Version version))
+            if (!TryParseVersion(number, out Version version))
                 throw new DocGenException($"Invalid number format {number}");
 
             result.Number = version;
@@ -119,7 +119,7 @@ namespace DocGen.Requirements.Impl
             string number = yaml.Yaml?.Number;
             if (string.IsNullOrEmpty(number))
                 throw new DocGenException("You must provider a number");
-            if (!Version.TryParse(number, out Version version))
+            if (!TryParseVersion(number, out Version version))
                 throw new DocGenException($"Invalid number format {number}");
 
             result.Number = version;
@@ -180,7 +180,7 @@ namespace DocGen.Requirements.Impl
             string number = yaml.Yaml?.Number;
             if (string.IsNullOrEmpty(number))
                 throw new DocGenException("You must provider a number");
-            if (!Version.TryParse(number, out Version version))
+            if (!TryParseVersion(number, out Version version))
                 throw new DocGenException($"Invalid number format {number}");
 
             result.Number = version;
@@ -238,7 +238,7 @@ namespace DocGen.Requirements.Impl
             string number = yaml.Yaml?.Number;
             if (string.IsNullOrEmpty(number))
                 throw new DocGenException("You must provider a number");
-            if (!Version.TryParse(number, out Version version))
+            if (!TryParseVersion(number, out Version version))
                 throw new DocGenException($"Invalid number format {number}");
 
             result.Number = version;
@@ -266,6 +266,22 @@ namespace DocGen.Requirements.Impl
                 throw new DocGenException("Expected is required");
 
             return result;
+        }
+
+        private bool TryParseVersion(string input, out Version version)
+        {
+            version = null;
+
+            if (string.IsNullOrEmpty(input)) return false;
+            
+            if (int.TryParse(input, out int tmp))
+            {
+                // This is just a number, but let's treat it as if it is valid.
+                version = new Version(tmp, 0);
+                return true;
+            }
+
+            return Version.TryParse(input, out version);
         }
     }
 }

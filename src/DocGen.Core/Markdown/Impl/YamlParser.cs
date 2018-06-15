@@ -12,7 +12,14 @@ namespace DocGen.Core.Markdown.Impl
     {
         public YamlParseResult ParseYaml(string markdown)
         {
-            var builder = new Markdig.MarkdownPipelineBuilder();
+            if (string.IsNullOrEmpty(markdown))
+            {
+                return new YamlParseResult(null, null);
+            }
+
+            markdown = markdown.NormalizeLineEndings();
+            
+            var builder = new MarkdownPipelineBuilder();
             builder.Extensions.Add(new Markdig.Extensions.Yaml.YamlFrontMatterExtension());
             var pipeline = builder.Build();
             var document = Markdig.Markdown.Parse(markdown, pipeline);
