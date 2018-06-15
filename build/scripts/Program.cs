@@ -97,8 +97,6 @@ namespace Build
                         return;
                     }
                 }
-                
-                Add("ci", DependsOn("update-version", "test", "deploy", "publish"));
 
                 // For now, we are only deploying npm packages.
                 RunShell("cd ./output/console/ && npm publish");
@@ -107,6 +105,7 @@ namespace Build
                 RunShell("cd ./output/console/linux-x64/ && npm publish");
             });
 
+            Add("ci", DependsOn("update-version", "test", "deploy", "publish")); 
             
             Add("default", DependsOn("build"));
 
