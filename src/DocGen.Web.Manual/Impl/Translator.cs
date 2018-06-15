@@ -5,7 +5,7 @@
         public string Translate(string language, string content)
         {
             // TODO:
-            return $"{language}-{content}";
+            return $"{content}";
         }
     }
 }
