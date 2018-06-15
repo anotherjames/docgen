@@ -17,7 +17,9 @@ namespace Build
         {
             var options = ParseOptions<Options>(args);
             var gitversion = GetGitVersion("./");
-
+            var dockerUsername = Environment.GetEnvironmentVariable("DOCKER_USERNAME");
+            var dockerPassword = Environment.GetEnvironmentVariable("DOCKER_PASSWORD");
+            
             var commandBuildArgs = $"--configuration {options.Configuration}";
             if (!string.IsNullOrEmpty(gitversion.PreReleaseTag))
             {
@@ -46,6 +48,7 @@ namespace Build
                 RunShell($"dotnet publish src/DocGen.Cons/ --output {ExpandPath("./output/console/osx-x64")} --runtime osx-x64 {commandBuildArgs}");
                 RunShell($"dotnet publish src/DocGen.Cons/ --output {ExpandPath("./output/console/win-x64")} --runtime win-x64 {commandBuildArgs}");
                 RunShell($"dotnet publish src/DocGen.Cons/ --output {ExpandPath("./output/console/linux-x64")} --runtime linux-x64 {commandBuildArgs}");
+                RunShell($"dotnet publish src/DocGen.Cons/ --output {ExpandPath("./output/console/any")} {commandBuildArgs}");
                 // The dotnet cli doesn't publish the entry points with executable permissions. No idea why.
                 RunShell("chmod +x ./output/console/osx-x64/DocGen.Cons");
                 RunShell("chmod +x ./output/console/linux-x64/DocGen.Cons");
@@ -61,6 +64,9 @@ namespace Build
                 }) {
                     ReplaceInFile(file, "VERSION", gitversion.FullVersion);
                 }
+                // Build the docker image.
+                CopyFile("./build/docker/Dockerfile", "./output/Dockerfile");
+                RunShell("docker build output --tag medxchange/docgen:build");
             });
             
             Add("update-version", () =>
@@ -103,6 +109,22 @@ namespace Build
                 RunShell("cd ./output/console/osx-x64/ && npm publish");
                 RunShell("cd ./output/console/win-x64/ && npm publish");
                 RunShell("cd ./output/console/linux-x64/ && npm publish");
+                
+                if (string.IsNullOrEmpty(dockerUsername))
+                {
+                    throw new Exception("No DOCKER_USERNAME provided.");
+                }
+
+                if (string.IsNullOrEmpty(dockerPassword))
+                {
+                    throw new Exception("No DOCKER_PASSWORD provided.");
+                }
+                
+                RunShell($"docker login -u {dockerUsername} -p {dockerPassword}");
+                RunShell($"docker tag medxchange/docgen:build medxchange/docgen:v{gitversion.FullVersion}");
+                RunShell("docker tag medxchange/docgen:build medxchange/docgen:latest");
+                RunShell($"docker push medxchange/docgen:v{gitversion.FullVersion}");
+                RunShell("docker push medxchange/docgen:latest");
             });
 
             Add("ci", DependsOn("update-version", "test", "deploy", "publish")); 
